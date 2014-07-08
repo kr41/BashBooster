@@ -1,0 +1,4 @@
+[1;30mtest-log-color [DEBUG] Debug message[0m
+[0;32mtest-log-color [INFO] Info message[0m
+[0;33mtest-log-color [WARNING] Warning message[0m
+[0;31mtest-log-color [ERROR] Error message[0m
