@@ -1,13 +1,13 @@
 #!/bin/bash
 
 unset CDPATH
-cd `dirname "${BASH_SOURCE[0]}"`
+cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 BB_TEST_OK=0
 BB_TEST_FAILED=0
 
 bb-test() {
-    local TEST=$1
+    local TEST="$1"
     local EXPECT_STDOUT="$TEST.stdout"
     local EXPECT_STDERR="$TEST.stderr"
     local EXPECT_CODE=0
@@ -18,7 +18,7 @@ bb-test() {
 
     local STDOUT=`bb-tmp-file`
     local STDERR=`bb-tmp-file`
-    $TEST > $STDOUT 2> $STDERR
+    "$TEST" > "$STDOUT" 2> "$STDERR"
 
     local CODE=$?
     if [[ $CODE -ne $EXPECT_CODE ]]
@@ -83,11 +83,12 @@ BB_LOG_PREFIX="bashbooster-test"
 BB_LOG_USE_COLOR=1
 source bashbooster.sh
 
-cd 'unit tests'
-for FILE in `find -name "test*.sh" | sort`
+IFS=`echo -e "\n\b"`
+for FILE in `find "./unit tests" -name "test*.sh" | sort`
 do
-    chmod a+x $FILE
-    bb-test $FILE
+    chmod a+x "$FILE"
+    bb-test "$FILE"
 done
+unset IFS
 
 bb-test-stat

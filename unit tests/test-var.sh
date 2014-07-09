@@ -1,5 +1,8 @@
 #!/bin/bash
 
+unset CDPATH
+cd "$( dirname "${BASH_SOURCE[0]}" )"
+
 BB_LOG_PREFIX='test-var'
 source ../bashbooster.sh
 

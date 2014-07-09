@@ -1,7 +1,7 @@
 #!/bin/bash
 
 unset CDPATH
-cd `dirname "${BASH_SOURCE[0]}"`
+cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 OUTPUT="bashbooster.sh"
 
