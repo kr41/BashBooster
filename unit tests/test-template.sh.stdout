@@ -1,0 +1,11 @@
+Here is a stupid bash based template
+
+Simple substitution test:
+FOO is 1
+BAR is 'Some Value'
+BAZ is "One Two Three"
+
+Simple iteration test:
+One
+Two
+Three
