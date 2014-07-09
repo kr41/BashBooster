@@ -10,11 +10,11 @@ bb-event-listen() {
     local EVENT=$1
     local HANDLER=$2
     local HANDLERS="$BB_EVENT_DIR/$EVENT.handlers"
-    touch $HANDLERS
-    if [[ -z `cat $HANDLERS | grep '$HANDLER'` ]]
+    touch "$HANDLERS"
+    if [[ -z `cat "$HANDLERS" | grep '$HANDLER'` ]]
     then
         bb-log-debug "Subscribed handler '$HANDLER' on event '$EVENT'"
-        echo "$HANDLER" >> $HANDLERS
+        echo "$HANDLER" >> "$HANDLERS"
     fi
 }
 
@@ -36,11 +36,11 @@ bb-event-fire() {
 bb-event-delay() {
     local EVENT=$1
     local EVENTS="$BB_EVENT_DIR/events"
-    touch $EVENTS
-    if [[ -z `cat $EVENTS | grep '$EVENT'` ]]
+    touch "$EVENTS"
+    if [[ -z `cat "$EVENTS" | grep '$EVENT'` ]]
     then
         bb-log-debug "Delayed event '$EVENT'"
-        echo "$EVENT" >> $EVENTS
+        echo "$EVENT" >> "$EVENTS"
     fi
 }
 
@@ -53,8 +53,8 @@ bb-event-cleanup() {
     local EVENTS="$BB_EVENT_DIR/events"
     if [[ -f "$EVENTS" ]]
     then
-        local EVENT_LIST=`cat $EVENTS`
-        rm $EVENTS
+        local EVENT_LIST=`cat "$EVENTS"`
+        rm "$EVENTS"
         for EVENT in $EVENT_LIST
         do
             bb-event-fire $EVENT

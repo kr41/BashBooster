@@ -1,7 +1,7 @@
 #!/bin/bash
 
 unset CDPATH
-cd "$( dirname "${BASH_SOURCE[0]}" )"
+cd `dirname "${BASH_SOURCE[0]}"`
 
 BB_TEST_OK=0
 BB_TEST_FAILED=0
@@ -83,7 +83,7 @@ BB_LOG_PREFIX="bashbooster-test"
 BB_LOG_USE_COLOR=1
 source bashbooster.sh
 
-cd tests
+cd 'unit tests'
 for FILE in `find -name "test*.sh" | sort`
 do
     chmod a+x $FILE
