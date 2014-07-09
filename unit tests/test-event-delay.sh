@@ -7,6 +7,7 @@ BB_LOG_PREFIX='test-event'
 source ../bashbooster.sh
 
 bb-event-delay first
+bb-event-delay first
 
 first() {
     echo "First Event"
