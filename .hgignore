@@ -1,5 +1,6 @@
 syntax: glob
 
+.vagrant
 bashbooster.sh
 *.sublime-*
 *.bb-workspace
