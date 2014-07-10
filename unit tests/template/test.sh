@@ -9,4 +9,4 @@ FOO=1
 BAR='Some Value'
 BAZ='One Two Three'
 
-bb-template "test-template.tmpl"
+bb-template "template.bbt"
