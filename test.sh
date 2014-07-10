@@ -11,6 +11,7 @@ bb-test() {
     local EXPECT_STDOUT="$DUMMY_OUT"
     local EXPECT_STDERR="$DUMMY_OUT"
     local EXPECT_CODE=0
+    local EXPECT_WORKSPACE=0
     if [[ -f "$( dirname "$TEST" )/stdout.txt" ]]
     then
         EXPECT_STDOUT="$( dirname "$TEST" )/stdout.txt"
@@ -22,6 +23,10 @@ bb-test() {
     if [[ -f "$( dirname "$TEST" )/code.txt" ]]
     then
         EXPECT_CODE=$(( `cat "$( dirname "$TEST" )/code.txt"` ))
+    fi
+    if [[ -f "$( dirname "$TEST" )/workspace.lock" ]]
+    then
+        EXPECT_WORKSPACE=1
     fi
 
     local STDOUT=`bb-tmp-file`
@@ -69,7 +74,7 @@ bb-test() {
         BB_TEST_FAILED=$(( $BB_TEST_FAILED + 1 ))
         return
     fi
-    if [[ -d "$( dirname "$TEST" )/.bb-workspace" ]]
+    if [[ -d "$( dirname "$TEST" )/.bb-workspace" && $EXPECT_WORKSPACE -eq 0 ]]
     then
         bb-log-error "$TEST Failed"
         bb-log-error "Workspace directory still exists"
