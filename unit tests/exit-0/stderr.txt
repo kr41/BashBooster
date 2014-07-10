@@ -1,1 +1,1 @@
-test-die [INFO] Die!
+test-die [INFO] Exit
