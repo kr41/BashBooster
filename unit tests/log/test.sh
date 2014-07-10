@@ -4,7 +4,7 @@ unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 BB_LOG_PREFIX='test-log'
-source ../bashbooster.sh
+source ../../bashbooster.sh
 
 BB_LOG_LEVEL=$BB_LOG_DEBUG
 bb-log-debug "Debug message 1"

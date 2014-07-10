@@ -8,12 +8,12 @@ BB_TEST_FAILED=0
 
 bb-test() {
     local TEST="$1"
-    local EXPECT_STDOUT="$TEST.stdout"
-    local EXPECT_STDERR="$TEST.stderr"
+    local EXPECT_STDOUT="$( dirname "$TEST" )/stdout.txt"
+    local EXPECT_STDERR="$( dirname "$TEST" )/stderr.txt"
     local EXPECT_CODE=0
-    if [[ -f "$TEST.code" ]]
+    if [[ -f "$( dirname "$TEST" )/code.txt" ]]
     then
-        EXPECT_CODE=$(( `cat "$TEST.code"` ))
+        EXPECT_CODE=$(( `cat "$( dirname "$TEST" )/code.txt"` ))
     fi
 
     local STDOUT=`bb-tmp-file`

@@ -5,7 +5,7 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 BB_LOG_PREFIX='test-log-color'
 BB_LOG_USE_COLOR=1
-source ../bashbooster.sh
+source ../../bashbooster.sh
 
 BB_LOG_LEVEL=$BB_LOG_DEBUG
 

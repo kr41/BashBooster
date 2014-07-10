@@ -5,7 +5,7 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 BB_LOG_PREFIX='sync-file'
 BB_LOG_LEVEL=$BB_LOG_DEBUG
-source ../bashbooster.sh
+source ../../bashbooster.sh
 
 SRC_FILE=`bb-tmp-file`
 DST_FILE="$BB_WORKSPACE/testfile"

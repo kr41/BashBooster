@@ -4,7 +4,7 @@ unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 BB_LOG_PREFIX='test-var'
-source ../bashbooster.sh
+source ../../bashbooster.sh
 
 
 [[ -z "$BB_TEST_VAR" ]] || bb-die 1 "Variable already exists"
