@@ -7,7 +7,7 @@ bb-workspace-init() {
     if [[ ! -d "$BB_WORKSPACE" ]]
     then
         mkdir -p "$BB_WORKSPACE" || \
-        bb-die $BB_WORKSPACE_ERROR "Failed to initialize workspace at '$BB_WORKSPACE'"
+        bb-exit $BB_WORKSPACE_ERROR "Failed to initialize workspace at '$BB_WORKSPACE'"
     fi
 
     # Ensure BB_WORKSPACE stores absolute path

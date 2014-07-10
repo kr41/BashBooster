@@ -1,4 +1,4 @@
-bb-die() {
+bb-exit() {
     local CODE=$1
     shift
     if [[ $CODE -eq 0 ]]
