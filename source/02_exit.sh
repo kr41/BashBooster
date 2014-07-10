@@ -1,7 +1,7 @@
 bb-exit() {
     local CODE=$1
     shift
-    if [[ $CODE -eq 0 ]]
+    if (( $CODE == 0 ))
     then
         bb-log-info "$@"
     else

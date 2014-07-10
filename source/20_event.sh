@@ -22,7 +22,7 @@ bb-event-listen() {
 bb-event-fire() {
     local EVENT=$1
     BB_EVENT_DEPTH["$EVENT"]=$(( ${BB_EVENT_DEPTH["$EVENT"]} + 1 ))
-    if [[ ${BB_EVENT_DEPTH["$EVENT"]} -ge $BB_EVENT_MAX_DEPTH ]]
+    if (( ${BB_EVENT_DEPTH["$EVENT"]} >= $BB_EVENT_MAX_DEPTH ))
     then
         bb-exit $BB_EVENT_ERROR_MAX_DEPTH_REACHED "Max recursion depth has been reached on processing event '$EVENT'"
     fi
@@ -47,7 +47,7 @@ bb-event-delay() {
 
 bb-event-cleanup() {
     BB_EVENT_DEPTH["__delay__"]=$(( ${BB_EVENT_DEPTH["__delay__"]} + 1 ))
-    if [[ ${BB_EVENT_DEPTH["__delay__"]} -ge $BB_EVENT_MAX_DEPTH ]]
+    if (( ${BB_EVENT_DEPTH["__delay__"]} >= $BB_EVENT_MAX_DEPTH ))
     then
         bb-exit $BB_EVENT_ERROR_MAX_DEPTH_REACHED "Max recursion depth has been reached on processing event '__delay__'"
         return $?

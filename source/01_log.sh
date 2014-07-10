@@ -30,7 +30,7 @@ bb-log-init() {
 bb-log-msg() {
     local LEVEL=$1
     shift
-    if [[ $LEVEL -ge $BB_LOG_LEVEL ]]
+    if (( $LEVEL >= $BB_LOG_LEVEL ))
     then
         local COLOR=${BB_LOG_COLORS[$LEVEL]}
         local NOCOLOR=${BB_LOG_COLORS['NC']}
