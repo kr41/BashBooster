@@ -26,6 +26,7 @@ bb-test() {
 
     local STDOUT=`bb-tmp-file`
     local STDERR=`bb-tmp-file`
+    chmod a+x "$TEST"
     "$TEST" > "$STDOUT" 2> "$STDERR"
 
     local CODE=$?
@@ -100,12 +101,17 @@ source bashbooster.sh
 
 DUMMY_OUT=`bb-tmp-file`
 
-IFS=`echo -e "\n\b"`
-for FILE in `find "./unit tests" -name "test*.sh" | sort`
-do
-    chmod a+x "$FILE"
-    bb-test "$FILE"
-done
-unset IFS
+TEST="$1"
+if [[ -z "$TEST" ]]
+then
+    IFS=`echo -e "\n\b"`
+    for TEST in `find "./unit tests" -name "test.sh" | sort`
+    do
+        bb-test "$TEST"
+    done
+    unset IFS
+else
+    bb-test "$TEST"
+fi
 
 bb-test-stat
