@@ -8,9 +8,17 @@ BB_TEST_FAILED=0
 
 bb-test() {
     local TEST="$1"
-    local EXPECT_STDOUT="$( dirname "$TEST" )/stdout.txt"
-    local EXPECT_STDERR="$( dirname "$TEST" )/stderr.txt"
+    local EXPECT_STDOUT="$DUMMY_OUT"
+    local EXPECT_STDERR="$DUMMY_OUT"
     local EXPECT_CODE=0
+    if [[ -f "$( dirname "$TEST" )/stdout.txt" ]]
+    then
+        EXPECT_STDOUT="$( dirname "$TEST" )/stdout.txt"
+    fi
+    if [[ -f "$( dirname "$TEST" )/stderr.txt" ]]
+    then
+        EXPECT_STDERR="$( dirname "$TEST" )/stderr.txt"
+    fi
     if [[ -f "$( dirname "$TEST" )/code.txt" ]]
     then
         EXPECT_CODE=$(( `cat "$( dirname "$TEST" )/code.txt"` ))
@@ -34,7 +42,7 @@ bb-test() {
         BB_TEST_FAILED=$(( $BB_TEST_FAILED + 1 ))
         return
     fi
-    if [[ -f $EXPECT_STDOUT && -n `diff -q $EXPECT_STDOUT $STDOUT` ]]
+    if [[ `diff -q "$EXPECT_STDOUT" "$STDOUT"` ]]
     then
         bb-log-error "$TEST Failed"
         bb-log-error "Expected output in stdout differs from given one"
@@ -47,7 +55,7 @@ bb-test() {
         BB_TEST_FAILED=$(( $BB_TEST_FAILED + 1 ))
         return
     fi
-    if [[ -f $EXPECT_STDERR && -n `diff -q $EXPECT_STDERR $STDERR` ]]
+    if [[ `diff -q "$EXPECT_STDERR" "$STDERR"` ]]
     then
         bb-log-error "$TEST Failed"
         bb-log-error "Expected output in stderr differs from given one"
@@ -57,6 +65,13 @@ bb-test() {
         echo "given >>>"
         cat $STDERR
         echo "<<< given"
+        BB_TEST_FAILED=$(( $BB_TEST_FAILED + 1 ))
+        return
+    fi
+    if [[ -d "$( dirname "$TEST" )/.bb-workspace" ]]
+    then
+        bb-log-error "$TEST Failed"
+        bb-log-error "Workspace directory still exists"
         BB_TEST_FAILED=$(( $BB_TEST_FAILED + 1 ))
         return
     fi
@@ -82,6 +97,8 @@ BB_WORKSPACE="test.bb-workspace"
 BB_LOG_PREFIX="bashbooster-test"
 BB_LOG_USE_COLOR=1
 source bashbooster.sh
+
+DUMMY_OUT=`bb-tmp-file`
 
 IFS=`echo -e "\n\b"`
 for FILE in `find "./unit tests" -name "test*.sh" | sort`
