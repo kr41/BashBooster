@@ -4,7 +4,7 @@ unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 BB_LOG_PREFIX='test-log-time'
-BB_LOG_USE_TIME=1
+BB_LOG_USE_TIME=true
 source ../../bashbooster.sh
 
 date-mock() {

@@ -101,7 +101,7 @@ bb-test-stat() {
 
 BB_WORKSPACE="test.bb-workspace"
 BB_LOG_PREFIX="bashbooster-test"
-BB_LOG_USE_COLOR=1
+BB_LOG_USE_COLOR=true
 source bashbooster.sh
 
 DUMMY_OUT=`bb-tmp-file`

@@ -5,13 +5,13 @@ BB_LOG_ERROR=4
 
 bb-var BB_LOG_LEVEL $BB_LOG_INFO
 bb-var BB_LOG_PREFIX 'bashbooster'
-bb-var BB_LOG_USE_COLOR 0
-bb-var BB_LOG_USE_TIME 0
+bb-var BB_LOG_USE_COLOR false
+bb-var BB_LOG_USE_TIME false
 
 declare -A BB_LOG_COLORS
 
 bb-log-init() {
-    if [[ $BB_LOG_USE_COLOR -ne 0 ]]
+    if $BB_LOG_USE_COLOR
     then
         BB_LOG_COLORS[$BB_LOG_DEBUG]='\e[1;30m'      # Dark Gray
         BB_LOG_COLORS[$BB_LOG_INFO]='\e[0;32m'       # Green
@@ -19,7 +19,7 @@ bb-log-init() {
         BB_LOG_COLORS[$BB_LOG_ERROR]='\e[0;31m'      # Red
         BB_LOG_COLORS['NC']='\e[0m'
     fi
-    if [[ $BB_LOG_USE_TIME -ne 0 ]]
+    if $BB_LOG_USE_TIME
     then
         bb-var BB_LOG_TIME 'date --rfc-3339=seconds'
     else
