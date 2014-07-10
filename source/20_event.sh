@@ -1,4 +1,5 @@
-BB_EVENT_DEPTH=0
+declare -A BB_EVENT_DEPTH
+BB_EVENT_DELAY_DEPTH=0
 BB_EVENT_MAX_DEPTH=1000
 BB_EVENT_ERROR_MAX_DEPTH_REACHED=20
 
@@ -19,18 +20,18 @@ bb-event-listen() {
 }
 
 bb-event-fire() {
-    BB_EVENT_DEPTH=$(( $BB_EVENT_DEPTH + 1 ))
-    if [[ $BB_EVENT_DEPTH -ge $BB_EVENT_MAX_DEPTH ]]
-    then
-        bb-exit $BB_EVENT_ERROR_MAX_DEPTH_REACHED "Max recursion depth in event processing has been reached"
-    fi
     local EVENT=$1
+    BB_EVENT_DEPTH["$EVENT"]=$(( ${BB_EVENT_DEPTH["$EVENT"]} + 1 ))
+    if [[ ${BB_EVENT_DEPTH["$EVENT"]} -ge $BB_EVENT_MAX_DEPTH ]]
+    then
+        bb-exit $BB_EVENT_ERROR_MAX_DEPTH_REACHED "Max recursion depth has been reached on processing event '$EVENT'"
+    fi
     if [[ -f "$BB_EVENT_DIR/$EVENT.handlers" ]]
     then
         bb-log-debug "Run handlers for event '$EVENT'"
         source "$BB_EVENT_DIR/$EVENT.handlers"
     fi
-    BB_EVENT_DEPTH=$(( $BB_EVENT_DEPTH - 1 ))
+    BB_EVENT_DEPTH["$EVENT"]=$(( ${BB_EVENT_DEPTH["$EVENT"]} - 1 ))
 }
 
 bb-event-delay() {
@@ -45,10 +46,11 @@ bb-event-delay() {
 }
 
 bb-event-cleanup() {
-    BB_EVENT_DEPTH=$(( $BB_EVENT_DEPTH + 1 ))
-    if [[ $BB_EVENT_DEPTH -ge $(( $BB_EVENT_MAX_DEPTH - 1)) ]]
+    BB_EVENT_DEPTH["__delay__"]=$(( ${BB_EVENT_DEPTH["__delay__"]} + 1 ))
+    if [[ ${BB_EVENT_DEPTH["__delay__"]} -ge $BB_EVENT_MAX_DEPTH ]]
     then
-        bb-exit $BB_EVENT_ERROR_MAX_DEPTH_REACHED "Max recursion depth in event processing has been reached"
+        bb-exit $BB_EVENT_ERROR_MAX_DEPTH_REACHED "Max recursion depth has been reached on processing event '__delay__'"
+        return $?
     fi
     local EVENTS="$BB_EVENT_DIR/events"
     if [[ -f "$EVENTS" ]]
@@ -66,5 +68,5 @@ bb-event-cleanup() {
             bb-event-cleanup
         fi
     fi
-    BB_EVENT_DEPTH=$(( $BB_EVENT_DEPTH - 1 ))
+    BB_EVENT_DEPTH["__delay__"]=$(( ${BB_EVENT_DEPTH["__delay__"]} - 1 ))
 }
