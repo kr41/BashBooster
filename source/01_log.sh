@@ -36,22 +36,22 @@ bb-log-msg() {
         local NOCOLOR=${BB_LOG_COLORS['NC']}
         local TIME=`$BB_LOG_TIME`
         [[ -n "$TIME" ]] && TIME=" $TIME"
-        echo -e "${COLOR}${BB_LOG_PREFIX}${TIME} $*${NOCOLOR}" >&2
+        echo -e "${COLOR}${BB_LOG_PREFIX}${TIME} $@${NOCOLOR}" >&2
     fi
 }
 
 bb-log-debug() {
-    bb-log-msg $BB_LOG_DEBUG "[DEBUG] $*"
+    bb-log-msg $BB_LOG_DEBUG "[DEBUG] $@"
 }
 
 bb-log-info() {
-    bb-log-msg $BB_LOG_INFO "[INFO] $*"
+    bb-log-msg $BB_LOG_INFO "[INFO] $@"
 }
 
 bb-log-warning() {
-    bb-log-msg $BB_LOG_WARNING "[WARNING] $*"
+    bb-log-msg $BB_LOG_WARNING "[WARNING] $@"
 }
 
 bb-log-error() {
-    bb-log-msg $BB_LOG_ERROR "[ERROR] $*"
+    bb-log-msg $BB_LOG_ERROR "[ERROR] $@"
 }

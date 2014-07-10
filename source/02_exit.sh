@@ -3,9 +3,9 @@ bb-exit() {
     shift
     if [[ $CODE -eq 0 ]]
     then
-        bb-log-info $*
+        bb-log-info "$@"
     else
-        bb-log-error $*
+        bb-log-error "$@"
     fi
     exit $CODE
 }
