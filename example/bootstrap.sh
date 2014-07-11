@@ -3,13 +3,16 @@
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
+BB_LOG_LEVEL='DEBUG'
 BB_LOG_USE_COLOR=true
 BB_WORKSPACE='/var/bb-workspace'
 source ../bashbooster.sh
 
-BB_LOG_LEVEL='DEBUG'
+
+###############################################################################
 
 bb-log-info "Installing system requirements"
+
 if bb-apt?
 then
     bb-apt-install nginx python-virtualenv
@@ -20,35 +23,48 @@ then
     bb-yum-install nginx python-virtualenv
     chkconfig nginx on
 fi
-service nginx start
+
+
+###############################################################################
 
 bb-log-info "Preparing environment"
-if [[ ! -d "$BB_WORKSPACE/docs" ]]
-then
-    mkdir "$BB_WORKSPACE/docs"
-fi
-if [[ ! -d "$BB_WORKSPACE/www" ]]
-then
-    mkdir "$BB_WORKSPACE/www"
-fi
-if [[ ! -d "$BB_WORKSPACE/virtualenv" ]]
-then
-    virtualenv "$BB_WORKSPACE/virtualenv"
-fi
+
+service nginx start
+[[ -d "$BB_WORKSPACE/docs" ]]       || mkdir      "$BB_WORKSPACE/docs"
+[[ -d "$BB_WORKSPACE/www" ]]        || mkdir      "$BB_WORKSPACE/www"
+[[ -d "$BB_WORKSPACE/virtualenv" ]] || virtualenv "$BB_WORKSPACE/virtualenv"
+
 pip="$BB_WORKSPACE/virtualenv/bin/pip"
 python="$BB_WORKSPACE/virtualenv/bin/python"
 
+
+###############################################################################
+
 bb-log-info "Creating event listeners"
-bb-event-listen reload-server 'service nginx restart'
-bb-event-listen rebuild-docs "$python $BB_WORKSPACE/docs/build.py"
-bb-event-listen update-deps "$pip install -r $BB_WORKSPACE/docs/requirements.txt"
+
+reload-server() {
+    service nginx restart
+}
+update-python-deps() {
+    $pip install -r $BB_WORKSPACE/docs/requirements.txt
+}
+rebuild-site() {
+    $python $BB_WORKSPACE/docs/build.py
+    bb-sync-file "$BB_WORKSPACE/www/index.html" "$BB_WORKSPACE/docs/index.html"
+}
+bb-event-listen reload-server      reload-server
+bb-event-listen update-python-deps update-python-deps
+bb-event-listen rebuild-site       rebuild-site
+
+
+###############################################################################
 
 bb-log-info "Synchronizing data"
-bb-sync-file "$BB_WORKSPACE/docs/build.py" '/vagrant/docs/build.py'
-bb-sync-file "$BB_WORKSPACE/docs/requirements.txt" '/vagrant/docs/requirements.txt' update-deps
-bb-sync-file "$BB_WORKSPACE/docs/layout.mako" '/vagrant/docs/layout.mako' rebuild-docs
-bb-sync-file "$BB_WORKSPACE/docs/index.md" '/vagrant/docs/index.md' rebuild-docs
-bb-sync-file "$BB_WORKSPACE/www/index.html" "$BB_WORKSPACE/docs/index.html"
+
+bb-sync-file "$BB_WORKSPACE/docs/build.py"         '/vagrant/docs/build.py'
+bb-sync-file "$BB_WORKSPACE/docs/requirements.txt" '/vagrant/docs/requirements.txt' update-python-deps
+bb-sync-file "$BB_WORKSPACE/docs/layout.mako"      '/vagrant/docs/layout.mako'      rebuild-site
+bb-sync-file "$BB_WORKSPACE/docs/index.md"         '/vagrant/docs/index.md'         rebuild-site
 
 NGINX_CONF=`bb-tmp-file`
 bb-template "nginx.conf.bbt" > "$NGINX_CONF"
@@ -57,5 +73,5 @@ then
     bb-sync-file '/etc/nginx/sites-available/default' "$NGINX_CONF" reload-server
 elif [[ -f '/etc/nginx/conf.d/default.conf' ]]
 then
-    bb-sync-file '/etc/nginx/conf.d/default.conf' "$NGINX_CONF" reload-server
+    bb-sync-file '/etc/nginx/conf.d/default.conf'     "$NGINX_CONF" reload-server
 fi
