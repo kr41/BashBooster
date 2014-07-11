@@ -1,4 +1,6 @@
-BB_DOWNLOAD_DIR="$BB_WORKSPACE/download"
+bb-download-init() {
+    BB_DOWNLOAD_DIR="$BB_WORKSPACE/download"
+}
 
 bb-download() {
     if [[ ! -d "$BB_DOWNLOAD_DIR" ]]

@@ -1,4 +1,4 @@
 test-download [INFO] Downloading http://example.com/file.txt
-test-download [INFO] mock: wget -O .bb-workspace/download/file.txt -nc http://example.com/file.txt
+test-download [INFO] mock: wget
 test-download [INFO] Downloading http://example.com/file.txt
-test-download [INFO] mock: wget -O .bb-workspace/download/file2.txt -nc http://example.com/file.txt
+test-download [INFO] mock: wget
