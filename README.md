@@ -1,6 +1,3 @@
-Title: Bash Booster
-
-
 Bash Booster
 ============
 
@@ -35,62 +32,3 @@ Then visit:
 *   <http://localhost:8081> — Ubuntu machine
 *   <http://localhost:8082> — CentOS machine
 *   <http://localhost:8083> — Debian machine
-
-
-Code Organization
------------------
-
-
-
-
-[Chef]: http://www.getchef.com/
-[Vagrant]: http://vagrantup.com/
-[Bash]: http://www.gnu.org/software/bash/
-
-- [var](#var)
-- [log](#log)
-- [exit](#exit)
-- [workspace](#workspace)
-- [template](#template)
-- [event](#event)
-- [download](#download)
-- [flag](#flag)
-- [sync](#sync)
-- [apt](#apt)
-- [yum](#yum)
-
-var
----
-
-log
----
-
-exit
-----
-
-workspace
----------
-
-tmp
----
-
-template
---------
-
-event
------
-
-download
---------
-
-flag
-----
-
-sync
-----
-
-apt
----
-
-yum
----
