@@ -1,0 +1,8 @@
+server {
+    listen 80 default_server;
+
+    location / {
+        root   ${BB_WORKSPACE}/www;
+        index  index.html;
+    }
+}

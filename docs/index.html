@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bash Booster</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <h1 id="bash-booster">Bash Booster</h1>
+<p>Bash Booster is steroids for bootstrap scripts.  It is a single file
+library, which provides various features useful during setup environment and
+preparing servers.  It is inspired by <a href="http://www.getchef.com/">Chef</a> and was developed to be used
+with <a href="http://vagrantup.com/">Vagrant</a>.  When Chef is too heavy, use Bash Booster, because it
+has been written using <a href="http://www.gnu.org/software/bash/">Bash</a> only and <strong>requires nothing</strong>.</p>
+<p>How to start:</p>
+<ol>
+<li>
+<p>Get the source code:</p>
+<div class="codehilite"><pre><span class="err">$</span> <span class="n">hg</span> <span class="n">clone</span> <span class="n">ssh</span><span class="o">:</span><span class="c1">//hg@bitbucket.org/kr41/bash-booster bash-booster</span>
+<span class="err">$</span> <span class="n">cd</span> <span class="n">bash</span><span class="o">-</span><span class="n">booster</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>Build the library file <code>bashbooster.sh</code>:</p>
+<div class="codehilite"><pre><span class="err">$</span> <span class="p">.</span><span class="o">/</span><span class="n">build</span><span class="p">.</span><span class="n">sh</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>Use it!</p>
+</li>
+</ol>
+<p>You can find <code>Vagrantfile</code> on the root of sources.  It sets up three virtual
+machines using Ubuntu, CentOS, and Debian.  Bootstrap script and other resources
+are placed in <code>example</code> directory.</p>
+<h2 id="code-organization">Code Organization</h2>
+<ul>
+<li><a href="#var">var</a></li>
+<li><a href="#log">log</a></li>
+<li><a href="#exit">exit</a></li>
+<li><a href="#workspace">workspace</a></li>
+<li><a href="#template">template</a></li>
+<li><a href="#event">event</a></li>
+<li><a href="#download">download</a></li>
+<li><a href="#flag">flag</a></li>
+<li><a href="#sync">sync</a></li>
+<li><a href="#apt">apt</a></li>
+<li><a href="#yum">yum</a></li>
+</ul>
+<h2 id="var">var</h2>
+<h2 id="log">log</h2>
+<h2 id="exit">exit</h2>
+<h2 id="workspace">workspace</h2>
+<h2 id="tmp">tmp</h2>
+<h2 id="template">template</h2>
+<h2 id="event">event</h2>
+<h2 id="download">download</h2>
+<h2 id="flag">flag</h2>
+<h2 id="sync">sync</h2>
+<h2 id="apt">apt</h2>
+<h2 id="yum">yum</h2>
+</body>
+</html>
