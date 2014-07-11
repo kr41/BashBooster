@@ -32,10 +32,6 @@ BB_LOG_COLORS[$BB_LOG_WARNING]='\e[0;33m'    # Brown/Orange
 BB_LOG_COLORS[$BB_LOG_ERROR]='\e[0;31m'      # Red
 BB_LOG_COLORS['NC']='\e[0m'
 
-bb-log-init() {
-    return 0
-}
-
 bb-log-level-code() {
     local CODE=$(( $BB_LOG_LEVEL ))
     if (( $CODE == 0 ))

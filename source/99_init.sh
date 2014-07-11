@@ -1,5 +1,3 @@
-bb-log-init
-
 bb-workspace-init
 bb-tmp-init
 bb-event-init
