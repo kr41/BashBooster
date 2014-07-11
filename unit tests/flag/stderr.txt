@@ -1,0 +1,3 @@
+test.sh [INFO] Flag is not set
+test.sh [INFO] Flag is set
+test.sh [INFO] Flag is not set
