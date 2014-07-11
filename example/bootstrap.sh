@@ -61,10 +61,10 @@ bb-event-on rebuild-site       rebuild-site
 
 bb-log-info "Synchronizing data"
 
-bb-sync-file "$BB_WORKSPACE/docs/build.py"         '/vagrant/docs/build.py'
 bb-sync-file "$BB_WORKSPACE/docs/requirements.txt" '/vagrant/docs/requirements.txt' update-python-deps
 bb-sync-file "$BB_WORKSPACE/docs/layout.mako"      '/vagrant/docs/layout.mako'      rebuild-site
 bb-sync-file "$BB_WORKSPACE/docs/index.md"         '/vagrant/docs/index.md'         rebuild-site
+bb-sync-file "$BB_WORKSPACE/docs/build.py"         '/vagrant/docs/build.py'         rebuild-site
 
 NGINX_CONF=`bb-tmp-file`
 bb-template "nginx.conf.bbt" > "$NGINX_CONF"
