@@ -55,3 +55,13 @@ bb-log-warning() {
 bb-log-error() {
     bb-log-msg $BB_LOG_ERROR "[ERROR] $@"
 }
+
+bb-log-callstack() {
+    local FRAME=$(( ${1-"1"} ))
+    local MSG="Call stack is:"
+    for (( i = $FRAME; i < ${#FUNCNAME[@]}; i++ ))
+    do
+        MSG="$MSG\n\t${BASH_SOURCE[$i]}:${BASH_LINENO[$i-1]}\t${FUNCNAME[$i]}()"
+    done
+    bb-log-debug "$MSG"
+}
