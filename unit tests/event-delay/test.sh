@@ -19,3 +19,9 @@ second() {
 
 bb-event-on first first
 bb-event-on second second
+
+bb-event-on event-1 'echo event-1'
+bb-event-on event-11 'echo event-11'
+
+bb-event-delay event-11
+bb-event-delay event-1

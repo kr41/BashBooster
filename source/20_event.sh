@@ -40,7 +40,7 @@ bb-event-delay() {
     local EVENTS="$BB_EVENT_DIR/events"
     [[ -n "$EVENT" ]] || return 0
     touch "$EVENTS"
-    if [[ -z `cat "$EVENTS" | grep "$EVENT"` ]]
+    if [[ -z `cat "$EVENTS" | grep "^$EVENT\$"` ]]
     then
         bb-log-debug "Delayed event '$EVENT'"
         echo "$EVENT" >> "$EVENTS"
