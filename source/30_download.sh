@@ -8,11 +8,7 @@ bb-download() {
     fi
 
     local URL="$1"
-    local TARGET="$2"
-    if [[ -z "$TARGET" ]]
-    then
-        TARGET="$( basename "$URL" )"
-    fi
+    local TARGET="${2-`basename "$URL"`}"
     TARGET="$BB_DOWNLOAD_DIR/$TARGET"
 
     bb-log-info "Downloading $URL"

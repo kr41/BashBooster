@@ -1,0 +1,2 @@
+.bb-workspace/download/file.txt
+.bb-workspace/download/file2.txt
