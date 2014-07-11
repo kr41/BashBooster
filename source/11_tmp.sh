@@ -1,9 +1,9 @@
 bb-tmp-init() {
-    if [[ ! -d "$BB_WORKSPACE/tmp" ]]
+    if [[ -d "$BB_WORKSPACE/tmp" ]]
     then
-        mkdir -p "$BB_WORKSPACE/tmp"
+        rm -rf "$BB_WORKSPACE/tmp/"
     fi
-    rm -rf "$BB_WORKSPACE/tmp/*"
+    mkdir "$BB_WORKSPACE/tmp"
 }
 
 bb-tmp-file() {
