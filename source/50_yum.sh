@@ -1,15 +1,15 @@
 bb-var BB_YUM_UPDATED false
 
-bb-yum() {
+bb-yum?() {
     type -t yum > /dev/null
 }
 
-bb-yum-repo() {
+bb-yum-repo?() {
     local REPO=$1
     yum -C repolist | grep -qw "^$REPO"
 }
 
-bb-yum-package() {
+bb-yum-package?() {
     local PACKAGE=$1
     yum -C list installed "$PACKAGE" &> /dev/null
 }
@@ -25,7 +25,7 @@ bb-yum-update() {
 bb-yum-install() {
     for PACKAGE in "$@"
     do
-        if ! bb-yum-package "$PACKAGE"
+        if ! bb-yum-package? "$PACKAGE"
         then
             bb-yum-update
             bb-log-info "Installing package '$PACKAGE'"

@@ -1,15 +1,15 @@
 bb-var BB_APT_UPDATED false
 
-bb-apt() {
+bb-apt?() {
     type -t apt-get > /dev/null
 }
 
-bb-apt-repo() {
+bb-apt-repo?() {
     local REPO=$1
     cat /etc/apt/sources.list /etc/apt/sources.list.d/* 2> /dev/null | grep -v '^#' | grep -qw "$REPO"
 }
 
-bb-apt-package() {
+bb-apt-package?() {
     local PACKAGE=$1
     dpkg -s "$PACKAGE" 2> /dev/null | grep -q '^Status:.\+installed'
 }
@@ -24,7 +24,7 @@ bb-apt-update() {
 bb-apt-install() {
     for PACKAGE in "$@"
     do
-        if ! bb-apt-package "$PACKAGE"
+        if ! bb-apt-package? "$PACKAGE"
         then
             bb-apt-update
             bb-log-info "Installing package '$PACKAGE'"
