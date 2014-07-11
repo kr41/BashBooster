@@ -1,4 +1,4 @@
-test-log [DEBUG] Call stack is:
-	./unit tests/log-callstack/test.sh:14	second()
-	./unit tests/log-callstack/test.sh:10	first()
-	./unit tests/log-callstack/test.sh:19	main()
+test.sh [DEBUG] Call stack is:
+	./unit tests/log-callstack/test.sh:13	second()
+	./unit tests/log-callstack/test.sh:9	first()
+	./unit tests/log-callstack/test.sh:18	main()

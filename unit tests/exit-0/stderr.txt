@@ -1,1 +1,1 @@
-test-die [INFO] Exit
+test.sh [INFO] Exit

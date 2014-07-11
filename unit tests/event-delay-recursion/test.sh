@@ -3,7 +3,6 @@
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-BB_LOG_PREFIX='test-event'
 source ../../bashbooster.sh
 
 BB_EVENT_MAX_DEPTH=5

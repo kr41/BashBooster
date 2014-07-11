@@ -6,7 +6,7 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 BB_TEST_OK=0
 BB_TEST_FAILED=0
 
-bb-test() {
+run-test() {
     local TEST="$1"
     local EXPECT_STDOUT="$DUMMY_OUT"
     local EXPECT_STDERR="$DUMMY_OUT"
@@ -40,10 +40,10 @@ bb-test() {
         bb-log-error "$TEST Failed"
         bb-log-error "Expected code $EXPECT_CODE is not matching returned one $CODE"
         echo "stderr >>>"
-        cat $STDERR
+        cat "$STDERR"
         echo "<<< stderr"
         echo "stdout >>>"
-        cat $STDOUT
+        cat "$STDOUT"
         echo "<<< stdout"
         BB_TEST_FAILED=$(( $BB_TEST_FAILED + 1 ))
         return
@@ -53,10 +53,10 @@ bb-test() {
         bb-log-error "$TEST Failed"
         bb-log-error "Expected output in stdout differs from given one"
         echo "expected >>>"
-        cat $EXPECT_STDOUT
+        cat "$EXPECT_STDOUT"
         echo "<<< expected"
         echo "given >>>"
-        cat $STDOUT
+        cat "$STDOUT"
         echo "<<< given"
         BB_TEST_FAILED=$(( $BB_TEST_FAILED + 1 ))
         return
@@ -66,10 +66,10 @@ bb-test() {
         bb-log-error "$TEST Failed"
         bb-log-error "Expected output in stderr differs from given one"
         echo "expected >>>"
-        cat $EXPECT_STDERR
+        cat "$EXPECT_STDERR"
         echo "<<< expected"
         echo "given >>>"
-        cat $STDERR
+        cat "$STDERR"
         echo "<<< given"
         BB_TEST_FAILED=$(( $BB_TEST_FAILED + 1 ))
         return
@@ -85,7 +85,7 @@ bb-test() {
     BB_TEST_OK=$(( $BB_TEST_OK + 1 ))
 }
 
-bb-test-stat() {
+print-test-stat() {
     if [[ $BB_TEST_OK -ne 0 ]]
     then
         bb-log-info "Total passed tests: $BB_TEST_OK"
@@ -100,7 +100,7 @@ bb-test-stat() {
 ./build.sh
 
 BB_WORKSPACE="test.bb-workspace"
-BB_LOG_PREFIX="bashbooster-test"
+BB_LOG_FORMAT='${PREFIX} ${TIME} [${LEVEL}] ${MESSAGE}'
 BB_LOG_USE_COLOR=true
 source bashbooster.sh
 
@@ -112,11 +112,11 @@ then
     IFS=`echo -e "\n\b"`
     for TEST in `find "./unit tests" -name "test.sh" | sort`
     do
-        bb-test "$TEST"
+        run-test "$TEST"
     done
     unset IFS
 else
-    bb-test "$TEST"
+    run-test "$TEST"
 fi
 
-bb-test-stat
+print-test-stat

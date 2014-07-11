@@ -3,7 +3,6 @@
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-BB_LOG_PREFIX='sync-dir'
 source ../../bashbooster.sh
 
 SRC_DIR=`bb-tmp-dir`

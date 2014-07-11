@@ -1,0 +1,2 @@
+bb-workspace [DEBUG] Initializing workspace at '.bb-workspace'
+test.sh [INFO] Message from test.sh

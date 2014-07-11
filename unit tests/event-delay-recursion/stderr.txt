@@ -1,1 +1,1 @@
-test-event [ERROR] Max recursion depth has been reached on processing event '__delay__'
+bb-event [ERROR] Max recursion depth has been reached on processing event '__delay__'

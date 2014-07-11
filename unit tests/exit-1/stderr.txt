@@ -1,1 +1,1 @@
-test-die [ERROR] Die!
+test.sh [ERROR] Die!

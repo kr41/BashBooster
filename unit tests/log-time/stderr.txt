@@ -1,4 +1,4 @@
-test-log-time 2014-07-02 13:26:41+07:00 [DEBUG] Debug message
-test-log-time 2014-07-02 13:26:41+07:00 [INFO] Info message
-test-log-time 2014-07-02 13:26:41+07:00 [WARNING] Warning message
-test-log-time 2014-07-02 13:26:41+07:00 [ERROR] Error message
+test.sh 2014-07-02 13:26:41+07:00 [DEBUG] Debug message
+test.sh 2014-07-02 13:26:41+07:00 [INFO] Info message
+test.sh 2014-07-02 13:26:41+07:00 [WARNING] Warning message
+test.sh 2014-07-02 13:26:41+07:00 [ERROR] Error message

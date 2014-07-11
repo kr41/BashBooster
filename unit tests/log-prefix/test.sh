@@ -3,5 +3,8 @@
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-BB_WORKSPACE="/unexisted/workspace"
+BB_LOG_LEVEL='DEBUG'
 source ../../bashbooster.sh
+
+bb-log-info "Message from test.sh"
+BB_LOG_LEVEL='INFO'
