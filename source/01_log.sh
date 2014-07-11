@@ -28,7 +28,7 @@ bb-log-init() {
 }
 
 bb-log-msg() {
-    local LEVEL=$1
+    local LEVEL=$(( $1 ))
     shift
     if (( $LEVEL >= $BB_LOG_LEVEL ))
     then

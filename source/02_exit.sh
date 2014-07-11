@@ -1,5 +1,5 @@
 bb-exit() {
-    local CODE=$1
+    local CODE=$(( $1 ))
     shift
     if (( $CODE == 0 ))
     then
