@@ -32,3 +32,7 @@ Then visit:
 *   <http://localhost:8081> — Ubuntu machine
 *   <http://localhost:8082> — CentOS machine
 *   <http://localhost:8083> — Debian machine
+
+[Chef]: http://www.getchef.com/
+[Vagrant]: http://vagrantup.com/
+[Bash]: http://www.gnu.org/software/bash/
