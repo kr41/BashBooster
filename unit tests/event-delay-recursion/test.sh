@@ -12,5 +12,5 @@ event-handler() {
     bb-event-delay event
 }
 
-bb-event-listen event event-handler
+bb-event-on event event-handler
 bb-event-delay event

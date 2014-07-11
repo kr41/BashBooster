@@ -7,11 +7,11 @@ source ../../bashbooster.sh
 
 SRC_DIR=`bb-tmp-dir`
 DST_DIR="$BB_WORKSPACE/testdir"
-bb-event-listen bb-cleanup 'rm -rf "$DST_DIR"'
-bb-event-listen dir-changed-1 'echo "Dir changed 1"'
-bb-event-listen dir-changed-2 'echo "Dir changed 2"'
-bb-event-listen dir-changed-3 'echo "Dir changed 3"'
-bb-event-listen dir-changed-4 'echo "Dir changed 4"'
+bb-event-on bb-cleanup 'rm -rf "$DST_DIR"'
+bb-event-on dir-changed-1 'echo "Dir changed 1"'
+bb-event-on dir-changed-2 'echo "Dir changed 2"'
+bb-event-on dir-changed-3 'echo "Dir changed 3"'
+bb-event-on dir-changed-4 'echo "Dir changed 4"'
 
 bb-sync-dir "$DST_DIR" "$SRC_DIR" 'dir-changed-1'
 [[ -d "$DST_DIR" ]] || bb-exit 1 "Dir doesn't exist"

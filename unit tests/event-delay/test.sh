@@ -17,5 +17,5 @@ second() {
     echo "Second Event"
 }
 
-bb-event-listen first first
-bb-event-listen second second
+bb-event-on first first
+bb-event-on second second

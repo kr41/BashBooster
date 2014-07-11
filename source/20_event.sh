@@ -7,7 +7,7 @@ bb-event-init() {
     BB_EVENT_DIR=`bb-tmp-dir`
 }
 
-bb-event-listen() {
+bb-event-on() {
     local EVENT=$1
     local HANDLER=$2
     local HANDLERS="$BB_EVENT_DIR/$EVENT.handlers"

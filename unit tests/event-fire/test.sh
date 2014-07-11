@@ -6,5 +6,5 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 source ../../bashbooster.sh
 
 bb-event-fire event
-bb-event-listen event 'echo "Event processed"'
+bb-event-on event 'echo "Event processed"'
 bb-event-fire event

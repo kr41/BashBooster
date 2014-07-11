@@ -52,9 +52,9 @@ rebuild-site() {
     $python $BB_WORKSPACE/docs/build.py
     bb-sync-file "$BB_WORKSPACE/www/index.html" "$BB_WORKSPACE/docs/index.html"
 }
-bb-event-listen reload-server      reload-server
-bb-event-listen update-python-deps update-python-deps
-bb-event-listen rebuild-site       rebuild-site
+bb-event-on reload-server      reload-server
+bb-event-on update-python-deps update-python-deps
+bb-event-on rebuild-site       rebuild-site
 
 
 ###############################################################################
