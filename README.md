@@ -23,7 +23,8 @@ How to start:
 You can find `Vagrantfile` on the root of sources.  It sets up three virtual
 machines using Ubuntu, CentOS, and Debian, and uses `example/bootstrap.sh`
 script for provisioning.  The script installs and configures Nginx web-server,
-builds Bash Booster documentation and places it to the web root directory. Run:
+builds Bash Booster documentation and places it to the web root directory.
+It also demonstrates most of library features.  Run:
 
     $ vagrant up
 
