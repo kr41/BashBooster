@@ -21,6 +21,7 @@ bb-event-listen() {
 
 bb-event-fire() {
     local EVENT=$1
+    [[ -n "$EVENT" ]] || return 0
     BB_EVENT_DEPTH["$EVENT"]=$(( ${BB_EVENT_DEPTH["$EVENT"]} + 1 ))
     if (( ${BB_EVENT_DEPTH["$EVENT"]} >= $BB_EVENT_MAX_DEPTH ))
     then
@@ -37,6 +38,7 @@ bb-event-fire() {
 bb-event-delay() {
     local EVENT=$1
     local EVENTS="$BB_EVENT_DIR/events"
+    [[ -n "$EVENT" ]] || return 0
     touch "$EVENTS"
     if [[ -z `cat "$EVENTS" | grep "$EVENT"` ]]
     then
