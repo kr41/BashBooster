@@ -4,3 +4,4 @@ syntax: glob
 bashbooster.sh
 *.sublime-*
 *.bb-workspace
+docs/*.html
