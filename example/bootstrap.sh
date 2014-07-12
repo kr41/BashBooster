@@ -65,6 +65,7 @@ bb-sync-file "$BB_WORKSPACE/docs/requirements.txt" '/vagrant/docs/requirements.t
 bb-sync-file "$BB_WORKSPACE/docs/layout.mako"      '/vagrant/docs/layout.mako'      rebuild-site
 bb-sync-file "$BB_WORKSPACE/docs/index.md"         '/vagrant/docs/index.md'         rebuild-site
 bb-sync-file "$BB_WORKSPACE/docs/build.py"         '/vagrant/docs/build.py'         rebuild-site
+bb-sync-dir  "$BB_WORKSPACE/www/css"               '/vagrant/docs/css'
 
 NGINX_CONF=`bb-tmp-file`
 bb-template "nginx.conf.bbt" > "$NGINX_CONF"
