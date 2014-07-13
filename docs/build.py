@@ -26,5 +26,5 @@ with open(os.path.join(here, 'index.md')) as f:
 body = markdown.convert(source)
 meta = markdown.Meta
 
-with open(os.path.join(here, 'index.html'), 'w') as f:
+with open(os.path.join(here, 'www', 'index.html'), 'w') as f:
     f.write(template.render(body=body, meta=meta))

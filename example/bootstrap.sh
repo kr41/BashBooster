@@ -50,7 +50,7 @@ update-python-deps() {
 }
 rebuild-site() {
     $python $BB_WORKSPACE/docs/build.py
-    bb-sync-file "$BB_WORKSPACE/www/index.html" "$BB_WORKSPACE/docs/index.html"
+    bb-sync-dir "$BB_WORKSPACE/www" "$BB_WORKSPACE/docs/www"
 }
 bb-event-on reload-server      reload-server
 bb-event-on update-python-deps update-python-deps
@@ -61,11 +61,11 @@ bb-event-on rebuild-site       rebuild-site
 
 bb-log-info "Synchronizing data"
 
+bb-sync-dir  "$BB_WORKSPACE/www"                   '/vagrant/docs/www'
 bb-sync-file "$BB_WORKSPACE/docs/requirements.txt" '/vagrant/docs/requirements.txt' update-python-deps
 bb-sync-file "$BB_WORKSPACE/docs/layout.mako"      '/vagrant/docs/layout.mako'      rebuild-site
 bb-sync-file "$BB_WORKSPACE/docs/index.md"         '/vagrant/docs/index.md'         rebuild-site
 bb-sync-file "$BB_WORKSPACE/docs/build.py"         '/vagrant/docs/build.py'         rebuild-site
-bb-sync-dir  "$BB_WORKSPACE/www/css"               '/vagrant/docs/css'
 
 NGINX_CONF=`bb-tmp-file`
 bb-template "nginx.conf.bbt" > "$NGINX_CONF"
