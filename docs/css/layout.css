@@ -2,6 +2,52 @@ body {
     width: 1000px;
     margin: 0 auto;
     padding: 0;
+    font-family: 'PT Serif', serif;
+    font-size: 16pt;
+    line-height: 1.8;
+    color: #151515;
+}
+h2, h3 { font-family: 'PT Serif', serif }
+header {
+    font-size: 32pt;
+    border-bottom: 1px solid #3F3F3F
+}
+dt {
+    margin-top: 21px;
+    font-family: monospace
 }
 
-dt { font-family: monospace }
+.codehilite {
+    background-color: #3F3F3F;
+    padding: 4pt 16pt;
+    border-radius: 3px;
+}
+code, pre { font-size: 14pt }
+code {
+    background-color: #d5d5d5;
+    padding: 2px 4px;
+    border-radius: 2px;
+    border: 1px solid #b7b7b7;
+}
+
+a { color: #0043A8 }
+a:visited { color: #822087 }
+a:hover { color: #4981D4 }
+
+a.code { text-decoration: none }
+a.code:visited { color: #0043A8 }
+a.code:hover { color: #4981D4 }
+
+h1 .headerlink,
+h2 .headerlink,
+h3 .headerlink {
+    visibility: hidden;
+}
+h1:hover .headerlink,
+h2:hover .headerlink,
+h3:hover .headerlink {
+    visibility: visible;
+}
+a.headerlink { text-decoration: none }
+a.headerlink:visited { color: #0043A8 }
+a.headerlink:hover { color: #4981D4 }
