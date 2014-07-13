@@ -12,8 +12,6 @@ use Bash Booster, because it has been written using Bash only and
 [Chef]: http://www.getchef.com/
 [Vagrant]: http://vagrantup.com/
 
-**Contents**
-
 [TOC]
 
 Quick Start
@@ -412,6 +410,9 @@ reload server.  If server configuration is changed, it will just reload server.
 Learn mode about functions [`bb-sync-dir`](#bb-sync-dir){: .code } and
 [`bb-sync-file`](#bb-sync-file){: .code } in [`sync`](#sync){: .code } module
 description.
+
+There is also a special event `bb-cleanup`.  This event fires automatically
+just before script termination.
 
 **bb-event-on** EVENT HANDLER {: #bb-event-on }
 :   Subscribes `HANDLER` on `EVENT`.  `HANDLER` will be subscribed only once,

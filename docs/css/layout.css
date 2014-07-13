@@ -1,7 +1,7 @@
 body {
-    width: 1000px;
+    max-width: 1000px;
     margin: 0 auto;
-    padding: 0;
+    padding: 20px;
     font-family: 'PT Serif', serif;
     font-size: 16pt;
     line-height: 1.8;
@@ -21,6 +21,7 @@ dt {
     background-color: #3F3F3F;
     padding: 4pt 16pt;
     border-radius: 3px;
+    overflow: auto;
 }
 code, pre { font-size: 14pt }
 code {
@@ -28,6 +29,7 @@ code {
     padding: 2px 4px;
     border-radius: 2px;
     border: 1px solid #b7b7b7;
+    white-space: pre;
 }
 
 a { color: #0043A8 }

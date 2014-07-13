@@ -13,6 +13,7 @@ markdown = Markdown(
             ('guess_lang', False),
         ],
         'toc': [
+            ('title', 'Table of Contents'),
             ('permalink', True),
         ]
     }
