@@ -12,10 +12,21 @@ bb-event-on() {
     local HANDLER=$2
     local HANDLERS="$BB_EVENT_DIR/$EVENT.handlers"
     touch "$HANDLERS"
-    if [[ -z `cat "$HANDLERS" | grep '$HANDLER'` ]]
+    if [[ -z `cat "$HANDLERS" | grep "^$HANDLER\$"` ]]
     then
         bb-log-debug "Subscribed handler '$HANDLER' on event '$EVENT'"
         echo "$HANDLER" >> "$HANDLERS"
+    fi
+}
+
+bb-event-off() {
+    local EVENT=$1
+    local HANDLER=$2
+    local HANDLERS="$BB_EVENT_DIR/$EVENT.handlers"
+    if [[ -f "$HANDLERS" ]]
+    then
+        bb-log-debug "Removed handler '$HANDLER' from event '$EVENT'"
+        cat "$HANDLERS" | grep -v "^$HANDLER\$" > "$HANDLERS"
     fi
 }
 
