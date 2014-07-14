@@ -30,7 +30,7 @@ fi
 bb-log-info "Preparing environment"
 
 service nginx start
-[[ -d "$BB_WORKSPACE/docs" ]]       || mkdir      "$BB_WORKSPACE/docs"
+[[ -d "$BB_WORKSPACE/docs/www" ]]   || mkdir -p   "$BB_WORKSPACE/docs/www"
 [[ -d "$BB_WORKSPACE/virtualenv" ]] || virtualenv "$BB_WORKSPACE/virtualenv"
 
 pip="$BB_WORKSPACE/virtualenv/bin/pip"
@@ -59,7 +59,7 @@ bb-event-on rebuild-site       rebuild-site
 
 bb-log-info "Synchronizing data"
 
-bb-sync-dir  "$BB_WORKSPACE/docs/www"              '/vagrant/docs/www'
+bb-sync-dir  "$BB_WORKSPACE/docs/www/css"          '/vagrant/docs/www/css'
 bb-sync-file "$BB_WORKSPACE/docs/requirements.txt" '/vagrant/docs/requirements.txt' update-python-deps
 bb-sync-file "$BB_WORKSPACE/docs/layout.mako"      '/vagrant/docs/layout.mako'      rebuild-site
 bb-sync-file "$BB_WORKSPACE/docs/index.md"         '/vagrant/docs/index.md'         rebuild-site
