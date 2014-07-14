@@ -487,7 +487,7 @@ cases.
 
 The module provides functions for synchronization files and directories.
 
-**bb-sync-file** DST_FILE SRC_FILE EVENT {: #bb-sync-event }
+**bb-sync-file** DST_FILE SRC_FILE EVENT {: #bb-sync-file }
 :   Synchronizes contents of `DST_FILE` with `SRC_FILE`.  If `DST_FILE` is changed
     it will delay `EVENT`.  Usage:
 
