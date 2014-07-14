@@ -109,12 +109,10 @@ DUMMY_OUT=`bb-tmp-file`
 TEST="$1"
 if [[ -z "$TEST" ]]
 then
-    IFS=`echo -e "\n\b"`
-    for TEST in `find "./unit tests" -name "test.sh" | sort`
+    find "./unit tests" -name "test.sh" -print0 | while read -rd $'\0' TEST
     do
         run-test "$TEST"
     done
-    unset IFS
 else
     run-test "$TEST"
 fi

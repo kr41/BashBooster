@@ -38,7 +38,7 @@ bb-sync-dir() {
         fi
     done
     cd "$DST_DIR"
-    for FILE in `find`
+    find -print0 | while read -rd $'\0' FILE
     do
         if [[ ! -e "$SRC_DIR/$FILE" ]]
         then
