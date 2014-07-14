@@ -418,6 +418,9 @@ just before script termination.
 :   Subscribes `HANDLER` on `EVENT`.  `HANDLER` will be subscribed only once,
     so the second call with the same arguments will take no effect.
 
+**bb-event-off** EVENT HANDLER {: #bb-event-off }
+:   Removes `HANDLER` from `EVENT`.
+
 **bb-event-fire** EVENT {: #bb-event-fire }
 :   Fires `EVENT`.  It will call all `EVENT` handlers immediately.
     This function is not very useful in your scripts, it is mostly for internal
