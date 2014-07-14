@@ -53,3 +53,28 @@ h3:hover .headerlink {
 a.headerlink { text-decoration: none }
 a.headerlink:visited { color: #0043A8 }
 a.headerlink:hover { color: #4981D4 }
+
+@media print {
+    * { color: #151515 !important }
+    @page {
+        margin: 1.5cm 1.5cm 1.5cm 2.5cm;
+        padding: 0;
+    }
+    body {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        font-size: 12pt;
+        line-height: 1.5;
+    }
+    a { text-decoration: none }
+    a[href^="http"]:after { content: " [" attr(href) "]" }
+    a[href^="http://localhost"]:after { content: none }
+    code, pre { font-size: 11pt }
+    code {
+        background-color: transparent;
+        padding: 0;
+        border: none;
+        font-weight: bold;
+    }
+}
