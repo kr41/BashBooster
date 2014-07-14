@@ -9,7 +9,7 @@ bb-sync-file() {
     fi
     if [[ -n `diff -q "$SRC_FILE" "$DST_FILE"` ]]
     then
-        cat "$SRC_FILE" > "$DST_FILE"
+        cp -f "$SRC_FILE" "$DST_FILE"
         bb-event-delay "$EVENT"
     fi
 }
