@@ -2,7 +2,7 @@ server {
     listen 80 default_server;
 
     location / {
-        root   ${BB_WORKSPACE}/www;
+        root   ${BB_WORKSPACE}/docs/www;
         index  index.html;
     }
 }
