@@ -159,7 +159,7 @@ It will break cleanup process.  [Subscribe](#bb-event-on) on `bb-cleanup` event
 instead, it will be fired just before exit:
 
     :::bash
-    bb-even-on bb-cleanup my-cleanup-command
+    bb-event-on bb-cleanup my-cleanup-command
 
 
 Module Description
