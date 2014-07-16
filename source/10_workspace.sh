@@ -12,13 +12,13 @@ bb-workspace-init() {
 
     # Ensure BB_WORKSPACE stores absolute path
     cd "$BB_WORKSPACE"
-    BB_WORKSPACE=`pwd`
+    BB_WORKSPACE="$( pwd )"
     cd - > /dev/null
 }
 
 bb-workspace-cleanup() {
     bb-log-debug "Cleaning up workspace at '$BB_WORKSPACE'"
-    if [[ -z `ls "$BB_WORKSPACE"` ]]
+    if [[ -z "$( ls "$BB_WORKSPACE" )" ]]
     then
         bb-log-debug "Workspace is empty. Removing"
         rm -rf "$BB_WORKSPACE"

@@ -28,7 +28,7 @@ bb-flag-clean() {
 }
 
 bb-flag-cleanup() {
-    if [[ -d "$BB_FLAG_DIR" && -z `ls "$BB_FLAG_DIR"` ]]
+    if [[ -d "$BB_FLAG_DIR" && -z "$( ls "$BB_FLAG_DIR" )" ]]
     then
         bb-log-debug "Flag directory is empty"
         bb-flag-clean

@@ -5,8 +5,8 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 source ../../bashbooster.sh
 
-FILE=`bb-tmp-file`
+FILE="$( bb-tmp-file )"
 [[ -f $FILE ]] || bb-exit 1 "File doesn't exist"
 
-DIR=`bb-tmp-dir`
+DIR="$( bb-tmp-dir )"
 [[ -d $DIR ]] || bb-exit 1 "Directory doesn't exist"

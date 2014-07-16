@@ -5,7 +5,7 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 source ../../bashbooster.sh
 
-SRC_DIR=`bb-tmp-dir`
+SRC_DIR="$( bb-tmp-dir )"
 DST_DIR="$BB_WORKSPACE/testdir"
 bb-event-on bb-cleanup 'rm -rf "$DST_DIR"'
 bb-event-on dir-changed-1 'echo "Dir changed 1"'
@@ -26,7 +26,7 @@ bb-sync-dir "$DST_DIR" "$SRC_DIR" 'dir-changed-2'
 
 echo "Foo" >> "$SRC_DIR/foo"
 bb-sync-dir "$DST_DIR" "$SRC_DIR" 'dir-changed-3'
-[[ -z `diff -q "$DST_DIR/foo" "$SRC_DIR/foo"` ]] || bb-exit 3 "Files 'foo' are different"
+[[ -z "$( diff -q "$DST_DIR/foo" "$SRC_DIR/foo" )" ]] || bb-exit 3 "Files 'foo' are different"
 
 rm "$SRC_DIR/foo"
 rm -r "$SRC_DIR/bar"

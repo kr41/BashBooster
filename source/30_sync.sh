@@ -7,7 +7,7 @@ bb-sync-file() {
         touch "$DST_FILE"
         bb-event-delay "$EVENT"
     fi
-    if [[ -n `diff -q "$SRC_FILE" "$DST_FILE"` ]]
+    if [[ -n "$( diff -q "$SRC_FILE" "$DST_FILE" )" ]]
     then
         cp -f "$SRC_FILE" "$DST_FILE"
         bb-event-delay "$EVENT"
@@ -24,10 +24,10 @@ bb-sync-dir() {
         bb-event-delay "$EVENT"
     fi
 
-    local ORIGINAL_DIR=`pwd`
+    local ORIGINAL_DIR="$( pwd )"
 
     cd "$SRC_DIR"
-    for NAME in `ls`
+    for NAME in $( ls )
     do
         if [[ -f "$SRC_DIR/$NAME" ]]
         then
@@ -38,7 +38,8 @@ bb-sync-dir() {
         fi
     done
     cd "$DST_DIR"
-    find -print0 | while read -rd $'\0' FILE
+    IFS="$( echo -e "\n\b" )"
+    for FILE in $( find )
     do
         if [[ ! -e "$SRC_DIR/$FILE" ]]
         then
@@ -46,6 +47,7 @@ bb-sync-dir() {
             bb-event-delay "$EVENT"
         fi
     done
+    unset IFS
 
     cd "$ORIGINAL_DIR"
 }

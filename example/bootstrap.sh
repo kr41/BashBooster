@@ -18,7 +18,7 @@ then
     bb-apt-install nginx python-virtualenv
 elif bb-yum?
 then
-    EPEL_REPO=`bb-download http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm`
+    EPEL_REPO="$( bb-download http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm )"
     bb-yum-repo? epel || rpm -ivh "$EPEL_REPO"
     bb-yum-install nginx python-virtualenv
     chkconfig nginx on
@@ -65,7 +65,7 @@ bb-sync-file "$BB_WORKSPACE/docs/layout.mako"      '/vagrant/docs/layout.mako'  
 bb-sync-file "$BB_WORKSPACE/docs/index.md"         '/vagrant/docs/index.md'         rebuild-site
 bb-sync-file "$BB_WORKSPACE/docs/build.py"         '/vagrant/docs/build.py'         rebuild-site
 
-NGINX_CONF=`bb-tmp-file`
+NGINX_CONF="$( bb-tmp-file )"
 bb-template "nginx.conf.bbt" > "$NGINX_CONF"
 if [[ -f '/etc/nginx/sites-available/default' ]]
 then

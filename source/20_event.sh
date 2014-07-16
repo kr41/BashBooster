@@ -4,7 +4,7 @@ BB_EVENT_MAX_DEPTH=1000
 BB_EVENT_ERROR_MAX_DEPTH_REACHED=20
 
 bb-event-init() {
-    BB_EVENT_DIR=`bb-tmp-dir`
+    BB_EVENT_DIR="$( bb-tmp-dir )"
 }
 
 bb-event-on() {
@@ -12,7 +12,7 @@ bb-event-on() {
     local HANDLER=$2
     local HANDLERS="$BB_EVENT_DIR/$EVENT.handlers"
     touch "$HANDLERS"
-    if [[ -z `cat "$HANDLERS" | grep "^$HANDLER\$"` ]]
+    if [[ -z "$( cat "$HANDLERS" | grep "^$HANDLER\$" )" ]]
     then
         bb-log-debug "Subscribed handler '$HANDLER' on event '$EVENT'"
         echo "$HANDLER" >> "$HANDLERS"
@@ -51,7 +51,7 @@ bb-event-delay() {
     local EVENTS="$BB_EVENT_DIR/events"
     [[ -n "$EVENT" ]] || return 0
     touch "$EVENTS"
-    if [[ -z `cat "$EVENTS" | grep "^$EVENT\$"` ]]
+    if [[ -z "$( cat "$EVENTS" | grep "^$EVENT\$" )" ]]
     then
         bb-log-debug "Delayed event '$EVENT'"
         echo "$EVENT" >> "$EVENTS"
@@ -68,13 +68,13 @@ bb-event-cleanup() {
     local EVENTS="$BB_EVENT_DIR/events"
     if [[ -f "$EVENTS" ]]
     then
-        local EVENT_LIST=`cat "$EVENTS"`
+        local EVENT_LIST="$( cat "$EVENTS" )"
         rm "$EVENTS"
         for EVENT in $EVENT_LIST
         do
             bb-event-fire $EVENT
         done
-        # If any event hadler calls ``bb-event-delay``, the ``$EVENTS`` file
+        # If any event hadler calls "bb-event-delay", the "$EVENTS" file
         # will be created again and we should repeat this processing
         if [[ -f "$EVENTS" ]]
         then

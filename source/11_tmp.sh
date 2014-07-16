@@ -7,13 +7,13 @@ bb-tmp-init() {
 }
 
 bb-tmp-file() {
-    FILENAME="$BB_WORKSPACE/tmp/`date +%s%N`"
+    FILENAME="$BB_WORKSPACE/tmp/$( date +%s%N )"
     touch "$FILENAME"
     echo "$FILENAME"
 }
 
 bb-tmp-dir() {
-    DIRNAME="$BB_WORKSPACE/tmp/`date +%s%N`"
+    DIRNAME="$BB_WORKSPACE/tmp/$( date +%s%N )"
     mkdir -p "$DIRNAME"
     echo "$DIRNAME"
 }

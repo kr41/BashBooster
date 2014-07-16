@@ -338,14 +338,14 @@ script.
 :   Creates temporary file:
 
         :::bash
-        MY_TMP_FILE=`bb-tmp-file`
+        MY_TMP_FILE="$( bb-tmp-file )"
         echo "Some stuff" > "$MY_TMP_FILE"
 
 **bb-tmp-dir** {: #bb-tmp-dir }
 :   Creates temporary directory:
 
         :::bash
-        MY_TMP_DIR=`bb-tmp-dir`
+        MY_TMP_DIR="$( bb-tmp-dir )"
         touch "$MY_TMP_DIR/file1"
         touch "$MY_TMP_DIR/file2"
 
@@ -443,7 +443,7 @@ The module manages download directory and its contents.
     the function will not download it again.  Prints full path to downloaded
     file into `stdout`.  Usage:
 
-        MY_FILE=`bb-download http://example.com/my_file.txt`
+        MY_FILE="$( bb-download http://example.com/my_file.txt )"
         # "$MY_FILE" == "$BB_WORKSPACE/download/my_file.txt"
 
 **bb-download-clean** {: #bb-download-clean }
@@ -521,7 +521,7 @@ The module provides functions to work with [Apt][] package manager.
 :   Checks if `REPOSITORY` is installed.  Usage:
 
         :::bash
-        REPO=`http://example.com/repo/ubuntu/`
+        REPO='http://example.com/repo/ubuntu/'
         if bb-apt-repo? $REPO
         then
             cp /etc/apt/sources.list /etc/apt/sources.list.backup

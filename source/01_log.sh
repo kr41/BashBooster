@@ -61,18 +61,18 @@ bb-log-prefix() {
     done
     if echo "${FUNCNAME[$i]}" | grep -q '^bb-'
     then
-        PREFIX=`echo "${FUNCNAME[$i]}" | awk '{ split($0, PARTS, "-"); print PARTS[1]"-"PARTS[2] }'`
+        PREFIX=$( echo "${FUNCNAME[$i]}" | awk '{ split($0, PARTS, "-"); print PARTS[1]"-"PARTS[2] }' )
     fi
     echo "$PREFIX"
 }
 
 bb-log-msg() {
     local LEVEL_CODE=$(( $1 ))
-    if (( $LEVEL_CODE >= `bb-log-level-code` ))
+    if (( $LEVEL_CODE >= $( bb-log-level-code ) ))
     then
         local MESSAGE="$2"
         local PREFIX="$( bb-log-prefix )"
-        local TIME="$(eval "$BB_LOG_TIME")"
+        local TIME="$( eval "$BB_LOG_TIME" )"
         local LEVEL="${BB_LOG_LEVEL_NAME[$LEVEL_CODE]}"
         local COLOR="${BB_LOG_COLORS[$LEVEL_CODE]}"
         local NOCOLOR="${BB_LOG_COLORS['NC']}"

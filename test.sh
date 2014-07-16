@@ -8,34 +8,35 @@ BB_TEST_FAILED=0
 
 run-test() {
     local TEST="$1"
+    local TEST_DIR="$( dirname "$TEST" )"
     local EXPECT_STDOUT="$DUMMY_OUT"
     local EXPECT_STDERR="$DUMMY_OUT"
     local EXPECT_CODE=0
-    local EXPECT_WORKSPACE=0
-    if [[ -f "$( dirname "$TEST" )/stdout.txt" ]]
+    local EXPECT_WORKSPACE=false
+    if [[ -f "$TEST_DIR/stdout.txt" ]]
     then
-        EXPECT_STDOUT="$( dirname "$TEST" )/stdout.txt"
+        EXPECT_STDOUT="$TEST_DIR/stdout.txt"
     fi
-    if [[ -f "$( dirname "$TEST" )/stderr.txt" ]]
+    if [[ -f "$TEST_DIR/stderr.txt" ]]
     then
-        EXPECT_STDERR="$( dirname "$TEST" )/stderr.txt"
+        EXPECT_STDERR="$TEST_DIR/stderr.txt"
     fi
-    if [[ -f "$( dirname "$TEST" )/code.txt" ]]
+    if [[ -f "$TEST_DIR/code.txt" ]]
     then
-        EXPECT_CODE=$(( `cat "$( dirname "$TEST" )/code.txt"` ))
+        EXPECT_CODE=$(( $( cat "$TEST_DIR/code.txt" ) ))
     fi
-    if [[ -f "$( dirname "$TEST" )/workspace.lock" ]]
+    if [[ -f "$TEST_DIR/workspace.lock" ]]
     then
-        EXPECT_WORKSPACE=1
+        EXPECT_WORKSPACE=true
     fi
 
-    local STDOUT=`bb-tmp-file`
-    local STDERR=`bb-tmp-file`
+    local STDOUT="$( bb-tmp-file )"
+    local STDERR="$( bb-tmp-file )"
     chmod a+x "$TEST"
     "$TEST" > "$STDOUT" 2> "$STDERR"
 
     local CODE=$?
-    if [[ $CODE -ne $EXPECT_CODE ]]
+    if (( $CODE != $EXPECT_CODE ))
     then
         bb-log-error "$TEST Failed"
         bb-log-error "Expected code $EXPECT_CODE is not matching returned one $CODE"
@@ -48,7 +49,7 @@ run-test() {
         BB_TEST_FAILED=$(( $BB_TEST_FAILED + 1 ))
         return
     fi
-    if [[ `diff -q "$EXPECT_STDOUT" "$STDOUT"` ]]
+    if [[ -n "$( diff -q "$EXPECT_STDOUT" "$STDOUT" )" ]]
     then
         bb-log-error "$TEST Failed"
         bb-log-error "Expected output in stdout differs from given one"
@@ -61,7 +62,7 @@ run-test() {
         BB_TEST_FAILED=$(( $BB_TEST_FAILED + 1 ))
         return
     fi
-    if [[ `diff -q "$EXPECT_STDERR" "$STDERR"` ]]
+    if [[ -n "$( diff -q "$EXPECT_STDERR" "$STDERR" )" ]]
     then
         bb-log-error "$TEST Failed"
         bb-log-error "Expected output in stderr differs from given one"
@@ -74,7 +75,7 @@ run-test() {
         BB_TEST_FAILED=$(( $BB_TEST_FAILED + 1 ))
         return
     fi
-    if [[ -d "$( dirname "$TEST" )/.bb-workspace" && $EXPECT_WORKSPACE -eq 0 ]]
+    if ! $EXPECT_WORKSPACE && [[ -d "$( dirname "$TEST" )/.bb-workspace" ]]
     then
         bb-log-error "$TEST Failed"
         bb-log-error "Workspace directory still exists"
@@ -104,15 +105,17 @@ BB_LOG_FORMAT='${PREFIX} ${TIME} [${LEVEL}] ${MESSAGE}'
 BB_LOG_USE_COLOR=true
 source bashbooster.sh
 
-DUMMY_OUT=`bb-tmp-file`
+DUMMY_OUT="$( bb-tmp-file )"
 
 TEST="$1"
 if [[ -z "$TEST" ]]
 then
-    find "./unit tests" -name "test.sh" -print0 | while read -rd $'\0' TEST
+    IFS="$( echo -e "\n\b" )"
+    for TEST in $( find "./unit tests" -name "test.sh" )
     do
         run-test "$TEST"
     done
+    unset IFS
 else
     run-test "$TEST"
 fi
