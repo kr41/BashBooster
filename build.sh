@@ -16,9 +16,9 @@ $( cat LICENSE.txt | awk '{ print "# "$0 }' )
 
 EOF
 
-for FILE in $( find ./source -name "*.sh" | sort )
+while read -r FILE
 do
     echo -e "##\n# $FILE\n#\n" >> "$OUTPUT"
     cat "$FILE" >> "$OUTPUT"
     echo >> "$OUTPUT"
-done
+done < <( find ./source -name "*.sh" | sort )

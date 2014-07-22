@@ -27,7 +27,7 @@ bb-sync-dir() {
     local ORIGINAL_DIR="$( pwd )"
 
     cd "$SRC_DIR"
-    for NAME in $( ls )
+    while read -r NAME
     do
         if [[ -f "$SRC_DIR/$NAME" ]]
         then
@@ -36,18 +36,16 @@ bb-sync-dir() {
         then
             bb-sync-dir "$DST_DIR/$NAME" "$SRC_DIR/$NAME" "$EVENT"
         fi
-    done
+    done < <( ls )
     cd "$DST_DIR"
-    IFS="$( echo -e "\n\b" )"
-    for FILE in $( find )
+    while read -r FILE
     do
         if [[ ! -e "$SRC_DIR/$FILE" ]]
         then
             rm -rf "$DST_DIR/$FILE"
             bb-event-delay "$EVENT"
         fi
-    done
-    unset IFS
+    done < <( find )
 
     cd "$ORIGINAL_DIR"
 }
