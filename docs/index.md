@@ -489,7 +489,7 @@ The module provides functions for synchronization files and directories.
 
 **bb-sync-file** DST_FILE SRC_FILE EVENT [ARGUMENTS...] {: #bb-sync-file }
 :   Synchronizes contents of `DST_FILE` with `SRC_FILE`.  If `DST_FILE` is changed
-    it will delay `EVENT` with `ARGUMENTS`.  Usage:
+    it will [delay](#bb-event-delay) `EVENT` with `ARGUMENTS`.  Usage:
 
         :::bash
         bb-event-on restart-server "service nginx restart"
@@ -501,7 +501,7 @@ The module provides functions for synchronization files and directories.
 
 **bb-sync-dir** DST_DIR SRC_DIR EVENT [ARGUMENTS...] {: #bb-sync-dir }
 :   Synchronizes contents of `DST_DIR` with `SRC_DIR`.  If `DST_DIR` is changed
-    it will delay `EVENT` with `ARGUMENTS`.
+    it will [delay](#bb-event-delay) `EVENT` with `ARGUMENTS`.
 
 
 ### apt
