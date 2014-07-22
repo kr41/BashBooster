@@ -32,6 +32,7 @@ bb-event-off() {
 
 bb-event-fire() {
     local EVENT=$1
+    shift
     [[ -n "$EVENT" ]] || return 0
     BB_EVENT_DEPTH["$EVENT"]=$(( ${BB_EVENT_DEPTH["$EVENT"]} + 1 ))
     if (( ${BB_EVENT_DEPTH["$EVENT"]} >= $BB_EVENT_MAX_DEPTH ))
@@ -41,13 +42,16 @@ bb-event-fire() {
     if [[ -f "$BB_EVENT_DIR/$EVENT.handlers" ]]
     then
         bb-log-debug "Run handlers for event '$EVENT'"
-        source "$BB_EVENT_DIR/$EVENT.handlers"
+        while read -r HANDLER
+        do
+            eval "$HANDLER $@"
+        done < "$BB_EVENT_DIR/$EVENT.handlers"
     fi
     BB_EVENT_DEPTH["$EVENT"]=$(( ${BB_EVENT_DEPTH["$EVENT"]} - 1 ))
 }
 
 bb-event-delay() {
-    local EVENT=$1
+    local EVENT="$@"
     local EVENTS="$BB_EVENT_DIR/events"
     [[ -n "$EVENT" ]] || return 0
     touch "$EVENTS"
@@ -68,12 +72,13 @@ bb-event-cleanup() {
     local EVENTS="$BB_EVENT_DIR/events"
     if [[ -f "$EVENTS" ]]
     then
-        local EVENT_LIST="$( cat "$EVENTS" )"
+        local EVENT_LIST="$( bb-tmp-file )"
+        cp -f "$EVENTS" "$EVENT_LIST"
         rm "$EVENTS"
-        for EVENT in $EVENT_LIST
+        while read -r EVENT
         do
             bb-event-fire $EVENT
-        done
+        done < "$EVENT_LIST"
         # If any event hadler calls "bb-event-delay", the "$EVENTS" file
         # will be created again and we should repeat this processing
         if [[ -f "$EVENTS" ]]
