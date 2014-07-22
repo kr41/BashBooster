@@ -421,15 +421,15 @@ just before script termination.
 **bb-event-off** EVENT HANDLER {: #bb-event-off }
 :   Removes `HANDLER` from `EVENT`.
 
-**bb-event-fire** EVENT {: #bb-event-fire }
-:   Fires `EVENT`.  It will call all `EVENT` handlers immediately.
-    This function is not very useful in your scripts, it is mostly for internal
-    usage.
+**bb-event-fire** EVENT [ARGUMENTS...] {: #bb-event-fire }
+:   Fires `EVENT`.  It will call all `EVENT` handlers with `ARGUMENTS` (if any)
+    immediately.  This function is not very useful in your scripts,
+    it is mostly for internal usage.
 
-**bb-event-delay** EVENT {: #bb-event-delay }
+**bb-event-delay** EVENT [ARGUMENTS...] {: #bb-event-delay }
 :   Delays `EVENT` to the end of script.  It will call all `EVENT` handlers
-    during the cleanup process.  Delayed event handlers can call this function
-    too.
+    with `ARGUMENTS` during the cleanup process.  Delayed event handlers can
+    call this function too.
 
 
 ### download
@@ -487,9 +487,9 @@ cases.
 
 The module provides functions for synchronization files and directories.
 
-**bb-sync-file** DST_FILE SRC_FILE EVENT {: #bb-sync-file }
+**bb-sync-file** DST_FILE SRC_FILE EVENT [ARGUMENTS...] {: #bb-sync-file }
 :   Synchronizes contents of `DST_FILE` with `SRC_FILE`.  If `DST_FILE` is changed
-    it will delay `EVENT`.  Usage:
+    it will delay `EVENT` with `ARGUMENTS`.  Usage:
 
         :::bash
         bb-event-on restart-server "service nginx restart"
@@ -499,9 +499,9 @@ The module provides functions for synchronization files and directories.
     Each time `my_site.conf` is changed, the script above will update Nginx
     configuration and restart it.
 
-**bb-sync-dir** DST_DIR SRC_DIR EVENT {: #bb-sync-dir }
+**bb-sync-dir** DST_DIR SRC_DIR EVENT [ARGUMENTS...] {: #bb-sync-dir }
 :   Synchronizes contents of `DST_DIR` with `SRC_DIR`.  If `DST_DIR` is changed
-    it will delay `EVENT`.
+    it will delay `EVENT` with `ARGUMENTS`.
 
 
 ### apt
