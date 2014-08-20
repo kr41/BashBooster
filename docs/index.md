@@ -62,9 +62,9 @@ documentation, and places compiled HTML into web-root directory. Just run:
 
 ...and have some coffee, then visit:
 
-*   <http://localhost:8081> — Ubuntu machine
-*   <http://localhost:8082> — CentOS machine
-*   <http://localhost:8083> — Debian machine
+*   <http://localhost:8081>—Ubuntu machine
+*   <http://localhost:8082>—CentOS machine
+*   <http://localhost:8083>—Debian machine
 
 If you run `vagrant provision` again, script will finish almost immediately.
 It happens, because it does not do unnecessary job: all packages installed,
@@ -75,7 +75,7 @@ Philosophy
 ----------
 
 The main goal of Bash Booster is ability to write [idempotent][Idempotence]
-scripts.  For instance, you have to manage developer´s virtual machine using
+scripts.  For instance, you have to manage developer’s virtual machine using
 Ubuntu.  At the start of your project you just need a web-server installed
 and nothing more.  But requirements may be changed in future.  So you place
 `bootstrap.sh` script at the root of your project sources:
@@ -98,7 +98,7 @@ has an ancient version, which does not support Chef.  So you need to install
 RVM and...
 
 Wait, what the heck? You was just going to install Nginx, why do you need all
-this stuff?  The answer is: you don´t.  You need a set of handy Bash functions,
+this stuff?  The answer is: you don’t.  You need a set of handy Bash functions,
 which requires nothing, but only Bash, which already included into each Linux
 distribution.  So Bash Booster is such set.  The script above can look like
 this:
@@ -236,16 +236,16 @@ The module provides functions to log messages to `stderr`.
 :   Log string format, default is `'${PREFIX} [${LEVEL}] ${MESSAGE}'`.
     The following variables can be used in log format:
 
-    *   `LEVEL_CODE` — Log level numeric value
-    *   `LEVEL` — Log level text value
-    *   `MESSAGE` — Message to log
-    *   `PREFIX` — Log message prefix, usually is
+    *   `LEVEL_CODE`—Log level numeric value
+    *   `LEVEL`—Log level text value
+    *   `MESSAGE`—Message to log
+    *   `PREFIX`—Log message prefix, usually is
         [`BB_LOG_PREFIX`](#BB_LOG_PREFIX){: .code}.  If logger is called within
         Bash Booster function, prefix will be equal to its module name.
-    *   `TIME` — Log time, the output of [`BB_LOG_TIME`](#BB_LOG_TIME){: .code}
+    *   `TIME`—Log time, the output of [`BB_LOG_TIME`](#BB_LOG_TIME){: .code}
         command.
-    *   `COLOR` — Escape code to start colored output
-    *   `NOCOLOR` — Escape code to stop colored output
+    *   `COLOR`—Escape code to start colored output
+    *   `NOCOLOR`—Escape code to stop colored output
 
 **BB_LOG_USE_COLOR** {: #BB_USE_COLOR }
 :   Boolean value, default is `false`.  If set to `true` before Bash Booster
@@ -253,10 +253,10 @@ The module provides functions to log messages to `stderr`.
     by `COLOR` and `NOCOLOR` values, so that log output will be colored according
     to log level:
 
-    *   `DEBUG` — gray
-    *   `INFO` — green
-    *   `WARNING` — orange
-    *   `ERROR` — red
+    *   `DEBUG`—gray
+    *   `INFO`—green
+    *   `WARNING`—orange
+    *   `ERROR`—red
 
     Changing this variable after initialization will take no effect.
 
