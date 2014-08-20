@@ -20,8 +20,18 @@ elif bb-yum?
 then
     EPEL_REPO="$( bb-download http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm )"
     bb-yum-repo? epel || rpm -ivh "$EPEL_REPO"
+
+    bb-event-on 'bb-package-installed' 'post-install'
+    post-install() {
+        local PACKAGE="$1"
+        case "$PACKAGE" in
+            "nginx")
+                chkconfig nginx on
+                service nginx start
+                ;;
+        esac
+    }
     bb-yum-install nginx python-virtualenv
-    chkconfig nginx on
 fi
 
 
@@ -29,7 +39,6 @@ fi
 
 bb-log-info "Preparing environment"
 
-service nginx start
 [[ -d "$BB_WORKSPACE/docs/www" ]]   || mkdir -p   "$BB_WORKSPACE/docs/www"
 [[ -d "$BB_WORKSPACE/virtualenv" ]] || virtualenv "$BB_WORKSPACE/virtualenv"
 

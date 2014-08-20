@@ -29,6 +29,13 @@ bb-apt-install() {
             bb-apt-update
             bb-log-info "Installing package '$PACKAGE'"
             apt-get install -y "$PACKAGE"
+            local STATUS=$?
+            if (( $STATUS == 0 ))
+            then
+                bb-event-fire "bb-package-installed" "$PACKAGE"
+            else
+                bb-exit $STATUS "Failed to install package '$PACKAGE'"
+            fi
         fi
     done
 }

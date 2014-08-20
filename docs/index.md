@@ -543,6 +543,30 @@ The module provides functions to work with [Apt][] package manager.
     installation status, and [`bb-apt-update`](#bb-apt-update){: .code }
     for updating Apt cache before installation.
 
+    For each installed package an event `bb-package-installed` will be fired
+    by [`bb-event-fire`](#bb-event-fire) with the package name as an argument.
+    So that you will be able to make some post installation actions.
+    For instance, install [MySQL on Ubuntu without asking a password](http://stackoverflow.com/a/7740393/3182064):
+
+        :::bash
+
+        bb-event-on 'bb-package-installed' 'post-install'
+        post-install() {
+            local PACKAGE="$1"
+            case "$PACKAGE" in
+                "mysql-server")
+                    # Setup MySQL root password
+                    mysqladmin -u root password 'myRooT_pa$$w0rd'
+                    ;;
+            esac
+        }
+        # Do not ask for MySQL root password during installation
+        export DEBIAN_FRONTEND=noninteractive
+        bb-apt-install mysql-server
+
+    If package is unable to be installed, script will be terminated with error,
+    i.e. [`bb-exit`](#bb-exit) will be called.
+
 [Apt]: https://wiki.debian.org/Apt
 
 ### yum
@@ -579,6 +603,29 @@ The module provides functions to work with [Yum][] package manager.
     [`bb-yum-package?`](#bb-yum-package){: .code } for checking `PACKAGE`
     installation status, and [`bb-yum-update`](#bb-yum-update){: .code }
     for updating Yum cache before installation.
+
+    For each installed package an event `bb-package-installed` will be fired
+    by [`bb-event-fire`](#bb-event-fire) with the package name as an argument.
+    So that you will be able to make some post installation actions.
+    For instance, [setup PostgreSQL on CentOS](http://www.postgresql.org/download/linux/redhat/):
+
+        :::bash
+
+        bb-event-on 'bb-package-installed' 'post-install'
+        post-install() {
+            local PACKAGE="$1"
+            case "$PACKAGE" in
+                "postgresql-9.3")
+                    chkconfig postgresql-9.3 on
+                    service postgresql-9.3 initdb
+                    service postgresql-9.3 start
+                    ;;
+            esac
+        }
+        bb-yum-install postgresql93-server
+
+    If package is unable to be installed, script will be terminated with error,
+    i.e. [`bb-exit`](#bb-exit) will be called.
 
 [Yum]: http://yum.baseurl.org/
 

@@ -30,6 +30,13 @@ bb-yum-install() {
             bb-yum-update
             bb-log-info "Installing package '$PACKAGE'"
             yum install -y "$PACKAGE"
+            local STATUS=$?
+            if (( $STATUS == 0 ))
+            then
+                bb-event-fire "bb-package-installed" "$PACKAGE"
+            else
+                bb-exit $STATUS "Failed to install package '$PACKAGE'"
+            fi
         fi
     done
 }
