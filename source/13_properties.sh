@@ -10,6 +10,11 @@ bb-properties-read() {
     do
 #        echo "$line"
         eval "$line"
-    done < <(gawk 'match($0, /^([^[:blank:]#!][^[:blank:]:=]*)[[:blank:]:=]+(.+)[[:blank:]]*/, m) \
-                   { print "'$PREFIX'" m[1] "=\"" m[2] "\"" }' $FILENAME)
+    done < <(gawk 'match($0, \
+                        /^([^[:blank:]#!][^[:blank:]:=]*)[[:blank:]:=]+(.+)[[:blank:]]*/ \
+                        , m) \
+                        { \
+                            gsub(/[^a-zA-Z0-9_]/, "_", m[1]);
+                            print "'$PREFIX'" m[1] "=\"" m[2] "\"" \
+                        }' $FILENAME)
 }

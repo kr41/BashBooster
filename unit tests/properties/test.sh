@@ -26,6 +26,8 @@ bb-assert-empty "$p_key3"
 bb-assert-empty "$p_key4"
 bb-assert-empty "$p_key5"
 bb-assert-empty "$p_long"
+bb-assert-empty "$p_tail"
+bb-assert-empty "$p_bad_key"
 
 bb-properties-read test.properties p_
 
@@ -35,3 +37,5 @@ bb-assert-equals "$p_key3" "value3"
 bb-assert-equals "$p_key4" "value4"
 bb-assert-equals "$p_key5" "value5"
 bb-assert-equals "$p_long" "string with spaces"
+bb-assert-equals "$p_tail" "tail spaces"
+bb-assert-equals "$p_bad_key" "good value"
