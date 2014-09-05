@@ -412,6 +412,8 @@ as [defined](http://docs.oracle.com/javase/7/docs/api/java/util/Properties.html#
     
     If the same key appears multiple times, only the last value will be visible.
     
+    If the file doesn't exist of cannot be read, the function prints warning and does nothing.
+    
     The escapes in the key name (like "k\:e\=y") are _not supported_, 
     the first ":" or "=" is treated as the end of the key name.
     
