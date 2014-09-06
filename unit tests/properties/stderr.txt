@@ -1,0 +1,1 @@
+bb-properties [WARNING] 'bad.file' is not readable
