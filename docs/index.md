@@ -170,6 +170,7 @@ Module Description
 - [exit](#exit)
 - [workspace](#workspace)
 - [template](#template)
+- [properties](#properties)
 - [event](#event)
 - [download](#download)
 - [flag](#flag)
@@ -377,6 +378,46 @@ looking for something more powerful, you will have to install it by your own.
 
         x=3
         msg='Hello World'
+
+
+### properties
+
+The module allows to read properties-like configuration files, 
+as [defined](http://docs.oracle.com/javase/7/docs/api/java/util/Properties.html#load(java.io.Reader)) by Java Properties class.
+
+**bb-properties-read** FILE_NAME VAR_PREFIX {: #bb-properties-read }
+:   The function reads `FILE_NAME` and parses it.
+    The lines like "key=value" or "key: value" or even "key := value" are converted into Bash variables.
+    The optional `VAR_PREFIX` is prepended to the key name, so if prefix is "p_" "key=value" is converted to `p_key` variable. 
+    For example, let `my.properties` file contains:
+        
+        param1 = value1
+        param2 = long string
+        
+    And the script can read it as the following:
+
+        #!/bin/bash
+
+        unset CDPATH
+        cd "$( dirname "${BASH_SOURCE[0]}" )"
+
+        source bashbooster.sh
+        
+        bb-properties-read "my.properties" "conf_"
+        echo "$conf_param1"     # prints "value1"
+        echo "$conf_param2"     # prints "long string"
+        
+    Note that characters which cannot be in a Bash variable name are replaced with underscore. 
+    So "param.sub=value" will be visible as `param_sub` variable.
+    
+    If the same key appears multiple times, only the last value will be visible.
+    
+    If the file doesn't exist of cannot be read, the function prints warning and does nothing.
+    
+    The escapes in the key name (like "k\:e\=y") are _not supported_, 
+    the first ":" or "=" is treated as the end of the key name.
+    
+    The multiline values (where the endline character is escaped by backslash) are _not supported_ too.
 
 
 ### event

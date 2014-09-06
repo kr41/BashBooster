@@ -5,3 +5,4 @@ bashbooster.sh
 *.sublime-*
 *.bb-workspace
 docs/www/*.html
+.idea/*
