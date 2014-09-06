@@ -1,4 +1,4 @@
-Copyright (c) 2014, Dmitry Vakhrushev <self@kr41.net>
+Copyright (c) 2014, Dmitry Vakhrushev and Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
