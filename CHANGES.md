@@ -1,6 +1,11 @@
 Changes
 -------
 
+### 0.1beta4
+
+*   Added properties module
+
+
 ### 0.1beta3
 
 *   When package is installed by function `bb-apt-install` or `bb-yum-install`,
