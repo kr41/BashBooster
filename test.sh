@@ -9,76 +9,62 @@ BB_TEST_FAILED=0
 run-test() {
     local TEST="$1"
     local TEST_DIR="$( dirname "$TEST" )"
-    local EXPECT_STDOUT="$DUMMY_OUT"
-    local EXPECT_STDERR="$DUMMY_OUT"
-    local EXPECT_CODE=0
-    local EXPECT_WORKSPACE=false
-    if [[ -f "$TEST_DIR/stdout.txt" ]]
+
+    eval "$(
+        cat "$TEST" |
+        grep '# expect:' |
+        awk '{ print "local EXPECT_" substr($0, length("# expect :") + 1) }'
+    )"
+    if [[ -z "$EXPECT_CODE" ]]
     then
-        EXPECT_STDOUT="$TEST_DIR/stdout.txt"
+        local EXPECT_CODE=0
     fi
-    if [[ -f "$TEST_DIR/stderr.txt" ]]
+    if [[ -z "$EXPECT_WORKSPACE" ]]
     then
-        EXPECT_STDERR="$TEST_DIR/stderr.txt"
-    fi
-    if [[ -f "$TEST_DIR/code.txt" ]]
-    then
-        EXPECT_CODE=$(( $( cat "$TEST_DIR/code.txt" ) ))
-    fi
-    if [[ -f "$TEST_DIR/workspace.lock" ]]
-    then
-        EXPECT_WORKSPACE=true
+        local EXPECT_WORKSPACE=false
     fi
 
     local STDOUT="$( bb-tmp-file )"
     local STDERR="$( bb-tmp-file )"
     chmod a+x "$TEST"
-    "$TEST" > "$STDOUT" 2> "$STDERR"
+    BB_LOG_LEVEL='debug' "$TEST" > "$STDOUT" 2> "$STDERR"
 
     local CODE=$?
+    local FAIL_MESSAGE=""
+
     if (( $CODE != $EXPECT_CODE ))
     then
-        bb-log-error "$TEST Failed"
-        bb-log-error "Expected code $EXPECT_CODE is not matching returned one $CODE"
-        echo "stderr >>>"
-        cat "$STDERR"
-        echo "<<< stderr"
-        echo "stdout >>>"
-        cat "$STDOUT"
-        echo "<<< stdout"
-        BB_TEST_FAILED=$(( $BB_TEST_FAILED + 1 ))
-        return
+        FAIL_MESSAGE="Expected code $EXPECT_CODE is not matching returned one $CODE"
     fi
-    if [[ -n "$( diff -q "$EXPECT_STDOUT" "$STDOUT" )" ]]
+    if [[ -n "$EXPECT_STDOUT" ]] && [[ -z "$( cat "$STDOUT" | grep "$EXPECT_STDOUT" )" ]]
+    then
+        FAIL_MESSAGE="Given stdout does not contain expected '$EXPECT_STDOUT'"
+    fi
+    if [[ -n "$EXPECT_STDERR" ]] && [[ -z "$( cat "$STDERR" | grep "$EXPECT_STDERR" )" ]]
+    then
+        FAIL_MESSAGE="Given stderr does not contain expected '$EXPECT_STDERR'"
+    fi
+    if ! $EXPECT_WORKSPACE && [[ -d "$TEST_DIR/.bb-workspace" ]]
+    then
+        FAIL_MESSAGE="Workspace directory still exists"
+    fi
+
+    if [[ -n "$FAIL_MESSAGE" ]]
     then
         bb-log-error "$TEST Failed"
-        bb-log-error "Expected output in stdout differs from given one"
-        echo "expected >>>"
-        cat "$EXPECT_STDOUT"
-        echo "<<< expected"
-        echo "given >>>"
-        cat "$STDOUT"
-        echo "<<< given"
-        BB_TEST_FAILED=$(( $BB_TEST_FAILED + 1 ))
-        return
-    fi
-    if [[ -n "$( diff -q "$EXPECT_STDERR" "$STDERR" )" ]]
-    then
-        bb-log-error "$TEST Failed"
-        bb-log-error "Expected output in stderr differs from given one"
-        echo "expected >>>"
-        cat "$EXPECT_STDERR"
-        echo "<<< expected"
-        echo "given >>>"
-        cat "$STDERR"
-        echo "<<< given"
-        BB_TEST_FAILED=$(( $BB_TEST_FAILED + 1 ))
-        return
-    fi
-    if ! $EXPECT_WORKSPACE && [[ -d "$( dirname "$TEST" )/.bb-workspace" ]]
-    then
-        bb-log-error "$TEST Failed"
-        bb-log-error "Workspace directory still exists"
+        bb-log-error "$FAIL_MESSAGE"
+        if [[ -n "$( cat "$STDERR" )" ]]
+        then
+            echo "stderr >>>"
+            cat "$STDERR"
+            echo "<<< stderr"
+        fi
+        if [[ -n "$( cat "$STDOUT" )" ]]
+        then
+            echo "stdout >>>"
+            cat "$STDOUT"
+            echo "<<< stdout"
+        fi
         BB_TEST_FAILED=$(( $BB_TEST_FAILED + 1 ))
         return
     fi
@@ -105,17 +91,22 @@ BB_LOG_FORMAT='${PREFIX} ${TIME} [${LEVEL}] ${MESSAGE}'
 BB_LOG_USE_COLOR=true
 source bashbooster.sh
 
-DUMMY_OUT="$( bb-tmp-file )"
 
 TEST="$1"
-if [[ -z "$TEST" ]]
+if [[ -f "$TEST" ]]
 then
+    run-test "$TEST"
+else
+    if [[ -d "$TEST" ]]
+    then
+        TEST_DIR="$TEST"
+    else
+        TEST_DIR='./unit tests'
+    fi
     while read -r TEST
     do
         run-test "$TEST"
-    done < <( find "./unit tests" -name "test.sh" )
-else
-    run-test "$TEST"
+    done < <( find "$TEST_DIR" -name "*test.sh" | sort )
 fi
 
 print-test-stat

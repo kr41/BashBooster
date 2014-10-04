@@ -1,2 +1,0 @@
-download/file.txt
-download/file2.txt

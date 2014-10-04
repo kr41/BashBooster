@@ -1,4 +1,0 @@
-First Event
-event-11
-event-1
-Second Event
