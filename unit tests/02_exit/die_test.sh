@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # expect: CODE=1
 # expect: STDERR='\[ERROR\] Die!'

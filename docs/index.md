@@ -30,10 +30,16 @@ Quick Start
 
 3.  Use it!
 
+Note for OS X users. OS X is shipped with an old version of Bash, so you need
+to get a new one using [Homebrew][].
+
+    :::bash
+    $ brew install bash
+
 A traditional “Hello World” script looks like this (you can find it
 in `helloworld.sh`):
 
-    #!/bin/bash
+    #!/usr/bin/env bash
 
     # Remove undesirable side effects of CDPATH variable
     unset CDPATH
@@ -70,6 +76,8 @@ If you run `vagrant provision` again, script will finish almost immediately.
 It happens, because it does not do unnecessary job: all packages installed,
 web-server configured, HTML compiled.
 
+[Homebrew]: http://brew.sh/
+
 
 Philosophy
 ----------
@@ -80,7 +88,7 @@ Ubuntu.  At the start of your project you just need a web-server installed
 and nothing more.  But requirements may be changed in future.  So you place
 `bootstrap.sh` script at the root of your project sources:
 
-    #!/bin/bash
+    #!/usr/bin/env bash
 
     apt-get update
     apt-get install nginx
@@ -103,7 +111,7 @@ which requires nothing, but only Bash, which already included into each Linux
 distribution.  So Bash Booster is such set.  The script above can look like
 this:
 
-    #!/bin/bash
+    #!/usr/bin/env bash
 
     unset CDPATH
     cd "$( dirname "${BASH_SOURCE[0]}" )"
@@ -187,7 +195,7 @@ The module contains a single function for management undefined variables
 :   The function will set up variable `VAR_NAME` to `DEFAULT_VALUE`, if variable
     is undefined.  It is used for configurable variables.  For example:
 
-        #!/bin/bash
+        #!/usr/bin/env bash
 
         unset CDPATH
         cd "$( dirname "${BASH_SOURCE[0]}" )"
@@ -204,7 +212,7 @@ The module contains a single function for management undefined variables
 
     Script `my_script.sh`:
 
-        #!/bin/bash
+        #!/usr/bin/env bash
 
         unset CDPATH
         cd "$( dirname "${BASH_SOURCE[0]}" )"
@@ -311,7 +319,7 @@ your scripts.
     created in the same directory, where caller script is stored.  To override
     default value use:
 
-        #!/bin/bash
+        #!/usr/bin/env bash
 
         unset CDPATH
         cd "$( dirname "${BASH_SOURCE[0]}" )"

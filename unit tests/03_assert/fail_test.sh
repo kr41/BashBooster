@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # expect: CODE=3
 # expect: STDERR="Assertion error 'false'"
