@@ -1,6 +1,11 @@
 Changes
 -------
 
+### 0.1beta5
+
+*   Fixed #3 OS X support
+*   Fixed #1 Ubuntu 14.04 support
+
 ### 0.1beta4
 
 *   Added properties module
