@@ -1,2 +1,0 @@
-mkdir: cannot create directory `/unexisted': Permission denied
-bb-workspace [ERROR] Failed to initialize workspace at '/unexisted/workspace'
