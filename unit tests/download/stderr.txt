@@ -1,4 +1,0 @@
-bb-download [INFO] Downloading http://example.com/file.txt
-test.sh [INFO] mock: wget
-bb-download [INFO] Downloading http://example.com/file.txt
-test.sh [INFO] mock: wget
