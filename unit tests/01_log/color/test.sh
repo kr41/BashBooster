@@ -3,8 +3,11 @@
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
+# expect: STDERR_FILE="$TEST_DIR/stderr.txt"
+
+BB_LOG_LEVEL='INFO'
 BB_LOG_USE_COLOR=true
-source ../../bashbooster.sh
+source ../../../bashbooster.sh
 
 BB_LOG_LEVEL=$BB_LOG_DEBUG
 

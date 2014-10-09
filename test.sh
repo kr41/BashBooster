@@ -40,9 +40,17 @@ run-test() {
     then
         FAIL_MESSAGE="Given stdout does not contain expected '$EXPECT_STDOUT'"
     fi
+    if [[ -n "$EXPECT_STDOUT_FILE" ]] && [[ -n "$( diff -q "$EXPECT_STDOUT_FILE" "$STDOUT" )" ]]
+    then
+        FAIL_MESSAGE="Given stdout and expected one '$EXPECT_STDOUT_FILE' are not matching"
+    fi
     if [[ -n "$EXPECT_STDERR" ]] && [[ -z "$( cat "$STDERR" | grep "$EXPECT_STDERR" )" ]]
     then
         FAIL_MESSAGE="Given stderr does not contain expected '$EXPECT_STDERR'"
+    fi
+    if [[ -n "$EXPECT_STDERR_FILE" ]] && [[ -n "$( diff -q "$EXPECT_STDERR_FILE" "$STDERR" )" ]]
+    then
+        FAIL_MESSAGE="Given stderr and expected one '$EXPECT_STDERR_FILE' are not matching"
     fi
     if ! $EXPECT_WORKSPACE && [[ -d "$TEST_DIR/.bb-workspace" ]]
     then

@@ -3,7 +3,10 @@
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-source ../../bashbooster.sh
+# expect: STDERR_FILE="$TEST_DIR/stderr.txt"
+
+BB_LOG_LEVEL='INFO'
+source ../../../bashbooster.sh
 
 first() {
     second "Argument 2"
