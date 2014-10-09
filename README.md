@@ -30,7 +30,7 @@ Quick Start
 A traditional “Hello World” script looks like this (you can find it
 in `helloworld.sh`):
 
-    #!/bin/bash
+    #!/usr/bin/env bash
 
     # Remove undesirable side effects of CDPATH variable
     unset CDPATH

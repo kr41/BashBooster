@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Remove undesirable side effects of CDPATH variable
 unset CDPATH
