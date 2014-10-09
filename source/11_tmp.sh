@@ -7,7 +7,7 @@ bb-tmp-init() {
 }
 
 bb-tmp-file() {
-    FILENAME="$BB_WORKSPACE/tmp/$( date +%s%N )"
+    FILENAME="$BB_WORKSPACE/tmp/$( date +%s )$RANDOM"
     touch "$FILENAME"
     echo "$FILENAME"
 }
