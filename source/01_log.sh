@@ -17,7 +17,7 @@ BB_LOG_LEVEL_CODE['ERROR']=$BB_LOG_ERROR
 
 bb-var BB_LOG_LEVEL $BB_LOG_INFO
 bb-var BB_LOG_PREFIX "$( basename "$0" )"
-bb-var BB_LOG_TIME 'date --rfc-3339=seconds'
+bb-var BB_LOG_TIME 'date'
 bb-var BB_LOG_FORMAT '${PREFIX} [${LEVEL}] ${MESSAGE}'
 bb-var BB_LOG_USE_COLOR false
 
