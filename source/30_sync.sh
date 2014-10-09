@@ -47,7 +47,7 @@ bb-sync-dir() {
             rm -rf "$DST_DIR/$FILE"
             bb-event-delay $EVENT
         fi
-    done < <( find )
+    done < <( find . )
 
     cd "$ORIGINAL_DIR"
 }
