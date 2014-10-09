@@ -30,6 +30,12 @@ Quick Start
 
 3.  Use it!
 
+Note for OS X users. OS X is shipped with an old version of Bash, so you need
+to get a new one using [Homebrew][].
+
+    :::bash
+    $ brew install bash
+
 A traditional “Hello World” script looks like this (you can find it
 in `helloworld.sh`):
 
@@ -69,6 +75,8 @@ documentation, and places compiled HTML into web-root directory. Just run:
 If you run `vagrant provision` again, script will finish almost immediately.
 It happens, because it does not do unnecessary job: all packages installed,
 web-server configured, HTML compiled.
+
+[Homebrew]: http://brew.sh/
 
 
 Philosophy
