@@ -29,3 +29,51 @@ bb-read-properties() {
 
     eval "$( bb-read-properties-helper "$FILENAME" "$PREFIX" )"
 }
+
+
+bb-ext-python 'bb-read-ini-helper' <<EOF
+import re
+import sys
+try:
+    from ConfigParser import SafeConfigParser as ConfigParser
+except ImportError:
+    # Python 3.x
+    from configparser import ConfigParser
+
+filename = sys.argv[1]
+section = sys.argv[2]
+prefix = sys.argv[3]
+reader = ConfigParser()
+reader.read(filename)
+
+if section == '*':
+    sections = reader.sections()
+else:
+    sections = [section]
+for section in sections:
+    for key, value in reader.items(section):
+        section = re.sub(r'[\W]', '_', section)
+        key = re.sub(r'[\W]', '_', key)
+        print(
+            '{prefix}{section}_{key}="{value}"'.format(
+                prefix=prefix,
+                section=section,
+                key=key,
+                value=value
+            )
+        )
+EOF
+
+bb-read-ini() {
+    local FILENAME="$1"
+    local SECTION="$2"
+    local PREFIX="$3"
+
+    if [[ ! -r "$FILENAME" ]]
+    then
+        bb-log-error "'$FILENAME' is not readable"
+        return 1
+    fi
+
+    eval "$( bb-read-ini-helper "$FILENAME" "$SECTION" "$PREFIX" )"
+}
