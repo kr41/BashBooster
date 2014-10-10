@@ -12,6 +12,7 @@ use Bash Booster, because it has been written using Bash only and
 [Chef]: http://www.getchef.com/
 [Vagrant]: http://vagrantup.com/
 
+
 [TOC]
 
 Quick Start
@@ -846,6 +847,15 @@ The module provides functions to work with [Yum][] package manager.
     i.e. [`bb-exit`](#bb-exit) will be called.
 
 [Yum]: http://yum.baseurl.org/
+
+
+Support
+-------
+
+Visit our [discussion group] if any support is required.  It is a good place
+for proposals too.
+
+[discussion group]: https://groups.google.com/forum/#!forum/bash-booster
 
 
 Contribution
