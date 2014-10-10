@@ -46,7 +46,7 @@ prefix = sys.argv[3]
 reader = ConfigParser()
 reader.read(filename)
 
-if section == '*':
+if not section or section == '*':
     sections = reader.sections()
 else:
     sections = [section]

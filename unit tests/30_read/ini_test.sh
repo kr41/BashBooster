@@ -18,6 +18,13 @@ bb-assert '[[ "$ini_section_dotted_key" == "another value" ]]'
 bb-assert '[[ "$ini_dotted_section_key" == "1" ]]'
 bb-assert '[[ "$ini_dotted_section_bad_key" == "2" ]]'
 
+bb-read-ini 'test.ini' '' 'i_'
+
+bb-assert '[[ "$i_section_key" == "value" ]]'
+bb-assert '[[ "$i_section_dotted_key" == "another value" ]]'
+bb-assert '[[ "$i_dotted_section_key" == "1" ]]'
+bb-assert '[[ "$i_dotted_section_bad_key" == "2" ]]'
+
 # _expect: STDERR="\[ERROR\] 'bad.file' is not readable"
 bb-assert '! bb-read-ini bad.file'
 
