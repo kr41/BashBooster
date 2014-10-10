@@ -21,7 +21,7 @@ Changes
 
 ### 0.1beta4
 
-*   Added properties module
+*   Added `properties` module
 
 
 ### 0.1beta3
