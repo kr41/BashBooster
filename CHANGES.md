@@ -1,10 +1,23 @@
 Changes
 -------
 
+### 0.2beta
+
+*   Added `bb-log-deprecated` function to `log` module
+*   Added `assert` module
+*   Added `ext` module
+*   Added `exe` module
+*   Added `read` module
+*   Added `wait` module
+*   Marked `properites` module as deprecated in favor of `read` one
+*   Rewrote unit tests
+
+
 ### 0.1beta5
 
 *   Fixed #3 OS X support
 *   Fixed #1 Ubuntu 14.04 support
+
 
 ### 0.1beta4
 
