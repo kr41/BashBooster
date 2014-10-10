@@ -96,6 +96,12 @@ bb-log-error() {
     bb-log-msg $BB_LOG_ERROR "$*"
 }
 
+bb-log-deprecated() {
+    local ALTERNATIVE="$1"
+    local CURRENT="${2-${FUNCNAME[1]}}"
+    bb-log-warning "'$CURRENT' is deprecated, use '$ALTERNATIVE' instead"
+}
+
 bb-log-callstack() {
     local FRAME=$(( ${1-"1"} ))
     local MSG="Call stack is:"

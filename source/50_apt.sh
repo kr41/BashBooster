@@ -1,7 +1,7 @@
 bb-var BB_APT_UPDATED false
 
 bb-apt?() {
-    type -t apt-get > /dev/null
+    bb-exe? apt-get
 }
 
 bb-apt-repo?() {

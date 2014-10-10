@@ -1,6 +1,0 @@
-test.sh [INFO] Handler called
-test.sh [INFO] PARAM1=p1
-test.sh [INFO] PARAM2=p2
-test.sh [INFO] Handler called
-test.sh [INFO] PARAM1=p3
-test.sh [INFO] PARAM2=p4
