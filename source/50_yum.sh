@@ -1,7 +1,7 @@
 bb-var BB_YUM_UPDATED false
 
 bb-yum?() {
-    type -t yum > /dev/null
+    bb-exe? yum
 }
 
 bb-yum-repo?() {
