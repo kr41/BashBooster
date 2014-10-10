@@ -16,7 +16,7 @@ bb-assert '[[ -z "$p_tail" ]]'
 bb-assert '[[ -z "$p_bad_key" ]]'
 bb-assert '[[ -z "$p_point_key" ]]'
 
-bb-read-properties test.properties p_
+bb-read-properties 'test.properties' 'p_'
 
 bb-assert '[[ "$p_key1" == "value1" ]]'
 bb-assert '[[ "$p_key2" == "value2" ]]'
@@ -41,7 +41,7 @@ bb-assert '[[ -z  "$tail" ]]'
 bb-assert '[[ -z  "$bad_key" ]]'
 bb-assert '[[ -z  "$point_key" ]]'
 
-bb-read-properties test.properties
+bb-read-properties 'test.properties'
 
 bb-assert '[[ "$key1" == "value1" ]]'
 bb-assert '[[ "$key2" == "value2" ]]'
