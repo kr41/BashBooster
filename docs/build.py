@@ -23,8 +23,15 @@ template = Template(filename=os.path.join(here, 'layout.mako'),
 with open(os.path.join(here, 'index.md')) as f:
     source = f.read().decode('utf-8')
 
+with open(os.path.join(here, '..', 'CHANGES.md')) as f:
+    source += '\n' + f.read().decode('utf-8')
+
+with open(os.path.join(here, '..', 'VERSION.txt')) as f:
+    version = f.read().decode('utf-8')
+
 body = markdown.convert(source)
 meta = markdown.Meta
+meta['version'] = version
 
 with open(os.path.join(here, 'www', 'index.html'), 'w') as f:
     f.write(template.render(body=body, meta=meta))

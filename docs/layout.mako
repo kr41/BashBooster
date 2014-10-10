@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>${meta['title'][0]}</title>
+    <title>${meta['title'][0]} ${meta['version']}</title>
     <meta charset="utf-8" />
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/css/layout.css" type="text/css" />
