@@ -149,6 +149,14 @@ with open(filename, 'r') as yaml_file:
 
 EOF
 
+bb-ext-python 'bb-read-yaml?' <<EOF
+try:
+    import yaml
+except ImportError:
+    exit(1)
+
+EOF
+
 bb-read-yaml() {
     local FILENAME="$1"
     local PREFIX="$2"
@@ -161,3 +169,5 @@ bb-read-yaml() {
 
     eval "$( bb-read-yaml-helper "$FILENAME" "$PREFIX" )"
 }
+
+

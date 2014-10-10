@@ -4,6 +4,7 @@ unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 BB_TEST_OK=0
+BB_TEST_SKIPPED=0
 BB_TEST_FAILED=0
 
 run-test() {
@@ -31,6 +32,13 @@ run-test() {
 
     local CODE=$?
     local FAIL_MESSAGE=""
+
+    if (( $CODE == 255 ))
+    then
+        bb-log-info "$TEST SKIPPED"
+        BB_TEST_SKIPPED=$(( $BB_TEST_SKIPPED + 1 ))
+        return
+    fi
 
     if (( $CODE != $EXPECT_CODE ))
     then
@@ -81,11 +89,15 @@ run-test() {
 }
 
 print-test-stat() {
-    if [[ $BB_TEST_OK -ne 0 ]]
+    if (( $BB_TEST_OK > 0 ))
     then
         bb-log-info "Total passed tests: $BB_TEST_OK"
     fi
-    if [[ $BB_TEST_FAILED -ne 0 ]]
+    if (( $BB_TEST_SKIPPED > 0 ))
+    then
+        bb-log-info "Total skipped tests: $BB_TEST_SKIPPED"
+    fi
+    if (( $BB_TEST_FAILED > 0 ))
     then
         bb-log-info "Total failed tests: $BB_TEST_FAILED"
         return 1

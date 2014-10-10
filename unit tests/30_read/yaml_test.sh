@@ -6,6 +6,9 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 source ../../bashbooster.sh
 
 
+bb-read-yaml? || exit 255  #  PyYaml is not installed, skip test
+
+
 bb-assert '[[ -z "$yaml_key" ]]'
 bb-assert '[[ -z "$yaml_dotted_key" ]]'
 bb-assert '[[ -z "$yaml_object_key" ]]'
