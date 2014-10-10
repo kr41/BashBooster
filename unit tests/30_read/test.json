@@ -1,0 +1,11 @@
+{
+    "key": "value",
+    "dotted.key": "another value",
+    "object": {
+        "key": 1,
+        "bad$key": 2
+    },
+    "array": [1, 2, 3],
+    "array_of_objects": [{ "key": "value" }],
+    "null": null
+}
