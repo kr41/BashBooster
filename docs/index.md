@@ -176,13 +176,18 @@ Module Description
 - [var](#var)
 - [log](#log)
 - [exit](#exit)
+- [assert](#assert)
+- [ext](#ext)
+- [exe](#exe)
 - [workspace](#workspace)
 - [template](#template)
 - [properties](#properties)
 - [event](#event)
 - [download](#download)
 - [flag](#flag)
+- [read](#read)
 - [sync](#sync)
+- [wait](#wait)
 - [apt](#apt)
 - [yum](#yum)
 
@@ -288,6 +293,14 @@ The module provides functions to log messages to `stderr`.
 **bb-log-error** MESSAGE {: #bb-log-error }
 :   Logs `MESSAGE` with `ERROR` level.
 
+**bb-log-deprecated** ALTERNATIVE [CURRENT] {: #bb-log-deprecated }
+:   Logs deprecation warning message:
+    `"'$CURRENT' is deprecated, use '$ALTERNATIVE' instead"`.
+    If optional `CURRENT` function name is not passed, it will be detected
+    using callstack.
+
+    The function is mostly useful for Bash Booster developers.
+
 
 ### exit
 
@@ -304,6 +317,49 @@ The module provides functions to log messages to `stderr`.
 
         :::bash
         bb-exit 0 "Success"
+
+### assert
+
+**bb-assert** ASSERTION [MSG] {: #bb-assert }
+:   Evaluates `ASSERTION`.  If assertion returns non-zero code, it will
+    exit script with code `3` and error message `MSG`.  If `MSG` is not
+    passed, it will use default one: `"Assertion error '$ASSERTION'"`.
+
+
+### ext
+
+Some tasks can be easily solved using other scripting languages.
+This module provides features to add extension functions using short
+non-bash scripts.  At the moment, only [Python][] is available.
+However, it is good place for [adding](#contribution) other interpreters.
+
+**bb-ext-python** NAME <BODY {: #bb-ext-python }
+:   Creates new function `NAME` using [Python][] interpreter. Example:
+
+        :::bash
+        bb-ext-python 'hello' <<EOF
+        import sys
+        print('Hello %s' % sys.argv[1])
+        EOF
+
+        hello 'World'   # Prints: Hello World
+
+[Python]: https://www.python.org
+
+
+### exe
+
+**bb-exe?** EXE
+:   Checks whether executable `EXE` is available.  It is a shortcut for
+    `type -t "$EXE" > /dev/null`.  Usage:
+
+        :::bash
+        if ! bb-exe? pip
+        then
+            GET_PIP="$( bb-download https://bootstrap.pypa.io/get-pip.py )"
+            python "$GET_PIP"
+        fi
+
 
 ### workspace
 
@@ -390,40 +446,10 @@ looking for something more powerful, you will have to install it by your own.
 
 ### properties
 
-The module allows to read properties-like configuration files,
-as [defined](http://docs.oracle.com/javase/7/docs/api/java/util/Properties.html#load(java.io.Reader))
-by Java Properties class.
+**NOTE,** the module is deprecated, use [`read`](#read){: .code } module instead.
 
-**bb-properties-read** FILE_NAME VAR_PREFIX {: #bb-properties-read }
-:   The function reads `FILE_NAME` and parses it.
-    The lines like `key=value` or `key: value` or even `key := value`
-    are converted into Bash variables.  The optional `VAR_PREFIX` is prepended
-    to the key name, so if prefix is `p_` `key=value` is converted to `p_key`
-    variable.  For example, let `my.properties` file contains:
-
-        param1 = value1
-        param2 = long string
-
-    And the script can read it as the following:
-
-        :::bash
-        bb-properties-read "my.properties" "conf_"
-        echo "$conf_param1"     # prints "value1"
-        echo "$conf_param2"     # prints "long string"
-
-    Note that characters which cannot be in a Bash variable name are replaced
-    with underscore.  So `param.sub=value` will be visible as `param_sub` variable.
-
-    If the same key appears multiple times, only the last value will be visible.
-
-    If the file doesn’t exist or cannot be read, the function prints
-    warning and does nothing.
-
-    The escapes in the key name (like `k\:e\=y`) are _not supported_,
-    the first `:` or `=` is treated as the end of the key name.
-
-    The multiline values (where the endline character is escaped by backslash)
-    are _not supported_ too.
+**bb-properties-read** FILENAME PREFIX {: #bb-properties-read }
+:   See [`bb-read-properties`](#bb-read-properties){: .code }.
 
 
 ### event
@@ -530,6 +556,137 @@ cases.
 :   Removes all flags.
 
 
+### read
+
+The module provides function to read [Java Properties][], [INI][], [JSON][],
+and [YAML][] files into Bash variables.  It uses [bb-ext-python](#bb-ext-python){: .code }
+to create read helpers.  So you need Python to be installed to use this
+module.
+
+Each reading function accepts optional `PREFIX` argument, which prepends
+result variable names.  Any illegal char (which cannot be in the Bash variable
+name) will be replaced by `_` underscore one.  So that keys like `dotted.key`
+will be imported as `dotted_key`.
+
+Complex objects like hashes and arrays (from JSON and YAML) are unfolded to the
+flat variables.  Nulls are treated as empty strings.
+
+If the file doesn’t exist or cannot be read, the function logs error and
+returns `1`.
+
+
+**bb-read-properties** FILENAME [PREFIX] {: #bb-read-properties }
+:   The function reads [Java Properties][] file `FILENAME` and parses it.
+    The lines like `key=value` or `key: value` or even `key := value`
+    are converted into Bash variables.  For example, let `my.properties`
+    file contains:
+
+        param1 = value1
+        param2 = long string
+
+    And the script can read it as the following:
+
+        :::bash
+        bb-read-properties "my.properties" "conf_"
+        echo "$conf_param1"     # prints "value1"
+        echo "$conf_param2"     # prints "long string"
+
+    If the same key appears multiple times, only the last value will be visible.
+
+    The escapes in the key name (like `k\:e\=y`) are _not supported_,
+    the first `:` or `=` is treated as the end of the key name.
+
+    The multiline values (where the endline character is escaped by backslash)
+    are _not supported_ too.
+
+**bb-read-ini** FILENAME \[SECTION\] [PREFIX] {: #bb-read-ini }
+:   The function reads [INI][] file `FILENAME` and parses it.  The optional
+    `SECTION` can be passed to read values from only this section.
+    If `SECTION` is omitted or equals to `*`, all sections will be read.
+    Each key will be prepended by its section name.
+
+        :::ini
+        [section]
+        param = value1
+
+        [section:2]
+        param = long string
+
+    And the script can read it as the following:
+
+        :::bash
+        bb-read-ini "my.ini" "*" "conf_"
+        echo "$conf_section_param"     # prints "value1"
+        echo "$conf_section_2_param"   # prints "long string"
+
+    The function will use [SafeConfigParser][], if Python 2.x is default Python
+    interpreter, or [ConfigParser][] for Python 3.x.  See their documentation for
+    details.
+
+**bb-read-json** FILENAME [PREFIX] {: #bb-read-json }
+:   The function reads [JSON][] file `FILENAME` and parses it.
+    For example, let `my.json` file contains:
+
+        :::json
+        {
+            "key": "value1",
+            "object": { "key": "value2" },
+            "array": [1, { "key": "value3" } ]
+        }
+
+    And the script can read it as the following:
+
+        :::bash
+        bb-read-json "my.json" "conf"  # NOTE, there is no "_" at the end of prefix
+        echo "$conf_key"               # prints "value1"
+        echo "$conf_object_key"        # prints "value2"
+        echo "$conf_array_len"         # prints "2", the length of array
+        echo "$conf_array_0"           # prints "1", the first element of array
+        echo "$conf_array_1_key"       # prints "value3"
+
+
+**bb-read-yaml** FILENAME [PREFIX] {: #bb-read-yaml }
+:   The function reads [YAML][] file `FILENAME` and parses it.
+    For example, let `my.yaml` file contains:
+
+        :::yaml
+        key: value1
+        object:
+            key: value2
+        array:
+            - 1
+            - { "key": "value3" }
+
+    And the script can read it as the following:
+
+        :::bash
+        bb-read-yaml "my.yaml" "conf"  # NOTE, there is no "_" at the end of prefix
+        echo "$conf_key"               # prints "value1"
+        echo "$conf_object_key"        # prints "value2"
+        echo "$conf_array_len"         # prints "2", the length of array
+        echo "$conf_array_0"           # prints "1", the first element of array
+        echo "$conf_array_1_key"       # prints "value3"
+
+    The function depends on [PyYaml][], which is not in the Python standard
+    library.  Use [`bb-read-yaml?`](#bb-read-yaml_){: .code } function to check
+    whether PyYaml is installed. For example:
+
+        :::bash
+        bb-read-yaml? || pip install pyyaml
+
+**bb-read-yaml?** {: #bb-read-yaml_ }
+:   Checks whether [PyYaml][] is installed, so that function
+    [`bb-read-yaml`](#bb-read-yaml){: .code } can be used.
+
+[Java Properties]: http://docs.oracle.com/javase/7/docs/api/java/util/Properties.html#load(java.io.Reader)
+[INI]: http://en.wikipedia.org/wiki/INI_file
+[JSON]: http://json.org/
+[YAML]: http://www.yaml.org/
+[SafeConfigParser]: https://docs.python.org/2/library/configparser.html#ConfigParser.SafeConfigParser
+[ConfigParser]: https://docs.python.org/3/library/configparser.html#configparser.ConfigParser
+[PyYaml]: http://pyyaml.org/
+
+
 ### sync
 
 The module provides functions for synchronization files and directories.
@@ -549,6 +706,20 @@ The module provides functions for synchronization files and directories.
 **bb-sync-dir** DST_DIR SRC_DIR EVENT [ARGUMENTS...] {: #bb-sync-dir }
 :   Synchronizes contents of `DST_DIR` with `SRC_DIR`.  If `DST_DIR` is changed
     it will [delay](#bb-event-delay) `EVENT` with `ARGUMENTS`.
+
+
+### wait
+
+**bb-wait** CONDITION [TIMEOUT]
+:   Freezes scripts until `CONDITION` is evaluated as `true`, i.e. expression
+    returns non-zero status code.  Example:
+
+        :::bash
+        LOG="$( bb-tmp-file )"
+        start-some-server 2> "$LOG"
+        bb-wait 'cat "$LOG" | grep "Server ready"'
+        # Do something useful using that server
+
 
 
 ### apt
