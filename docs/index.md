@@ -18,6 +18,8 @@ use Bash Booster, because it has been written using Bash only and
 Quick Start
 -----------
 
+Download [ready to use library file][] or...
+
 1.  Get the source code:
 
         :::bash
@@ -77,6 +79,7 @@ If you run `vagrant provision` again, script will finish almost immediately.
 It happens, because it does not do unnecessary job: all packages installed,
 web-server configured, HTML compiled.
 
+[ready to use library file]: https://bitbucket.org/kr41/bash-booster/downloads
 [Homebrew]: http://brew.sh/
 
 
@@ -245,7 +248,7 @@ The module provides functions to log messages to `stderr`.
 
 **BB_LOG_TIME** {: #BB_LOG_TIME }
 :   Command to get date and time of log message, default is
-    `date --rfc-3339=seconds`.
+    `date +"%Y-%m-%d %H:%M:%S"`.
 
 **BB_LOG_FORMAT** {: #BB_LOG_FORMAT }
 :   Log string format, default is `'${PREFIX} [${LEVEL}] ${MESSAGE}'`.
@@ -449,7 +452,7 @@ looking for something more powerful, you will have to install it by your own.
 
 **NOTE,** the module is deprecated, use [`read`](#read){: .code } module instead.
 
-**bb-properties-read** FILENAME PREFIX {: #bb-properties-read }
+**bb-properties-read** FILENAME [PREFIX] {: #bb-properties-read }
 :   See [`bb-read-properties`](#bb-read-properties){: .code }.
 
 
@@ -461,18 +464,18 @@ sources from repository, rebuilds one, and reloads application server:
 
     :::bash
 
-    reload-server-handler() {
+    bb-event-on reload-server on-reload-server
+    on-reload-server() {
         bb-log-info "Reloading server"
         # ...
     }
-    rebuild-app-handler() {
+
+    bb-event-on rebuild-app on-rebuild-app
+    on-rebuild-app() {
         bb-log-info "Rebuilding application"
         # ...
         bb-event-delay reload-server
     }
-
-    bb-event-on reload-server reload-server-handler
-    bb-event-on rebuild-app rebuild-app-handler
 
     cd "$PATH_TO_REPOSITORY"
     git pull
@@ -503,14 +506,15 @@ just before script termination.
 **bb-event-delay** EVENT [ARGUMENTS...] {: #bb-event-delay }
 :   Delays `EVENT` to the end of script.  It will call all `EVENT` handlers
     with `ARGUMENTS` during the cleanup process.  Delayed event handlers can
-    call this function too.
+    call this function too.  If event is delayed twice with the same arguments,
+    its handler will be called only once.
 
 
 ### download
 
 The module manages download directory and its contents.
 
-**bb-download** URL TARGET {: #bb-download }
+**bb-download** URL [TARGET] {: #bb-download }
 :   Downloads file from `URL` and writes it to `$BB_WORKSPACE/download/$TARGET`.
     The second argument `TARGET` can be omitted.  In that case it will be
     detected using `basename "$URL"` command.  If `TARGET` file already exists,
@@ -560,7 +564,7 @@ cases.
 ### read
 
 The module provides function to read [Java Properties][], [INI][], [JSON][],
-and [YAML][] files into Bash variables.  It uses [bb-ext-python](#bb-ext-python){: .code }
+and [YAML][] files into Bash variables.  It uses [`bb-ext-python`](#bb-ext-python){: .code }
 to create read helpers.  So you need Python to be installed to use this
 module.
 
@@ -574,6 +578,11 @@ flat variables.  Nulls are treated as empty strings.
 
 If the file doesn’t exist or cannot be read, the function logs error and
 returns `1`.
+
+Each reading function has its helper one, which just prints variables to
+stdout.  Such helper functions ends with `-helper` postfix. For examle,
+`bb-read-json-helper` is a helper for [`bb-read-json`](#bb-read-json){: .code }.
+You can use these helpers for debugging.
 
 
 **bb-read-properties** FILENAME [PREFIX] {: #bb-read-properties }
@@ -691,8 +700,10 @@ returns `1`.
 ### sync
 
 The module provides functions for synchronization files and directories.
+The main goal is delaying [events](#event), if source and destination files
+are different.  That is why it does not use [rsync][] command.
 
-**bb-sync-file** DST_FILE SRC_FILE EVENT [ARGUMENTS...] {: #bb-sync-file }
+**bb-sync-file** DST_FILE SRC_FILE [EVENT [ARGUMENTS...]] {: #bb-sync-file }
 :   Synchronizes contents of `DST_FILE` with `SRC_FILE`.  If `DST_FILE` is changed
     it will [delay](#bb-event-delay) `EVENT` with `ARGUMENTS`.  Usage:
 
@@ -704,9 +715,11 @@ The module provides functions for synchronization files and directories.
     Each time `my_site.conf` is changed, the script above will update Nginx
     configuration and restart it.
 
-**bb-sync-dir** DST_DIR SRC_DIR EVENT [ARGUMENTS...] {: #bb-sync-dir }
+**bb-sync-dir** DST_DIR SRC_DIR [EVENT [ARGUMENTS...]] {: #bb-sync-dir }
 :   Synchronizes contents of `DST_DIR` with `SRC_DIR`.  If `DST_DIR` is changed
     it will [delay](#bb-event-delay) `EVENT` with `ARGUMENTS`.
+
+[rsync]: http://rsync.samba.org/
 
 
 ### wait
@@ -721,6 +734,9 @@ The module provides functions for synchronization files and directories.
         bb-wait 'cat "$LOG" | grep "Server ready"'
         # Do something useful using that server
 
+    If the optional `TIMEOUT` is not passed, the function will wait for
+    `CONDITION` forever.  If `TIMEOUT` has been specified and reached during
+    the command execution, it will logs error and return `1`.
 
 
 ### apt
