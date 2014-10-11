@@ -3,6 +3,7 @@ Changes
 
 ### 0.2beta
 
+*   Changed license to GNU GPL version 3
 *   Added `bb-log-deprecated` function to `log` module
 *   Added `assert` module
 *   Added `ext` module

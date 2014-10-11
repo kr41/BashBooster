@@ -878,5 +878,8 @@ char in the name.  It helps to catch stupid errors with unquoted variables.
 License
 -------
 
-The code is licensed under the terms of BSD 2-Clause license.  The full text of
-the license can be found at the root of the sources.
+The code is licensed under the terms of GNU GPL version 3 license.
+The full text of the license can be found at the root of the sources
+or at [GNU website][].
+
+[GNU website]: http://www.gnu.org/licenses/licenses.html
