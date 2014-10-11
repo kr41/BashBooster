@@ -11,6 +11,7 @@ use Bash Booster, because it has been written using Bash only and
 [Chef]: http://www.getchef.com/
 [Vagrant]: http://vagrantup.com/
 
+
 Quick Start
 -----------
 
@@ -66,3 +67,12 @@ documentation, and places compiled HTML into web-root directory. Just run:
 If you run `vagrant provision` again, script will finish almost immediately.
 It happens, because it does not do unnecessary job: all packages installed,
 web-server configured, HTML compiled.
+
+
+Support
+-------
+
+Visit our [discussion group] if any support is required.  It is a good place
+for proposals too.
+
+[discussion group]: https://groups.google.com/forum/#!forum/bash-booster
