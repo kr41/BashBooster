@@ -6,6 +6,7 @@
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/css/layout.css" type="text/css" />
     <link rel="stylesheet" href="/css/zenburn.css" type="text/css" />
+    <meta name="wot-verification" content="2d57c12783dbbdb80189"/>
 </head>
 <body>
     ${body}
