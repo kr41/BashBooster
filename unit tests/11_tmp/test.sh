@@ -3,7 +3,7 @@
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-source ../../bashbooster.sh
+source "$BASHBOOSTER"
 
 FILE="$( bb-tmp-file )"
 bb-assert '[[ -f "$FILE" ]]'

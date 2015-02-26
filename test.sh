@@ -3,6 +3,8 @@
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
+BASHBOOSTER="$( pwd )/dist/bashbooster.sh"
+
 BB_TEST_OK=0
 BB_TEST_SKIPPED=0
 BB_TEST_FAILED=0
@@ -28,7 +30,7 @@ run-test() {
     local STDOUT="$( bb-tmp-file )"
     local STDERR="$( bb-tmp-file )"
     chmod a+x "$TEST"
-    BB_LOG_LEVEL='debug' "$TEST" > "$STDOUT" 2> "$STDERR"
+    BB_LOG_LEVEL='debug' BASHBOOSTER="$BASHBOOSTER" "$TEST" > "$STDOUT" 2> "$STDERR"
 
     local CODE=$?
     local FAIL_MESSAGE=""
@@ -109,7 +111,7 @@ print-test-stat() {
 BB_WORKSPACE="test.bb-workspace"
 BB_LOG_FORMAT='${PREFIX} ${TIME} [${LEVEL}] ${MESSAGE}'
 BB_LOG_USE_COLOR=true
-source bashbooster.sh
+source "$BASHBOOSTER"
 
 
 TEST="$1"

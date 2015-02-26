@@ -3,7 +3,7 @@
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-source ../../bashbooster.sh
+source "$BASHBOOSTER"
 
 bb-assert '[[ -d "$BB_WORKSPACE" ]]'
 bb-assert '[[ -d ".bb-workspace" ]]'

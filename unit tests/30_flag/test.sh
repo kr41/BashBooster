@@ -3,7 +3,7 @@
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-source ../../bashbooster.sh
+source "$BASHBOOSTER"
 
 bb-flag-clean
 bb-assert "! bb-flag? 'flag'"

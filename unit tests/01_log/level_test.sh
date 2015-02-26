@@ -3,7 +3,7 @@
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-source ../../bashbooster.sh
+source "$BASHBOOSTER"
 
 BB_LOG_LEVEL=1
 bb-assert '[[ "$( bb-log-level-name )" == "DEBUG" ]]'

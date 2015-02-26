@@ -3,7 +3,7 @@
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-source ../../bashbooster.sh
+source "$BASHBOOSTER"
 
 SRC_DIR="$( bb-tmp-dir )"
 DST_DIR="$BB_WORKSPACE/testdir"

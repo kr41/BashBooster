@@ -6,7 +6,7 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 # expect: STDERR_FILE="$TEST_DIR/stderr.txt"
 
 BB_LOG_LEVEL='INFO'
-source ../../../bashbooster.sh
+source "$BASHBOOSTER"
 
 first() {
     second "Argument 2"

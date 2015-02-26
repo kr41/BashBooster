@@ -3,7 +3,7 @@
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-source ../../bashbooster.sh
+source "$BASHBOOSTER"
 
 # expect: STDERR="\[WARNING\] 'bb-properties-read' is deprecated, use 'bb-read-properties' instead"
 
