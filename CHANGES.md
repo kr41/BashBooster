@@ -1,6 +1,11 @@
 Changes
 -------
 
+### 0.3dev
+
+*   Added `task` module
+
+
 ### 0.2beta
 
 *   Changed license to GNU GPL version 3
