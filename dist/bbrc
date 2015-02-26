@@ -1,0 +1,5 @@
+# System-wide Bash Booster configuration
+
+BB_WORKSPACE='.bb-workspace'
+BB_LOG_FORMAT='${PREFIX} ${TIME} [${LEVEL}] ${MESSAGE}'
+BB_LOG_USE_COLOR=true

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+BB_RUNDIR="$( pwd )"
+BB_TASKDIR="$BB_RUNDIR"
+
+while [[ ! -f "$BB_TASKDIR/bb-tasks.sh" && "$BB_TASKDIR" != "/" ]]
+do
+    BB_TASKDIR="$( dirname "$BB_TASKDIR" )"
+done
+
+if [[ ! -f "$BB_TASKDIR/bb-tasks.sh" ]]
+then
+    echo "No tasks file 'bb-tasks.sh' found in the current location" >&2
+    exit 1
+fi
+
+cd "$BB_TASKDIR"
+
+source "/etc/bashbooster/bbrc"
+[[ -f "~/.config/bbrc" ]] && source "~/.config/bbrc"
+[[ -f "~/.bbrc" ]] && source "~/.bbrc"
+[[ -f "./.bbrc" ]] && source "./.bbrc"
+source "/usr/local/lib/bashbooster/bashbooster.sh"
+source "bb-tasks.sh"
+
+bb-task-run "$@"
