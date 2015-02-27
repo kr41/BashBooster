@@ -37,6 +37,6 @@ bb-task-depends() {
             fi
             bb-log-info "Task '$NAME' OK"
         fi
-        echo "$NAME" >> "$BB_TASK_CONTEXT"
+        echo "$NAME" >> "$CONTEXT"
     done
 }
