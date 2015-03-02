@@ -4,6 +4,7 @@ Changes
 ### 0.3dev
 
 *   Added `task` module
+*   Fixed `bb-template` function
 
 
 ### 0.2beta (2014-10-11)

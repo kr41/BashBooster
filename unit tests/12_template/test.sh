@@ -9,7 +9,9 @@ FOO=1
 BAR='Some Value'
 BAZ='One Two Three'
 
-RESULT="$( bb-template "template.bbt" )"
+PWD="$( pwd )"
+
+RESULT="$( bb-template "$PWD/template.bbt" )"
 EXPECT="$( cat "expect.txt" )"
 
 bb-assert '[[ "$RESULT" == "$EXPECT" ]]'
