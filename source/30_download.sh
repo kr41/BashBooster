@@ -14,7 +14,7 @@ bb-download() {
     TARGET="$BB_DOWNLOAD_DIR/$TARGET"
 
     bb-log-info "Downloading $URL"
-    wget -O "$TARGET" -nc "$URL"
+    wget -nv -O "$TARGET" -nc "$URL"
     echo "$TARGET"
 }
 
