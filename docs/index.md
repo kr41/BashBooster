@@ -192,6 +192,7 @@ Module Description
 - [read](#read)
 - [sync](#sync)
 - [wait](#wait)
+- [task](#task)
 - [apt](#apt)
 - [yum](#yum)
 
@@ -737,6 +738,65 @@ are different.  That is why it does not use [rsync][] command.
     If the optional `TIMEOUT` is not passed, the function will wait for
     `CONDITION` forever.  If `TIMEOUT` has been specified and reached during
     the command execution, it will logs error and return `1`.
+
+
+### task
+
+The module provides functions to define and run tasks.  Each task can define
+its dependencies (other tasks), that will run within it.  Each task will be
+executed only once within the call of [`bb-task-run`](#bb-task-run){: .code },
+even if it is included by several tasks as dependency.  If any of task exits
+with non-zero code (i.e. fails), [`bb-exit`](#bb-exit){: .code } function will
+be called with the same code.
+
+Example:
+
+    :::bash
+    bb-task-def 'install-build-tools'
+    install-build-tools() {
+        # ...
+    }
+
+    bb-task-def 'build-frontend'
+    build-frontend() {
+        bb-task-depends 'install-build-tools'
+    }
+
+    bb-task-def 'build-backend'
+    build-backend() {
+        bb-task-depends 'install-build-tools'
+    }
+
+    bb-task-def 'build-app'
+    build-app() {
+        bb-task-depends 'build-backend' 'build-frontend'
+    }
+
+    # The following code will execute tasks:
+    # * install-build-tools (only once)
+    # * build-backend
+    # * build-frontend
+    # * build-app
+    bb-task-run 'build-app'
+
+**bb-task-def** TASK_NAME [FUNC_NAME] {: #bb-task-def }
+:   Defines task `TASK_NAME` as function `FUNC_NAME`.  If `FUNC_NAME` is omitted,
+    `TASK_NAME` will be used instead.  Example:
+
+        :::bash
+        bb-task-def 'test' 'run-test-suite'
+        run-test-suite() {
+            # Function name differ from task name to avoid conflict with
+            # built-in `test` function.
+        }
+
+
+**bb-task-depends** TASK [TASK...] {: #bb-task-depends }
+:   Runs specified tasks within the current task.  This function can be called
+    only within another task.
+
+**bb-task-run**  TASK [TASK...] {: #bb-task-run }
+:   Runs specified tasks.
 
 
 ### apt
