@@ -1,4 +1,5 @@
 BB_TASK_CONTEXT_ERROR=30
+BB_TASK_NOT_DEFINED_ERROR=31
 
 declare -A BB_TASK_FUNCS
 declare -a BB_TASK_CONTEXT
@@ -19,6 +20,7 @@ bb-task-depends() {
     local CONTEXT="${BB_TASK_CONTEXT[-1]}"
     local CODE
     local NAME
+    local TASK
 
     if [[ ! -f "$CONTEXT" ]]
     then
@@ -29,7 +31,12 @@ bb-task-depends() {
         if [[ -z $( cat "$CONTEXT" | grep "^$NAME$" ) ]]
         then
             bb-log-info "Running task '$NAME'..."
-            ${BB_TASK_FUNCS[$NAME]}
+            TASK=${BB_TASK_FUNCS[$NAME]}
+            if [[ -z "$TASK" ]]
+            then
+                bb-exit $BB_TASK_NOT_DEFINED_ERROR "Task '$NAME' is not defined"
+            fi
+            $TASK
             CODE=$?
             if (( $CODE != 0 ))
             then
