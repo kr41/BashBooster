@@ -6,7 +6,7 @@ Changes
 *   Added `task` module
 
 
-### 0.2beta
+### 0.2beta (2014-10-11)
 
 *   Changed license to GNU GPL version 3
 *   Added `bb-log-deprecated` function to `log` module
@@ -19,18 +19,18 @@ Changes
 *   Rewrote unit tests
 
 
-### 0.1beta5
+### 0.1beta5 (2014-10-10)
 
-*   Fixed #3 OS X support
+*   Fixed #3 OS X support (Mike Kolganov)
 *   Fixed #1 Ubuntu 14.04 support
 
 
-### 0.1beta4
+### 0.1beta4 (2014-09-08)
 
-*   Added `properties` module
+*   Added `properties` module (Denis Nelubin)
 
 
-### 0.1beta3
+### 0.1beta3 (2014-08-20)
 
 *   When package is installed by function `bb-apt-install` or `bb-yum-install`,
     an event `bb-package-installed` will be fired with the package name as
@@ -40,11 +40,11 @@ Changes
     will terminate script with error.
 
 
-### 0.1beta2
+### 0.1beta2 (2014-07-23)
 
 *   Added ability to pass arguments to event handlers
 
 
-### 0.1beta
+### 0.1beta (2014-07-16)
 
 *   Intial release
