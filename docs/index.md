@@ -610,7 +610,7 @@ You can use these helpers for debugging.
     The multiline values (where the endline character is escaped by backslash)
     are _not supported_ too.
 
-**bb-read-ini** FILENAME \[SECTION\] [PREFIX] {: #bb-read-ini }
+**bb-read-ini** FILENAME [SECTION [PREFIX]] {: #bb-read-ini }
 :   The function reads [INI][] file `FILENAME` and parses it.  The optional
     `SECTION` can be passed to read values from only this section.
     If `SECTION` is omitted or equals to `*`, all sections will be read.
