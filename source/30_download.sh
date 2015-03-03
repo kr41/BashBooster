@@ -15,6 +15,13 @@ bb-download() {
 
     bb-log-info "Downloading $URL"
     wget -nv -O "$TARGET" -nc "$URL"
+    local CODE=$?
+    if (( $CODE != 0 ))
+    then
+        bb-log-error "Unable to get $URL"
+        rm "$TARGET"
+        return $CODE
+    fi
     echo "$TARGET"
 }
 
