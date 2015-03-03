@@ -1,6 +1,3 @@
-BB_TASK_CONTEXT_ERROR=30
-BB_TASK_NOT_DEFINED_ERROR=31
-
 declare -A BB_TASK_FUNCS
 declare -a BB_TASK_CONTEXT
 
@@ -24,7 +21,7 @@ bb-task-depends() {
 
     if [[ ! -f "$CONTEXT" ]]
     then
-        bb-exit $BB_TASK_CONTEXT_ERROR "Cannot run tasks. Bad context"
+        bb-exit $BB_ERROR_TASK_BAD_CONTEXT "Cannot run tasks. Bad context"
     fi
     for NAME in "$@"
     do
@@ -34,7 +31,7 @@ bb-task-depends() {
             TASK=${BB_TASK_FUNCS[$NAME]}
             if [[ -z "$TASK" ]]
             then
-                bb-exit $BB_TASK_NOT_DEFINED_ERROR "Task '$NAME' is not defined"
+                bb-exit $BB_ERROR_TASK_UNDEFINED "Task '$NAME' is not defined"
             fi
             $TASK
             CODE=$?

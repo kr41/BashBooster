@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# expect: CODE=31
+# expect: CODE=$BB_ERROR_TASK_UNDEFINED
 # expect: STDERR="\[ERROR\] Task 'task1' is not defined"
 
 unset CDPATH

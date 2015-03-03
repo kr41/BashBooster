@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# expect: CODE=30
+# expect: CODE=$BB_ERROR_TASK_BAD_CONTEXT
 # expect: STDERR="\[ERROR\] Cannot run tasks. Bad context"
 
 unset CDPATH

@@ -7,7 +7,7 @@ source "$BASHBOOSTER"
 
 BB_EVENT_MAX_DEPTH=5
 
-# expect: CODE=20
+# expect: CODE=$BB_ERROR_EVENT_MAX_DEPTH_REACHED
 # expect: STDOUT="Event processed"
 
 event-handler() {

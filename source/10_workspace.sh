@@ -1,13 +1,12 @@
 bb-var BB_WORKSPACE ".bb-workspace"
 
-BB_WORKSPACE_ERROR=10
-
 bb-workspace-init() {
     bb-log-debug "Initializing workspace at '$BB_WORKSPACE'"
     if [[ ! -d "$BB_WORKSPACE" ]]
     then
-        mkdir -p "$BB_WORKSPACE" || \
-        bb-exit $BB_WORKSPACE_ERROR "Failed to initialize workspace at '$BB_WORKSPACE'"
+        mkdir -p "$BB_WORKSPACE" || bb-exit \
+            $BB_ERROR_WORKSPACE_CREATION_FAILED \
+            "Failed to initialize workspace at '$BB_WORKSPACE'"
     fi
 
     # Ensure BB_WORKSPACE stores absolute path

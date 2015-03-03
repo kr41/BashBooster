@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# expect: CODE=10
+# expect: CODE=$BB_ERROR_WORKSPACE_CREATION_FAILED
 
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
