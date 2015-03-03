@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # expect: CODE=$BB_ERROR_TASK_UNDEFINED
-# expect: STDERR="\[ERROR\] Task 'task1' is not defined"
+# expect: STDERR="\[ERROR\] Undefined task 'task1'"
 
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"

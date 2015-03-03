@@ -31,7 +31,7 @@ bb-task-depends() {
             TASK=${BB_TASK_FUNCS[$NAME]}
             if [[ -z "$TASK" ]]
             then
-                bb-exit $BB_ERROR_TASK_UNDEFINED "Task '$NAME' is not defined"
+                bb-exit $BB_ERROR_TASK_UNDEFINED "Undefined task '$NAME'"
             fi
             $TASK
             CODE=$?
