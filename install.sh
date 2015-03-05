@@ -21,7 +21,7 @@ BIN_PATH='/usr/local/bin'
 [[ ! -d "$LIB_PATH" ]] && mkdir "$LIB_PATH"
 
 cp dist/bashbooster.sh "$LIB_PATH"
-cp dist/bbrc "$CONF_PATH/bashbooster"
+cp dist/bbrc "$CONF_PATH/bbrc"
 cp dist/bb-task "$BIN_PATH"
 
 chmod a+x "$BIN_PATH/bb-task"
