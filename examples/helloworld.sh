@@ -6,7 +6,7 @@ unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 # Initialize Bash Booster
-source build/bashbooster.sh
+source ../build/bashbooster.sh
 
 # Log message with log level "INFO"
 bb-log-info "Hello World"
