@@ -22,10 +22,6 @@ run-test() {
     then
         local EXPECT_CODE=0
     fi
-    if [[ -z "$EXPECT_WORKSPACE" ]]
-    then
-        local EXPECT_WORKSPACE=false
-    fi
 
     local STDOUT="$( bb-tmp-file )"
     local STDERR="$( bb-tmp-file )"
@@ -62,9 +58,10 @@ run-test() {
     then
         FAIL_MESSAGE="Given stderr and expected one '$EXPECT_STDERR_FILE' are not matching"
     fi
-    if ! $EXPECT_WORKSPACE && [[ -d "$TEST_DIR/.bb-workspace" ]]
+    if [[ -d "$TEST_DIR/.bb-workspace" ]]
     then
         FAIL_MESSAGE="Workspace directory still exists"
+        rm -rf "$TEST_DIR/.bb-workspace"
     fi
 
     if [[ -n "$FAIL_MESSAGE" ]]
