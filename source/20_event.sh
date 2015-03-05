@@ -1,5 +1,4 @@
 declare -A BB_EVENT_DEPTH
-BB_EVENT_DELAY_DEPTH=0
 BB_EVENT_MAX_DEPTH=1000
 
 bb-event-init() {
