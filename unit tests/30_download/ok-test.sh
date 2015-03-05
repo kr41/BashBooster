@@ -5,20 +5,13 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 source "$BASHBOOSTER"
 
-# expect: STDERR='mock: wget'
+FILE1="$( bb-download 'http://bashbooster.net/index.html' )"
+bb-exit-on-error "Failed"
+bb-assert 'cat "$FILE1" | grep -q "Bash Booster"'
 
-# Mock
-wget() {
-    bb-log-info "mock: wget"
-}
-
-FILE1="$( bb-download 'http://example.com/file.txt' )"
-FILE2="$( bb-download 'http://example.com/file.txt' 'file2.txt' )"
-
-FILE1="$( echo $FILE1 | awk "{ print substr(\$0, length(\"$BB_WORKSPACE\") + 2) }" )"
-FILE2="$( echo $FILE2 | awk "{ print substr(\$0, length(\"$BB_WORKSPACE\") + 2) }" )"
-
-bb-assert '[[ "$FILE1" == "download/file.txt" ]]'
-bb-assert '[[ "$FILE2" == "download/file2.txt" ]]'
+FILE2="$( bb-download 'http://bashbooster.net/index.html' )"
+bb-exit-on-error "Failed"
+bb-assert 'cat "$FILE2" | grep -q "Bash Booster"'
+bb-assert '[[ "$FILE1" == "$FILE2" ]]'
 
 bb-download-clean

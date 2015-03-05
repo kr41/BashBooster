@@ -5,10 +5,11 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 source "$BASHBOOSTER"
 
-# expect: STDERR='\[ERROR\] Unable to get http://localhost:666/file.txt'
+# expect: STDERR='\[ERROR\] An error occurs while downloading http://localhost:666/file.txt'
 
-FILE1="$( bb-download 'http://localhost:666/file.txt' )"
+FILE="$( bb-download 'http://localhost:666/file.txt' )"
 
-bb-assert '[[ ! -f "$FILE1" ]]'
+bb-assert '[[ -f "$FILE" ]]'
+bb-assert '[[ "$( cat "$FILE" )" == "" ]]'
 
 bb-download-clean

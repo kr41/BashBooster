@@ -1,3 +1,5 @@
+bb-var BB_DOWNLOAD_WGET_OPTIONS '-nv'
+
 bb-download-init() {
     BB_DOWNLOAD_DIR="$BB_WORKSPACE/download"
 }
@@ -11,17 +13,21 @@ bb-download() {
 
     local URL="$1"
     local TARGET="${2-$( basename "$URL" )}"
+    local FORCE="${3-false}"
     TARGET="$BB_DOWNLOAD_DIR/$TARGET"
+    echo "$TARGET"
+    if [[ -f "$TARGET" ]] && ! $FORCE
+    then
+        return 0
+    fi
 
     bb-log-info "Downloading $URL"
-    wget -nv -O "$TARGET" -nc "$URL"
+    wget $BB_DOWNLOAD_WGET_OPTIONS -O "$TARGET" "$URL"
     if bb-error?
     then
-        bb-log-error "Unable to get $URL"
-        rm "$TARGET"
+        bb-log-error "An error occurs while downloading $URL"
         return $BB_ERROR
     fi
-    echo "$TARGET"
 }
 
 bb-download-clean() {
