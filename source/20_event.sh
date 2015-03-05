@@ -65,13 +65,13 @@ bb-event-delay() {
 
 bb-event-cleanup() {
     BB_EVENT_DEPTH["__delay__"]=$(( ${BB_EVENT_DEPTH["__delay__"]} + 1 ))
+    local EVENTS="$BB_EVENT_DIR/events"
     if (( ${BB_EVENT_DEPTH["__delay__"]} >= $BB_EVENT_MAX_DEPTH ))
     then
-        bb-exit \
-            $BB_ERROR_EVENT_MAX_DEPTH_REACHED \
-            "Max recursion depth has been reached on processing event '__delay__'"
+        bb-error "Max recursion depth has been reached on processing event '__delay__'"
+        rm "$EVENTS"
+        return $BB_ERROR_EVENT_MAX_DEPTH_REACHED
     fi
-    local EVENTS="$BB_EVENT_DIR/events"
     if [[ -f "$EVENTS" ]]
     then
         local EVENT_LIST="$( bb-tmp-file )"
@@ -86,6 +86,10 @@ bb-event-cleanup() {
         if [[ -f "$EVENTS" ]]
         then
             bb-event-cleanup
+            if bb-error?
+            then
+                return $BB_ERROR
+            fi
         fi
     fi
     BB_EVENT_DEPTH["__delay__"]=$(( ${BB_EVENT_DEPTH["__delay__"]} - 1 ))
