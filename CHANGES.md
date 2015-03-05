@@ -4,7 +4,11 @@ Changes
 ### 0.3dev
 
 *   Added `task` module
+*   Added helper functions `bb-error?` and `bb-exit-on-error`
 *   Fixed `bb-template` function
+*   Fixed cleanup process
+*   Fixed behavior on shared workspace.  Several scripts can use one workspace
+    at the same time.
 
 
 ### 0.2beta (2014-10-11)
