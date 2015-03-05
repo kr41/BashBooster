@@ -6,7 +6,7 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 BB_LOG_LEVEL='DEBUG'
 BB_LOG_USE_COLOR=true
 BB_WORKSPACE='/var/bb-workspace'
-source ../dist/bashbooster.sh
+source ../build/bashbooster.sh
 
 
 ###############################################################################

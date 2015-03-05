@@ -3,10 +3,8 @@
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-./build.sh
-
 BB_LOG_USE_COLOR=true
-source dist/bashbooster.sh
+source bashbooster.sh
 
 if (( $UID != 0 ))
 then
@@ -20,8 +18,8 @@ BIN_PATH='/usr/local/bin'
 [[ ! -d "$CONF_PATH" ]] && mkdir "$CONF_PATH"
 [[ ! -d "$LIB_PATH" ]] && mkdir "$LIB_PATH"
 
-cp dist/bashbooster.sh "$LIB_PATH"
-cp dist/bbrc "$CONF_PATH/bbrc"
-cp dist/bb-task "$BIN_PATH"
+cp bashbooster.sh "$LIB_PATH"
+cp bbrc "$CONF_PATH"
+cp bb-task "$BIN_PATH"
 
 chmod a+x "$BIN_PATH/bb-task"

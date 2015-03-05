@@ -3,7 +3,7 @@
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-OUTPUT="dist/bashbooster.sh"
+OUTPUT="build/bashbooster.sh"
 > $OUTPUT
 
 TITLE="Bash Booster $( cat VERSION.txt ) <http://www.bashbooster.net>"

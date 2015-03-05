@@ -3,7 +3,7 @@
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-BASHBOOSTER="$( pwd )/dist/bashbooster.sh"
+BASHBOOSTER="$( pwd )/build/bashbooster.sh"
 
 BB_TEST_OK=0
 BB_TEST_SKIPPED=0
