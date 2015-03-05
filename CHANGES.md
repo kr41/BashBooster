@@ -6,6 +6,7 @@ Changes
 *   Added `task` module
 *   Added helper functions `bb-error?` and `bb-exit-on-error`
 *   Fixed `bb-template` function
+*   Fixed `bb-download` function behavior when error occurs
 *   Fixed cleanup process
 *   Fixed behavior on shared workspace.  Several scripts can use one workspace
     at the same time.
