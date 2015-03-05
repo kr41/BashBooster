@@ -1,23 +1,22 @@
+BB_TMP=''
+
 bb-tmp-init() {
-    if [[ -d "$BB_WORKSPACE/tmp" ]]
-    then
-        rm -rf "$BB_WORKSPACE/tmp/"
-    fi
-    mkdir "$BB_WORKSPACE/tmp"
+    BB_TMP="$BB_WORKSPACE/tmp_$( bb-unique )"
+    mkdir "$BB_TMP"
 }
 
 bb-tmp-file() {
-    FILENAME="$BB_WORKSPACE/tmp/$( bb-unique )"
+    local FILENAME="$BB_TMP/$( bb-unique )"
     touch "$FILENAME"
     echo "$FILENAME"
 }
 
 bb-tmp-dir() {
-    DIRNAME="$BB_WORKSPACE/tmp/$( bb-unique )"
+    local DIRNAME="$BB_TMP/$( bb-unique )"
     mkdir -p "$DIRNAME"
     echo "$DIRNAME"
 }
 
 bb-tmp-cleanup() {
-    rm -rf "$BB_WORKSPACE/tmp"
+    rm -rf "$BB_TMP"
 }

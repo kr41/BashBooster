@@ -4,8 +4,6 @@ bb-event-init
 bb-download-init
 bb-flag-init
 
-bb-workspace-lock
-
 
 bb-cleanup-update-exit-code() {
     if bb-error? && (( $BB_EXIT_CODE == 0 ))
@@ -17,7 +15,6 @@ bb-cleanup-update-exit-code() {
 bb-cleanup() {
     bb-cleanup-update-exit-code
 
-    bb-workspace-unlock             ; bb-cleanup-update-exit-code
     bb-event-fire bb-cleanup        ; bb-cleanup-update-exit-code
 
     bb-flag-cleanup                 ; bb-cleanup-update-exit-code
