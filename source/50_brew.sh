@@ -4,14 +4,14 @@ bb-brew?() {
     bb-exe? brew
 }
 
-bb-brew-tap?() {
+bb-brew-repo?() {
     local REPO=$1
     brew tap | grep -q "$REPO"
 }
 
 bb-brew-package?() {
     local PACKAGE=$1
-    [ -n "$(brew ls --versions "$PACKAGE")" ]
+    [ -n "$( brew ls --versions "$PACKAGE" )" ]
 }
 
 bb-brew-update() {
@@ -29,13 +29,8 @@ bb-brew-install() {
             bb-brew-update
             bb-log-info "Installing package '$PACKAGE'"
             brew install "$PACKAGE"
-            local STATUS=$?
-            if (( $STATUS == 0 ))
-            then
-                bb-event-fire "bb-package-installed" "$PACKAGE"
-            else
-                bb-exit $STATUS "Failed to install package '$PACKAGE'"
-            fi
+            bb-exit-on-error "Failed to install package '$PACKAGE'"
+            bb-event-fire "bb-package-installed" "$PACKAGE"
         fi
     done
 }
