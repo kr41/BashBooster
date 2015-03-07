@@ -3,13 +3,13 @@ Changes
 
 ### 0.3dev
 
-*   Added `task` module
+*   Added `task` module and task runner utility
 *   Added helper functions `bb-error?` and `bb-exit-on-error`
+*   Updated `download` module to be more error-proof and flexible
 *   Fixed `bb-template` function
-*   Fixed `bb-download` function behavior when error occurs
 *   Fixed cleanup process
-*   Fixed behavior on shared workspace.  Several scripts can use one workspace
-    at the same time.
+*   Fixed behavior on shared workspace.  Several scripts can now use single
+    workspace directory at the same time.
 
 
 ### 0.2beta (2014-10-11)

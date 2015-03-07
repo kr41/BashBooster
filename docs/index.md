@@ -9,7 +9,10 @@ and was developed to be used with [Vagrant][].  When Chef is too heavy,
 use Bash Booster, because it has been written using Bash only and
 **requires nothing**.
 
-[Chef]: http://www.getchef.com/
+It also shipped with task runner utility, so you can install
+into your system and [use as an automation tool](#task-runner).
+
+[Chef]: http://www.chef.io/
 [Vagrant]: http://vagrantup.com/
 
 
@@ -18,7 +21,7 @@ use Bash Booster, because it has been written using Bash only and
 Quick Start
 -----------
 
-Download [ready to use library file][] or...
+Download [ready to use library archive][] or...
 
 1.  Get the source code:
 
@@ -40,7 +43,7 @@ to get a new one using [Homebrew][].
     $ brew install bash
 
 A traditional “Hello World” script looks like this (you can find it
-in `helloworld.sh`):
+at `examples/helloworld.sh`):
 
     #!/usr/bin/env bash
 
@@ -60,13 +63,14 @@ It just prints a line to `stderr`:
     helloworld.sh [INFO] Hello world
 
 More interesting example, which demonstrates almost all features of
-Bash Booster you can find at `example/bootstrap.sh`.  This script is used
-for provisioning virtual machines managed by Vagrant.  A `Vagrantfile` placed
-at the root of sources sets up three virtual machines: ubuntu, centos, and
-debian.  Bootstrap script installs Nginx web-server, builds Bash Booster
+Bash Booster you can find at `examples/vagrant/bootstrap.sh`.  This script
+is used for provisioning virtual machines managed by [Vagrant][].  A `Vagrantfile`
+placed at `examples/vagrant` sets up three virtual machines: ubuntu, centos,
+and debian.  Bootstrap script installs Nginx web-server, builds Bash Booster
 documentation, and places compiled HTML into web-root directory. Just run:
 
     :::bash
+    $ cd examples/vagrant
     $ vagrant up
 
 ...and have some coffee, then visit:
@@ -79,8 +83,9 @@ If you run `vagrant provision` again, script will finish almost immediately.
 It happens, because it does not do unnecessary job: all packages installed,
 web-server configured, HTML compiled.
 
-[ready to use library file]: https://bitbucket.org/kr41/bash-booster/downloads
+[ready to use library archive]: https://bitbucket.org/kr41/bash-booster/downloads
 [Homebrew]: http://brew.sh/
+[Vagrant]: http://vagrantup.com/
 
 
 Philosophy
@@ -177,6 +182,7 @@ instead, it will be fired just before exit:
 Module Description
 ------------------
 
+- [error](#error)
 - [var](#var)
 - [log](#log)
 - [exit](#exit)
@@ -195,6 +201,35 @@ Module Description
 - [task](#task)
 - [apt](#apt)
 - [yum](#yum)
+
+
+### error
+
+The module contains a single function for handling errors
+
+**bb-error?** {: #bb-error }
+:   The function will return `true`, if previous operation fails, i.e. returns
+    non-zero exit code.  It also saves that exit code into global variable
+    `BB_ERROR`.  Example:
+
+        :::bash
+        false
+        if bb-error?
+        then
+            bb-log-error "An error with code $BB_ERROR occured"
+            return $BB_ERROR
+        fi
+
+    The example above is equal to:
+
+        :::bash
+        false
+        BB_ERROR=$?
+        if (( $BB_ERROR != 0 ))
+        then
+            bb-log-error "An error with code $BB_ERROR occured"
+            return $BB_ERROR
+        fi
 
 
 ### var
@@ -322,6 +357,25 @@ The module provides functions to log messages to `stderr`.
 
         :::bash
         bb-exit 0 "Success"
+
+**bb-exit-on-error** MSG {: #bb-exit }
+:   If previous operation fails (returns non-zero exit code), the function will
+    terminate script with the same code and given error message `MSG`.  Usage:
+
+        :::bash
+        false
+        bb-exit-on-error "Something went wrong"
+
+    It is equal to combination of [`bb-error?`](#bb-error){: .code } and
+    [`bb-exit`](#bb-exit){: .code } functions:
+
+        :::bash
+        false
+        if bb-error?
+        then
+            bb-exit $BB_ERROR "Something went wrong"
+        fi
+
 
 ### assert
 
@@ -515,19 +569,27 @@ just before script termination.
 
 The module manages download directory and its contents.
 
-**bb-download** URL [TARGET] {: #bb-download }
+**BB_DOWNLOAD_WGET_OPTIONS** {: #BB_DOWNLOAD_WGET_OPTIONS }
+:   As the variable name says, it stores additional [Wget][] options and can
+    be used to tune [`bb-download`](#bb-download){: .code } behavior.
+
+**bb-download** URL [TARGET [FORCE]] {: #bb-download }
 :   Downloads file from `URL` and writes it to `$BB_WORKSPACE/download/$TARGET`.
     The second argument `TARGET` can be omitted.  In that case it will be
     detected using `basename "$URL"` command.  If `TARGET` file already exists,
-    the function will not download it again.  Prints full path to downloaded
-    file into `stdout`.  Usage:
+    the function will not download it again.  Pass `true` as a `FORCE` argument
+    to change this behavior.  The full path to downloaded file will be
+    printed into `stdout`.  Usage:
 
+        :::bash
         MY_FILE="$( bb-download http://example.com/my_file.txt )"
         # "$MY_FILE" == "$BB_WORKSPACE/download/my_file.txt"
 
 **bb-download-clean** {: #bb-download-clean }
 :   Removes all downloaded files, i.e. deletes directory
     `$BB_WORKSPACE/download`.
+
+[Wget]: https://www.gnu.org/software/wget/
 
 
 ### flag
@@ -920,16 +982,45 @@ The module provides functions to work with [Yum][] package manager.
         bb-yum-install postgresql93-server
 
     If package is unable to be installed, script will be terminated with error,
-    i.e. [`bb-exit`](#bb-exit) will be called.
+    i.e. [`bb-exit`](#bb-exit){: .code } will be called.
 
 [Yum]: http://yum.baseurl.org/
 
 
-Support
--------
+Task Runner
+-----------
+
+It is an experimental feature.  You can find `install.sh` script at `build`
+directory of the sources or within distributive archive.  This script installs
+Bash Booster to your system (should be run with root privileges, of course)
+with task runner utility `bb-task`.
+
+Usage is quite simple and is similar to [Make][] and other Make-like tools.
+Place file `bb-tasks.sh` into your project directory with task definitions
+(see [`task`](#task){: .code } module).  And run tasks using:
+
+    :::bash
+    $ bb-task task-name
+
+This command will:
+
+*   read Bash Booster configuration from `/etc/bashbooster/bbrc`,
+    `~/.bbrc` (home directory), and `./.bbrc` (current directory);
+*   initialize Bash Booster itself;
+*   read your task definitions from `./bb-tasks.sh`;
+*   run specified tasks.
+
+See `examples/task-runner` at the sources for live demo.
+
+[Make]: https://www.gnu.org/software/make/
+
+
+Support & Feedback
+------------------
 
 Visit our [discussion group] if any support is required.  It is a good place
-for proposals too.
+for proposals too. And of course, any feedback will be highly appreciated,
+either good and bad.
 
 [discussion group]: https://groups.google.com/forum/#!forum/bash-booster
 
