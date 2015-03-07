@@ -3,27 +3,31 @@
 unset CDPATH
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-BB_LOG_LEVEL='DEBUG'
 BB_LOG_USE_COLOR=true
 BB_WORKSPACE='/var/bb-workspace'
 source ../../build/bashbooster.sh
 
 
+PROJECT_DIR='/home/vagrant/Projects/TraversalKitExampleApp'
+
+
 bb-log-info 'Installing Bash Booster'
 ../../build/install.sh
 
+
+bb-log-info 'Installing system packages'
 bb-apt-install 'mercurial' 'python-virtualenv'
 
 
-[[ ! -d '/home/vagrant/Projects' ]] && \
-    mkdir 'home/vagrant/Projects'
-[[ ! -d '/home/vagrant/Projects/TraversalKitExampleApp' ]] && \
-    hg clone \
+bb-log-info 'Cloning project'
+[[ ! -d "$PROJECT_DIR" ]] && \
+    sudo -iu vagrant hg clone \
         'https://kr41@bitbucket.org/kr41/traversalkitexampleapp' \
-        '/home/vagrant/Projects/TraversalKitExampleApp'
+        "$PROJECT_DIR"
 
+
+bb-log-info 'Syncing task file'
 bb-sync-file \
-    '/home/vagrant/Projects/TraversalKitExampleApp/bb-tasks.sh' \
+    "$PROJECT_DIR/bb-tasks.sh" \
     '/vagrant/examples/task-runner/bb-tasks.sh'
-
-chown -R vagrant:vagrant '/home/vagrant/Projects'
+chown vagrant:vagrant "$PROJECT_DIR/bb-tasks.sh"
