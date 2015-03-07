@@ -4,6 +4,7 @@ Changes
 ### 0.3dev
 
 *   Added `task` module and task runner utility
+*   Added `brew` module (Trevor Bekolay)
 *   Added helper functions `bb-error?` and `bb-exit-on-error`
 *   Updated `download` module to be more error-proof and flexible
 *   Fixed `bb-template` function

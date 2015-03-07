@@ -901,8 +901,8 @@ The module provides functions to work with [Apt][] package manager.
     for updating Apt cache before installation.
 
     For each installed package an event `bb-package-installed` will be fired
-    by [`bb-event-fire`](#bb-event-fire) with the package name as an argument.
-    So that you will be able to make some post installation actions.
+    by [`bb-event-fire`](#bb-event-fire){: .code } with the package name as
+    an argument.  So that you will be able to make some post installation actions.
     For instance, install [MySQL on Ubuntu without asking a password](http://stackoverflow.com/a/7740393/3182064):
 
         :::bash
@@ -922,9 +922,10 @@ The module provides functions to work with [Apt][] package manager.
         bb-apt-install mysql-server
 
     If package is unable to be installed, script will be terminated with error,
-    i.e. [`bb-exit`](#bb-exit) will be called.
+    i.e. [`bb-exit`](#bb-exit){: .code } will be called.
 
 [Apt]: https://wiki.debian.org/Apt
+
 
 ### yum
 
@@ -962,8 +963,8 @@ The module provides functions to work with [Yum][] package manager.
     for updating Yum cache before installation.
 
     For each installed package an event `bb-package-installed` will be fired
-    by [`bb-event-fire`](#bb-event-fire) with the package name as an argument.
-    So that you will be able to make some post installation actions.
+    by [`bb-event-fire`](#bb-event-fire){: .code } with the package name as
+    an argument.  So that you will be able to make some post installation actions.
     For instance, [setup PostgreSQL on CentOS](http://www.postgresql.org/download/linux/redhat/):
 
         :::bash
@@ -985,6 +986,45 @@ The module provides functions to work with [Yum][] package manager.
     i.e. [`bb-exit`](#bb-exit){: .code } will be called.
 
 [Yum]: http://yum.baseurl.org/
+
+
+### brew
+
+The module provides functions to work with [Homebrew][] package manager.
+
+**bb-brew?** {: #bb-brew }
+:   Checks if Homebrew is available. Usage:
+
+        :::bash
+        if bb-brew?
+        then
+            bb-brew-install somepackage
+        fi
+
+**bb-brew-repo?** REPOSITORY {: #bb-brew-repo }
+:   Checks if `REPOSITORY` repository (tap in Homebrew terms) is installed.
+
+**bb-brew-package?** PACKAGE {: #bb-brew-package }
+:   Checks if `PACKAGE` is installed.
+
+**bb-brew-update** {: #bb-brew-update }
+:   Updates Homebrew cache.  It sets up variable `BB_BREW_UPDATED` to `true`.
+    So the second call of this function does nothing.
+
+**bb-brew-install** PACKAGE [PACKAGE...] {: #bb-brew-install }
+:   Installs `PACKAGE` if it is not already installed.  It uses
+    [`bb-brew-package?`](#bb-brew-package){: .code } for checking `PACKAGE`
+    installation status, and [`bb-brew-update`](#bb-brew-update){: .code }
+    for updating Homebrew cache before installation.
+
+    For each installed package an event `bb-package-installed` will be fired
+    by [`bb-event-fire`](#bb-event-fire){: .code } with the package name as
+    an argument.  So that you will be able to make some post installation actions.
+
+    If package is unable to be installed, script will be terminated with error,
+    i.e. [`bb-exit`](#bb-exit){: .code } will be called.
+
+[Homebrew]: http://brew.sh/
 
 
 Task Runner
