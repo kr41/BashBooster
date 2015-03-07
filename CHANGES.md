@@ -1,7 +1,7 @@
 Changes
 -------
 
-### 0.3dev
+### 0.3beta (2015-03-07)
 
 *   Added `task` module and task runner utility
 *   Added `brew` module (Trevor Bekolay)
