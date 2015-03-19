@@ -26,15 +26,15 @@ Download [ready to use library archive][] or...
 1.  Get the source code:
 
         :::bash
-        $ hg clone ssh://hg@bitbucket.org/kr41/bash-booster bash-booster
+        $ hg clone https://bitbucket.org/kr41/bash-booster bash-booster
         $ cd bash-booster
 
-2.  Build the library file `bashbooster.sh`:
+2.  Build the library:
 
         :::bash
         $ ./build.sh
 
-3.  Use it!
+3.  Get the library at `build/bashbooster.sh` and use it!
 
 Note for OS X users. OS X is shipped with an old version of Bash, so you need
 to get a new one using [Homebrew][].
@@ -53,7 +53,7 @@ at `examples/helloworld.sh`):
     cd "$( dirname "${BASH_SOURCE[0]}" )"
 
     # Initialize Bash Booster
-    source bashbooster.sh
+    source build/bashbooster.sh
 
     # Log message with log level "INFO"
     bb-log-info "Hello World"
@@ -1059,7 +1059,7 @@ Support & Feedback
 ------------------
 
 Visit our [discussion group] if any support is required.  It is a good place
-for proposals too. And of course, any feedback will be highly appreciated,
+for proposals too.  And of course, any feedback will be highly appreciated,
 either good and bad.
 
 [discussion group]: https://groups.google.com/forum/#!forum/bash-booster
