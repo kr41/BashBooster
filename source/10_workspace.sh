@@ -8,11 +8,8 @@ bb-workspace-init() {
             $BB_ERROR_WORKSPACE_CREATION_FAILED \
             "Failed to initialize workspace at '$BB_WORKSPACE'"
     fi
-
     # Ensure BB_WORKSPACE stores absolute path
-    cd "$BB_WORKSPACE"
-    BB_WORKSPACE="$( pwd )"
-    cd - > /dev/null
+    BB_WORKSPACE="$( readlink -ne $BB_WORKSPACE )"
 }
 
 bb-workspace-cleanup() {
