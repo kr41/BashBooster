@@ -1,14 +1,4 @@
-#!/usr/bin/env bash
-
-unset CDPATH
-cd "$( dirname "${BASH_SOURCE[0]}" )"
-
-source "$BASHBOOSTER"
-
-SRC_DIR="$( bb-tmp-dir )"
-DST_DIR="$BB_WORKSPACE/testdir"
-
-bb-event-on bb-cleanup 'rm -rf "$DST_DIR"'
+mkdir "$SRC_DIR"
 
 # Mock
 EXPECT_EVENT='dir-changed'

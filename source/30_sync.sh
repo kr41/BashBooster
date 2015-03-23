@@ -16,8 +16,8 @@ bb-sync-file() {
 }
 
 bb-sync-dir() {
-    local DST_DIR="$1"
-    local SRC_DIR="$2"
+    local DST_DIR="$( readlink -nm "$1" )"
+    local SRC_DIR="$( readlink -ne "$2" )"
     shift 2
     local EVENT="$@"
     if [[ ! -d "$DST_DIR" ]]
@@ -27,6 +27,7 @@ bb-sync-dir() {
     fi
 
     local ORIGINAL_DIR="$( pwd )"
+    local NAME
 
     cd "$SRC_DIR"
     while read -r NAME
@@ -40,11 +41,11 @@ bb-sync-dir() {
         fi
     done < <( ls )
     cd "$DST_DIR"
-    while read -r FILE
+    while read -r NAME
     do
-        if [[ ! -e "$SRC_DIR/$FILE" ]]
+        if [[ ! -e "$SRC_DIR/$NAME" ]]
         then
-            rm -rf "$DST_DIR/$FILE"
+            rm -rf "$DST_DIR/$NAME"
             bb-event-delay $EVENT
         fi
     done < <( find . )
