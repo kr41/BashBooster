@@ -2,6 +2,20 @@
 # To reliably identify rules, an "ID" is required for each rule.  It
 # must be unique to the chain.
 
+# Example Usage:
+#
+# bb-iptables-chain FOO
+# bb-iptables-rule FOO id=tcp:2 -1 -p tcp --dport 2 -j ACCEPT # Append some rules.
+# bb-iptables-rule FOO id=tcp:4 -1 -p tcp --dport 4 -j ACCEPT
+# bb-iptables-rule FOO id=tcp:3 -2 -p tcp --dport 3 -j ACCEPT # Add just before the end.
+# bb-iptables-rule FOO id=tcp:1 1 -p tcp --dport 1 -j ACCEPT  # Insert at beginning.
+
+# NOTE: Can run with `BB_DRY_RUN` set to get a sense of what it might do but
+# it's not 100% accurate since:
+#  a) depends on chains being defined
+#  b) rule numbers/positions will change
+
+
 # True if `iptables` is executable
 bb-iptables?() {
     bb-exe? iptables
@@ -19,7 +33,12 @@ bb-iptables-chain() { # (CHAIN)
     local CHAIN="$1"
     if ! bb-iptables-chain? "$CHAIN"
     then
-      iptables -N "$CHAIN"
+      if test -n "$BB_DRY_RUN"
+      then
+        echo "iptables -N '$CHAIN'"
+      else
+        iptables -N "$CHAIN"
+      fi
     fi
 }
 
@@ -46,7 +65,7 @@ bb-iptables-rule() { # (CHAIN, ID, NUM)
     RULE=$(bb-iptables-rule-num "$CHAIN" "$ID")
     if test -n "$RULE"
     then
-      iptables -R "$CHAIN" $RULE $DEF -m comment --comment "$ID"
+      CMD="iptables -R '$CHAIN' $RULE $DEF -m comment --comment '$ID'"
     else
       TOTAL=$(( $(iptables -nL "$CHAIN" | wc -l) - 2 ))
       if test $NUM -eq -1
@@ -67,6 +86,12 @@ bb-iptables-rule() { # (CHAIN, ID, NUM)
           NUM=1
         fi
       fi
-      iptables $OP "$CHAIN" $NUM $DEF -m comment --comment "$ID"
+      CMD="iptables $OP '$CHAIN' $NUM $DEF -m comment --comment '$ID'"
+    fi
+    if test -n "$BB_DRY_RUN"
+    then
+      echo $CMD
+    else
+      eval $CMD
     fi
 }
