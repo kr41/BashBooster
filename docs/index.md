@@ -782,6 +782,12 @@ are different.  That is why it does not use [rsync][] command.
 :   Synchronizes contents of `DST_DIR` with `SRC_DIR`.  If `DST_DIR` is changed
     it will [delay](#bb-event-delay) `EVENT` with `ARGUMENTS`.
 
+**bb-sync-dir-one-way** DST_DIR SRC_DIR [EVENT [ARGUMENTS...]] {: #bb-sync-dir-one-way }
+:   Peforms one-way synchronization of contents of `DST_DIR` with `SRC_DIR`.
+    This means that all files in `SRC_DIR` will be replicated to `DST_DIR`, but
+    files from `DST_DIR` that are not in `SRC_DIR` will not be removed.  If
+    `DST_DIR` is changed it will [delay](#bb-event-delay) `EVENT` with `ARGUMENTS`.
+
 [rsync]: http://rsync.samba.org/
 
 

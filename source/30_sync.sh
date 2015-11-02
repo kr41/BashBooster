@@ -14,10 +14,13 @@ bb-sync-file() {
     fi
 }
 
-bb-sync-dir() {
+bb-sync-dir-helper() {
+    local ONE_WAY="$1"
+    shift
     local DST_DIR="$( readlink -nm "$1" )"
     local SRC_DIR="$( readlink -ne "$2" )"
     shift 2
+
     if [[ ! -d "$DST_DIR" ]]
     then
         mkdir -p "$DST_DIR"
@@ -35,11 +38,11 @@ bb-sync-dir() {
             bb-sync-file "$DST_DIR/$NAME" "$SRC_DIR/$NAME" "$@"
         elif [[ -d "$SRC_DIR/$NAME" ]]
         then
-            bb-sync-dir "$DST_DIR/$NAME" "$SRC_DIR/$NAME" "$@"
+            bb-sync-dir-helper "$ONE_WAY" "$DST_DIR/$NAME" "$SRC_DIR/$NAME" "$@"
         fi
     done < <( ls )
     cd "$DST_DIR"
-    while read -r NAME
+    while [ "$ONE_WAY" -eq 0 ] && read -r NAME
     do
         if [[ ! -e "$SRC_DIR/$NAME" ]]
         then
@@ -50,3 +53,12 @@ bb-sync-dir() {
 
     cd "$ORIGINAL_DIR"
 }
+
+bb-sync-dir() {
+    bb-sync-dir-helper 0 "$@"
+}
+
+bb-sync-dir-one-way() {
+    bb-sync-dir-helper 1 "$@"
+}
+
