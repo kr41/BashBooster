@@ -51,19 +51,21 @@ bb-event-fire() {
 }
 
 bb-event-delay() {
-    local EVENT="$@"
     local EVENTS="$BB_EVENT_DIR/events"
-    [[ -n "$EVENT" ]] || return 0
+    [[ -n "$@" ]] || return 0
     touch "$EVENTS"
-    if [[ -z "$( cat "$EVENTS" | grep "^$EVENT\$" )" ]]
+
+    local EVENT=
+    while [ $# -gt 0 ]
+    do
+        EVENT+="$(printf "%q " "$1")"
+        shift
+    done
+
+    if [[ -z "$( cat "$EVENTS" | grep -Fx "$EVENT" )" ]]
     then
         bb-log-debug "Delayed event '$EVENT'"
-        while [ $# -gt 0 ]
-        do
-            printf "%q " "$1" >> "$EVENTS"
-            shift
-        done
-        printf "\n" >> "$EVENTS"
+        printf "%s\n" "$EVENT" >> "$EVENTS"
     fi
 }
 
