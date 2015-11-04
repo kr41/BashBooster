@@ -405,6 +405,22 @@ However, it is good place for [adding](#contribution) other interpreters.
 
 [Python]: https://www.python.org
 
+**bb-ext-augeas** NAME <BODY {: #bb-ext-augeas }
+:   Creates new function `NAME` using [Augeas][] interpreter. Example:
+
+        :::bash
+        bb-ext-augeas 'set-ssh-port' <<EOF
+        set /files/etc/ssh/sshd_config/Port 222
+        save
+        EOF
+
+        set-ssh-port    # Sets "Port 222" in /etc/ssh/sshd_config
+
+    The variable `BB_EXT_AUGEAS_PARAMS` can be used to provide additional
+    parameter to the invocation of the [Augeas][] interpreter.
+
+[Augeas]: http://augeas.net
+
 
 ### exe
 
@@ -1031,6 +1047,57 @@ The module provides functions to work with [Homebrew][] package manager.
     i.e. [`bb-exit`](#bb-exit){: .code } will be called.
 
 [Homebrew]: http://brew.sh/
+
+
+### augeas
+
+The module provides functions to work with [Augeas][] configuration editing tool.
+
+**BB_AUGEAS_EXTRA_COMMANDS** {: #BB_AUGEAS_EXTRA_COMMANDS }
+:   The variable stores extra Augeas commands that will be run before the ones
+    embeded in bb-augeas functions.
+
+    By default, the variable is empty and no additionnal command is provided.
+
+**bb-augeas?** {: #bb-augeas }
+:   Checks if Augeas is available.
+
+**bb-augeas-get** FILE SETTING {: #bb-augeas-get }
+:   Gets the value of `SETTING` from file `FILE`.  Usage:
+
+        :::bash
+        VALUE="$(bb-augeas-get "/etc/ssh/sshd_config" "Port")"
+        if bb-error?
+        then
+            # Handle read error
+        else
+            # Do something useful
+            echo "Configured SSH port is $VALUE"
+
+**bb-augeas-set** FILE SETTING VALUE [EVENT [ARGUMENTS...]] {: #bb-augeas-set }
+:   Sets the value of `SETTING` to `VALUE` in file `FILE`.
+    If `FILE` is changed, it will [delay](#bb-event-delay) `EVENT` with `ARGUMENTS`.
+    Usage:
+
+        :::bash
+        bb-event-on restart-server "service ssh restart"
+
+        bb-augeas-set "/etc/ssh/sshd_config" "Port" "22" restart-server
+
+    Also, if `FILE` is changed, an event `bb-augeas-file-changed` will be fired
+    by [`bb-event-fire`](#bb-event-fire){: .code } with the file path as an
+    argument.  So that you will be able to make some file-specific actions.
+
+**bb-augeas-match?** FILE SETTING VALUE {: #bb-augeas-match }
+:   Checks if the value of `SETTING` in file `FILE` matches the value `VALUE`.
+
+        :::bash
+        if bb-augeas-match? "/etc/ssh/sshd_config" "Port" "22"
+        then
+            # Do something useful
+        fi
+
+[Augeas]: http://augeas.net
 
 
 Task Runner

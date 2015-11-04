@@ -1,0 +1,2 @@
+SyslogFacility AUTH
+LogLevel INFO
