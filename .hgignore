@@ -7,3 +7,4 @@ bashbooster.sh
 *.zip
 docs/www/*.html
 .idea/*
+.pip
