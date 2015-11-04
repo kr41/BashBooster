@@ -778,15 +778,44 @@ are different.  That is why it does not use [rsync][] command.
     Each time `my_site.conf` is changed, the script above will update Nginx
     configuration and restart it.
 
+    Also, for each file that is changed, an event `bb-sync-file-changed` will
+    be fired by [`bb-event-fire`](#bb-event-fire){: .code } with the file path
+    as an argument.  So that you will be able to make some file-specific
+    actions.
+
 **bb-sync-dir** DST_DIR SRC_DIR [EVENT [ARGUMENTS...]] {: #bb-sync-dir }
 :   Synchronizes contents of `DST_DIR` with `SRC_DIR`.  If `DST_DIR` is changed
     it will [delay](#bb-event-delay) `EVENT` with `ARGUMENTS`.
+
+    For each file that is changed, an event `bb-sync-file-changed` will be
+    fired by [`bb-event-fire`](#bb-event-fire){: .code } with the file path as
+    an argument.
+
+    For each file that is removed, an event `bb-sync-file-removed` will be
+    fired by [`bb-event-fire`](#bb-event-fire){: .code } with the file path as
+    an argument.
+
+    For each directory that is created, an event `bb-sync-dir-created` will be
+    fired by [`bb-event-fire`](#bb-event-fire){: .code } with the directory as
+    an argument.
+
+    For each directory that is removed, an event `bb-sync-file-removed` will be
+    fired by [`bb-event-fire`](#bb-event-fire){: .code } with the directory as
+    an argument.
 
 **bb-sync-dir-one-way** DST_DIR SRC_DIR [EVENT [ARGUMENTS...]] {: #bb-sync-dir-one-way }
 :   Peforms one-way synchronization of contents of `DST_DIR` with `SRC_DIR`.
     This means that all files in `SRC_DIR` will be replicated to `DST_DIR`, but
     files from `DST_DIR` that are not in `SRC_DIR` will not be removed.  If
     `DST_DIR` is changed it will [delay](#bb-event-delay) `EVENT` with `ARGUMENTS`.
+
+    For each file that is changed, an event `bb-sync-file-changed` will be
+    fired by [`bb-event-fire`](#bb-event-fire){: .code } with the file path as
+    an argument.
+
+    For each directory that is created, an event `bb-sync-dir-created` will be
+    fired by [`bb-event-fire`](#bb-event-fire){: .code } with the directory as
+    an argument.
 
 [rsync]: http://rsync.samba.org/
 
