@@ -416,8 +416,11 @@ However, it is good place for [adding](#contribution) other interpreters.
 
         set-ssh-port    # Sets "Port 222" in /etc/ssh/sshd_config
 
-    The variable `BB_EXT_AUGEAS_PARAMS` can be used to provide additional
-    parameter to the invocation of the [Augeas][] interpreter.
+    The variable `BB_AUGEAS_PARAMS` can be used to provide additional parameters
+    to the invocation of the [Augeas][] interpreter.
+
+    The variable `BB_AUGEAS_ROOT` stores the directory to be used as the root by
+    [Augeas][].  The default value is "/".
 
 [Augeas]: http://augeas.net
 
