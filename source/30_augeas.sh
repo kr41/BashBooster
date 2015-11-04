@@ -19,17 +19,16 @@ bb-augeas-file-supported?() {
     # Define the helper function
     bb-ext-augeas 'bb-augeas-file-supported?-helper' <<EOF
 $BB_AUGEAS_EXTRA_COMMANDS
-print '/augeas/files$ABSOLUTE_FILE_PATH/path'
+match /augeas/load/*/incl '$ABSOLUTE_FILE_PATH'
+print '/augeas/files$ABSOLUTE_FILE_PATH[count(error) = 0]/*'
 EOF
 
     # Run the helper function
     local OUTPUT="$(bb-augeas-file-supported?-helper)"
     bb-error? && bb-assert false "Failed to execute augeas"
 
-    # Check output
-    # When file is supported, the output is in the form:
-    #     /augeas/files/<File path>/path = "/files/<File path>"
-    [[ "$OUTPUT" == "/augeas/files/"* ]]
+    # File is supported if output is not empty.
+    [[ -n "$OUTPUT" ]]
 }
 
 bb-augeas-get() {
@@ -38,8 +37,6 @@ bb-augeas-get() {
     local AUG_PATH="$(bb-augeas-get-path "$ABSOLUTE_FILE_PATH" "$SETTING")"
 
     # Validate the specified file
-    [ -f "$ABSOLUTE_FILE_PATH" ] || { bb-log-error "File '$ABSOLUTE_FILE_PATH' not found"; return 1; }
-    [ -r "$ABSOLUTE_FILE_PATH" ] || { bb-log-error "File '$ABSOLUTE_FILE_PATH' is not readable"; return 1; }
     bb-augeas-file-supported? "$ABSOLUTE_FILE_PATH" || { bb-log-error "Cannot get value from unsupported file '$ABSOLUTE_FILE_PATH'"; return 1; }
 
     # Define the helper function
@@ -83,8 +80,6 @@ bb-augeas-match?() {
     local AUG_PATH=$(bb-augeas-get-path "$ABSOLUTE_FILE_PATH" "$SETTING")
 
     # Validate the specified file
-    [ -f "$ABSOLUTE_FILE_PATH" ] || { bb-log-error "File '$ABSOLUTE_FILE_PATH' not found"; return 1; }
-    [ -r "$ABSOLUTE_FILE_PATH" ] || { bb-log-error "File '$ABSOLUTE_FILE_PATH' is not readable"; return 1; }
     bb-augeas-file-supported? "$ABSOLUTE_FILE_PATH" || { bb-log-error "Cannot match value from unsupported file '$ABSOLUTE_FILE_PATH'"; return 1; }
 
     # Define the helper function
@@ -98,7 +93,7 @@ EOF
     if bb-error?
     then
         bb-log-error "An error occured while verifying if '$SETTING' matches '$VALUE' ($AUG_PATH)"
-        return 0
+        return $BB_ERROR
     fi
 
     # Check output
@@ -115,8 +110,6 @@ bb-augeas-set() {
     shift 3
 
     # Validate the specified file
-    [ -f "$ABSOLUTE_FILE_PATH" ] || { bb-log-error "File '$ABSOLUTE_FILE_PATH' not found"; return 1; }
-    [ -w "$ABSOLUTE_FILE_PATH" ] || { bb-log-error "File '$ABSOLUTE_FILE_PATH' is not writeable"; return 1; }
     bb-augeas-file-supported? "$ABSOLUTE_FILE_PATH" || { bb-log-error "Cannot set value to unsupported file '$ABSOLUTE_FILE_PATH'"; return 1; }
 
     # Define the helper function
