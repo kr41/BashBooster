@@ -406,23 +406,6 @@ However, it is good place for [adding](#contribution) other interpreters.
 [Python]: https://www.python.org
 
 
-### run
-
-Run or echo a command, depending on value of `BB_RUN_DRY`.
-
-**BB_RUN_DRY** {: #BB_RUN_DRY }
-:   The variable controls whether `bb-run` will execute commands or
-    echo them instead.  *NOTE:* Not all bash-booster modules support
-    `BB_RUN_DRY`, and those that do may have limitations.
-
-**bb-run** CMD {: #bb-run }
-:   Execute `CMD` when `BB_RUN_DRY=false` (default).  Otherwise, echo.
-
-        :::bash
-        BB_RUN_DRY=true echo hello   # Prints: echo hello
-        BB_RUN_DRY=false echo hello  # Prints: hello
-
-
 ### exe
 
 **bb-exe?** EXE
