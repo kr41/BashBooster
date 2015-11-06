@@ -34,3 +34,28 @@ bb-apt-install() {
         fi
     done
 }
+
+bb-apt-package-upgrade?() {
+    bb-apt-update
+
+    local PACKAGE=$1
+    local OUTPUT="$(apt-cache policy "$PACKAGE" | grep -A 1 'Installed: ' | sed -r 's/(Installed: |Candidate: )//'| sed '/ (none)/I,+1 d' | uniq -u)"
+
+    # Note: No upgrade available is reported for a non-installed package
+    [ -n "$OUTPUT" ]
+}
+
+bb-apt-upgrade() {
+    for PACKAGE in "$@"
+    do
+        if bb-apt-package-upgrade? "$PACKAGE"
+        then
+            bb-log-info "Upgrading package '$PACKAGE'"
+            bb-event-fire "bb-package-pre-upgrade" "$PACKAGE"
+            apt-get upgrade -y "$PACKAGE"
+            bb-exit-on-error "Failed to upgrade package '$PACKAGE'"
+            bb-event-fire "bb-package-post-upgrade" "$PACKAGE"
+        fi
+    done
+}
+
