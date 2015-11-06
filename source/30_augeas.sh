@@ -15,6 +15,7 @@ bb-augeas-get-path() {
 
 bb-augeas-file-supported?() {
     local ABSOLUTE_FILE_PATH="$1"
+    local OUTPUT=
 
     # Define the helper function
     bb-ext-augeas 'bb-augeas-file-supported?-helper' <<EOF
@@ -24,7 +25,7 @@ print '/augeas/files$ABSOLUTE_FILE_PATH[count(error) = 0]/*'
 EOF
 
     # Run the helper function
-    local OUTPUT="$(bb-augeas-file-supported?-helper)"
+    OUTPUT="$(bb-augeas-file-supported?-helper)"
     bb-error? && bb-assert false "Failed to execute augeas"
 
     # File is supported if output is not empty.
@@ -35,6 +36,7 @@ bb-augeas-get() {
     local ABSOLUTE_FILE_PATH="$1"
     local SETTING="$2"
     local AUG_PATH="$(bb-augeas-get-path "$ABSOLUTE_FILE_PATH" "$SETTING")"
+    local VALUE=
 
     # Validate the specified file
     bb-augeas-file-supported? "$ABSOLUTE_FILE_PATH" || { bb-log-error "Cannot get value from unsupported file '$ABSOLUTE_FILE_PATH'"; return 1; }
@@ -46,7 +48,7 @@ get '$AUG_PATH'
 EOF
 
     # Run the helper function
-    local VALUE="$(bb-augeas-get-helper)"
+    VALUE="$(bb-augeas-get-helper)"
     if bb-error?
     then
         bb-log-error "An error occured while getting value of '$SETTING' from $ABSOLUTE_FILE_PATH"
@@ -77,7 +79,8 @@ bb-augeas-match?() {
     local ABSOLUTE_FILE_PATH="$1"
     local SETTING="$2"
     local VALUE="$3"
-    local AUG_PATH=$(bb-augeas-get-path "$ABSOLUTE_FILE_PATH" "$SETTING")
+    local AUG_PATH="$(bb-augeas-get-path "$ABSOLUTE_FILE_PATH" "$SETTING")"
+    local OUTPUT
 
     # Validate the specified file
     bb-augeas-file-supported? "$ABSOLUTE_FILE_PATH" || { bb-log-error "Cannot match value from unsupported file '$ABSOLUTE_FILE_PATH'"; return 1; }
@@ -89,7 +92,7 @@ match '$AUG_PATH' "$VALUE"
 EOF
 
     # Run the helper function
-    local OUTPUT="$(bb-augeas-match-helper)"
+    OUTPUT="$(bb-augeas-match-helper)"
     if bb-error?
     then
         bb-log-error "An error occured while verifying if '$SETTING' matches '$VALUE' ($AUG_PATH)"
@@ -106,7 +109,8 @@ bb-augeas-set() {
     local ABSOLUTE_FILE_PATH="$1"
     local SETTING="$2"
     local VALUE="$3"
-    local AUG_PATH=$(bb-augeas-get-path "$ABSOLUTE_FILE_PATH" "$SETTING")
+    local AUG_PATH="$(bb-augeas-get-path "$ABSOLUTE_FILE_PATH" "$SETTING")"
+    local OUTPUT=
     shift 3
 
     # Validate the specified file
@@ -120,7 +124,7 @@ save
 EOF
 
     # Run the helper function
-    local OUTPUT=$(bb-augeas-set-helper)
+    OUTPUT="$(bb-augeas-set-helper)"
     if bb-error?
     then
         bb-log-error "An error occured while setting value of '$SETTING' to '$VALUE' ($ABSOLUTE_FILE_PATH)"
