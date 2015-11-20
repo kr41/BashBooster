@@ -414,6 +414,11 @@ The module provides functions to log messages to `stderr`.
     exit script with code `3` and error message `MSG`.  If `MSG` is not passed,
     it will use default one: `"Directory '$DIR' not found"`.
 
+**bb-assert-var** VAR [MSG] {: #bb-assert-var }
+:   Evaluates if the variable `VAR` is set (not empty).  If assertion is false,
+    it will exit script with code `3` and error message `MSG`.  If `MSG` is not
+    passed, it will use default one: `"Variable '$VAR' not set"`.
+
 
 ### ext
 

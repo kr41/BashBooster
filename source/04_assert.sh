@@ -44,3 +44,9 @@ bb-assert-dir() {
     bb-assert '[[ -d $__DIR ]]' "$__MESSAGE"
 }
 
+bb-assert-var() {
+    local __VAR="$1"
+    local __MESSAGE="${2-Variable '$__VAR' not set}"
+    bb-assert '[[ -n \$$__VAR ]]' "$__MESSAGE"
+}
+
