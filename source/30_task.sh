@@ -10,11 +10,11 @@ bb-task-def() {
 bb-task-run() {
     BB_TASK_CONTEXT[${#BB_TASK_CONTEXT[@]}]="$( bb-tmp-file )"
     bb-task-depends "$@"
-    unset BB_TASK_CONTEXT[-1]
+    unset BB_TASK_CONTEXT[${#BB_TASK_CONTEXT[@]}-1]
 }
 
 bb-task-depends() {
-    local CONTEXT="${BB_TASK_CONTEXT[-1]}"
+    local CONTEXT="${BB_TASK_CONTEXT[${#BB_TASK_CONTEXT[@]}-1]}"
     local CODE
     local NAME
     local TASK
