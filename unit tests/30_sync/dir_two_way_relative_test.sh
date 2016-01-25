@@ -10,4 +10,4 @@ DST_DIR=".bb-workspace/dst_dir"
 
 bb-event-on bb-cleanup 'rm -rf "$DST_DIR"; rm -rf "$SRC_DIR"'
 
-source "dir.sh"
+source "dir_two_way.sh"
