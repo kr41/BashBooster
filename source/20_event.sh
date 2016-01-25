@@ -6,8 +6,8 @@ bb-event-init() {
 }
 
 bb-event-on() {
-    local EVENT=$1
-    local HANDLER=$2
+    local EVENT="$1"
+    local HANDLER="$2"
     local HANDLERS="$BB_EVENT_DIR/$EVENT.handlers"
     touch "$HANDLERS"
     if [[ -z "$( cat "$HANDLERS" | grep "^$HANDLER\$" )" ]]
@@ -18,8 +18,8 @@ bb-event-on() {
 }
 
 bb-event-off() {
-    local EVENT=$1
-    local HANDLER=$2
+    local EVENT="$1"
+    local HANDLER="$2"
     local HANDLERS="$BB_EVENT_DIR/$EVENT.handlers"
     if [[ -f "$HANDLERS" ]]
     then
@@ -29,9 +29,11 @@ bb-event-off() {
 }
 
 bb-event-fire() {
-    local EVENT=$1
+    [[ -n "$@" ]] || return 0
+
+    local EVENT="$1"
     shift
-    [[ -n "$EVENT" ]] || return 0
+
     BB_EVENT_DEPTH["$EVENT"]=$(( ${BB_EVENT_DEPTH["$EVENT"]} + 1 ))
     if (( ${BB_EVENT_DEPTH["$EVENT"]} >= $BB_EVENT_MAX_DEPTH ))
     then
@@ -51,17 +53,18 @@ bb-event-fire() {
 }
 
 bb-event-delay() {
-    local EVENTS="$BB_EVENT_DIR/events"
     [[ -n "$@" ]] || return 0
-    touch "$EVENTS"
 
-    local EVENT=
-    while [ $# -gt 0 ]
+    local EVENTS="$BB_EVENT_DIR/events"
+    local EVENT=''
+
+    while (( $# ))
     do
-        EVENT+="$(printf "%q " "$1")"
+        EVENT+="$( printf "%q " "$1" )"
         shift
     done
 
+    touch "$EVENTS"
     if [[ -z "$( cat "$EVENTS" | grep -Fx "$EVENT" )" ]]
     then
         bb-log-debug "Delayed event '$EVENT'"
