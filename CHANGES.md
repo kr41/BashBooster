@@ -1,6 +1,17 @@
 Changes
 -------
 
+### 0.4beta (2016-??-??)
+
+*   Added `iptables` module (Erik Stephens)
+*   Added `augeas` module (Jocelyn Le Sage)
+*   Added some shortcuts to `assert` module (Jocelyn Le Sage)
+*   Added support of `upgrade` comand to `apt` module (Jocelyn Le Sage)
+*   Fixed and improved `sync` module (Jocelyn Le Sage)
+*   Fixed `bb-event-delay` function (Jocelyn Le Sage)
+*   Fixed `task` module
+
+
 ### 0.3beta (2015-03-07)
 
 *   Added `task` module and task runner utility
