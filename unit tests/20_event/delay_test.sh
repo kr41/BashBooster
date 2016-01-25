@@ -33,3 +33,6 @@ bb-event-on second second
 bb-event-on third third
 
 bb-event-delay third
+
+bb-event-cleanup
+bb-assert '[[ "$CALL_ORDER" == " first third second"  ]]'

@@ -6,3 +6,4 @@ Contributors
 *   Mike Kolganov <mike.kolganov@gmail.com>, 2014/10/09
 *   Trevor Bekolay <tbekolay@gmail.com>, 2014/10/28
 *   Jocelyn Le Sage <jocelyn@le-sage.com>, 2015/11/02
+*   Erik Stephens <erik@tfks.net>, 2015/11/04
