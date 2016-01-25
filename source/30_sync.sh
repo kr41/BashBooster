@@ -51,7 +51,7 @@ bb-sync-dir-helper() {
         then
             bb-sync-dir-helper "$ONE_WAY" "$DST_DIR/$NAME" "$SRC_DIR/$NAME" "$@"
         fi
-    done < <( ls )
+    done < <( ls -A )
     cd "$DST_DIR"
     while [ "$ONE_WAY" -eq 0 ] && read -r NAME
     do
