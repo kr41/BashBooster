@@ -797,15 +797,44 @@ are different.  That is why it does not use [rsync][] command.
     Each time `my_site.conf` is changed, the script above will update Nginx
     configuration and restart it.
 
+    Also, for each file that is changed, an event `bb-sync-file-changed` will
+    be fired by [`bb-event-fire`](#bb-event-fire){: .code } with the file path
+    as an argument.  So that you will be able to make some file-specific
+    actions.
+
 **bb-sync-dir** DST_DIR SRC_DIR [EVENT [ARGUMENTS...]] {: #bb-sync-dir }
 :   Synchronizes contents of `DST_DIR` with `SRC_DIR`.  If `DST_DIR` is changed
     it will [delay](#bb-event-delay) `EVENT` with `ARGUMENTS`.
+
+    For each file that is changed, an event `bb-sync-file-changed` will be
+    fired by [`bb-event-fire`](#bb-event-fire){: .code } with the file path as
+    an argument.
+
+    For each file that is removed, an event `bb-sync-file-removed` will be
+    fired by [`bb-event-fire`](#bb-event-fire){: .code } with the file path as
+    an argument.
+
+    For each directory that is created, an event `bb-sync-dir-created` will be
+    fired by [`bb-event-fire`](#bb-event-fire){: .code } with the directory as
+    an argument.
+
+    For each directory that is removed, an event `bb-sync-file-removed` will be
+    fired by [`bb-event-fire`](#bb-event-fire){: .code } with the directory as
+    an argument.
 
 **bb-sync-dir-one-way** DST_DIR SRC_DIR [EVENT [ARGUMENTS...]] {: #bb-sync-dir-one-way }
 :   Peforms one-way synchronization of contents of `DST_DIR` with `SRC_DIR`.
     This means that all files in `SRC_DIR` will be replicated to `DST_DIR`, but
     files from `DST_DIR` that are not in `SRC_DIR` will not be removed.  If
     `DST_DIR` is changed it will [delay](#bb-event-delay) `EVENT` with `ARGUMENTS`.
+
+    For each file that is changed, an event `bb-sync-file-changed` will be
+    fired by [`bb-event-fire`](#bb-event-fire){: .code } with the file path as
+    an argument.
+
+    For each directory that is created, an event `bb-sync-dir-created` will be
+    fired by [`bb-event-fire`](#bb-event-fire){: .code } with the directory as
+    an argument.
 
 [rsync]: http://rsync.samba.org/
 
@@ -825,6 +854,38 @@ are different.  That is why it does not use [rsync][] command.
     If the optional `TIMEOUT` is not passed, the function will wait for
     `CONDITION` forever.  If `TIMEOUT` has been specified and reached during
     the command execution, it will logs error and return `1`.
+
+
+### iptables
+
+Manage iptables chains & rules, playing nice with existing rules.  To
+reliably identify rules, an "ID" is required for each rule.  It must
+be unique to the chain.  Use whatever convention is preferred for
+ID's.  Simple string matching is used.
+
+**bb-iptables-chain** CHAIN {: #bb-iptables-chain }
+:   Create chain `CHAIN` if does not exist.  Example:
+
+        :::bash
+        bb-iptables-chain WEB
+
+**bb-iptables-rule** -t,--table TABLE=filter -n,--num NUM=-1 CHAIN ID {: #bb-iptables-rule }
+
+:   Define rule in `CHAIN` in `TABLE` at position `NUM`. If rule with
+    matching `ID` exists, then update it.  When `NUM` is negative,
+    count from end of `CHAIN` (-1 == last rule).
+
+        :::bash
+        # Add just before the end (-2), useful when last rule defines the policy.
+        bb-iptables-rule --num -2 INPUT https -p tcp --dport 443 -j WEB
+        # Append some rules to end of chain WEB of the filter table.
+        bb-iptables-chain WEB
+        bb-iptables-rule WEB host-a --src $HOST_A -j ACCEPT
+        bb-iptables-rule WEB host-b --src $HOST_B -j ACCEPT
+        # Insert at beginning (1) of the nat table.
+        bb-iptables-rule INPUT 'container subnet' -2 -j ACCEPT -s $NET
+        bb-iptables-rule --num 1 --table nat POSTROUTING 'container internet access' 1 -j MASQUERADE -s $net ! -o docker0
+        bb-iptables-rule --num 1 --table nat POSTROUTING tcp:1 -p tcp --dport 1 -j ACCEPT
 
 
 ### task
@@ -947,6 +1008,30 @@ The module provides functions to work with [Apt][] package manager.
         bb-apt-install mysql-server
 
     If package is unable to be installed, script will be terminated with error,
+    i.e. [`bb-exit`](#bb-exit){: .code } will be called.
+
+**bb-apt-package-upgrade?** PACKAGE {: #bb-apt-package-upgrade }
+:   Checks if a new version of `PACKAGE` is available.  It uses
+    [`bb-apt-update`](#bb-apt-update){: .code } for updating Apt cache before
+    doing the check.
+
+    If the requested package is not installed, `false` is returned by the
+    function.
+
+**bb-apt-upgrade** PACKAGE [PACKAGE...] {: #bb-apt-upgrade }
+:   Upgrades `PACKAGE` if a newer version is available.  It uses
+    [`bb-apt-package-upgrade?`](#bb-apt-package-upgrade){: .code } for checking
+    the availability of an updated version.
+
+    Before upgrading a package, an event `bb-package-pre-upgrade` will be fired
+    by [`bb-event-fire`](#bb-event-fire){: .code } with the package name as an
+    argument.  So that you will be able to make some pre upgrade actions.
+
+    After upgrading a package, an event `bb-package-post-upgrade` will be fired
+    by [`bb-event-fire`](#bb-event-fire){: .code } with the package name as an
+    argument.  So that you will be able to make some post upgrade actions.
+
+    If package is unable to be upgraded, script will be terminated with error,
     i.e. [`bb-exit`](#bb-exit){: .code } will be called.
 
 [Apt]: https://wiki.debian.org/Apt
