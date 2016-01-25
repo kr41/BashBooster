@@ -39,10 +39,16 @@ bb-apt-package-upgrade?() {
     bb-apt-update
 
     local PACKAGE=$1
-    local OUTPUT="$(apt-cache policy "$PACKAGE" | grep -A 1 'Installed: ' | sed -r 's/(Installed: |Candidate: )//'| sed '/ (none)/I,+1 d' | uniq -u)"
+    local OUTPUT="$(
+        apt-cache policy "$PACKAGE" |
+        grep -A 1 'Installed: ' |
+        sed -r 's/(Installed: |Candidate: )//' |
+        sed '/ (none)/I,+1 d' |
+        uniq -u
+    )"
 
     # Note: No upgrade available is reported for a non-installed package
-    [ -n "$OUTPUT" ]
+    [[ -n "$OUTPUT" ]]
 }
 
 bb-apt-upgrade() {
