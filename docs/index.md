@@ -384,6 +384,41 @@ The module provides functions to log messages to `stderr`.
     exit script with code `3` and error message `MSG`.  If `MSG` is not
     passed, it will use default one: `"Assertion error '$ASSERTION'"`.
 
+**bb-assert-root** [MSG] {: #bb-assert-root }
+:   Evaluates if the script is running as root.  If assertion is false, it will
+    exit script with code `3` and error message `MSG`.  If `MSG` is not passed,
+    it will use default one: `"This script must be run as root!"`.
+
+**bb-assert-file** FILE [MSG] {: #bb-assert-file }
+:   Evaluates if the file `FILE` exists.  If assertion is false, it will exit
+    script with code `3` and error message `MSG`.  If `MSG` is not passed, it
+    will use default one: `"File '$FILE' not found"`.
+
+**bb-assert-file-readable** FILE [MSG] {: #bb-assert-file-readable }
+:   Evaluates if the file `FILE` is readable.  If assertion is false, it will
+    exit script with code `3` and error message `MSG`.  If `MSG` is not passed,
+    it will use default one: `"File '$FILE' is not readable"`.
+
+**bb-assert-file-writeable** FILE [MSG] {: #bb-assert-file-writeable }
+:   Evaluates if the file `FILE` is writeable.  If assertion is false, it will
+    exit script with code `3` and error message `MSG`.  If `MSG` is not passed,
+    it will use default one: `"File '$FILE' is not writeable"`.
+
+**bb-assert-file-executable** FILE [MSG] {: #bb-assert-file-executable }
+:   Evaluates if the file `FILE` is executable.  If assertion is false, it will
+    exit script with code `3` and error message `MSG`.  If `MSG` is not passed,
+    it will use default one: `"File '$FILE' is not executable"`.
+
+**bb-assert-dir** DIR [MSG] {: #bb-assert-file-dir }
+:   Evaluates if the directory `DIR` exists.  If assertion is false, it will
+    exit script with code `3` and error message `MSG`.  If `MSG` is not passed,
+    it will use default one: `"Directory '$DIR' not found"`.
+
+**bb-assert-var** VAR [MSG] {: #bb-assert-var }
+:   Evaluates if the variable `VAR` is set (not empty).  If assertion is false,
+    it will exit script with code `3` and error message `MSG`.  If `MSG` is not
+    passed, it will use default one: `"Variable '$VAR' not set"`.
+
 
 ### ext
 
