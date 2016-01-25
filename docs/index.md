@@ -808,6 +808,38 @@ are different.  That is why it does not use [rsync][] command.
     the command execution, it will logs error and return `1`.
 
 
+### iptables
+
+Manage iptables chains & rules, playing nice with existing rules.  To
+reliably identify rules, an "ID" is required for each rule.  It must
+be unique to the chain.  Use whatever convention is preferred for
+ID's.  Simple string matching is used.
+
+**bb-iptables-chain** CHAIN {: #bb-iptables-chain }
+:   Create chain `CHAIN` if does not exist.  Example:
+
+        :::bash
+        bb-iptables-chain WEB
+
+**bb-iptables-rule** -t,--table TABLE=filter -n,--num NUM=-1 CHAIN ID {: #bb-iptables-rule }
+
+:   Define rule in `CHAIN` in `TABLE` at position `NUM`. If rule with
+    matching `ID` exists, then update it.  When `NUM` is negative,
+    count from end of `CHAIN` (-1 == last rule).
+
+        :::bash
+        # Add just before the end (-2), useful when last rule defines the policy.
+        bb-iptables-rule --num -2 INPUT https -p tcp --dport 443 -j WEB
+        # Append some rules to end of chain WEB of the filter table.
+        bb-iptables-chain WEB
+        bb-iptables-rule WEB host-a --src $HOST_A -j ACCEPT
+        bb-iptables-rule WEB host-b --src $HOST_B -j ACCEPT
+        # Insert at beginning (1) of the nat table.
+        bb-iptables-rule INPUT 'container subnet' -2 -j ACCEPT -s $NET
+        bb-iptables-rule --num 1 --table nat POSTROUTING 'container internet access' 1 -j MASQUERADE -s $net ! -o docker0
+        bb-iptables-rule --num 1 --table nat POSTROUTING tcp:1 -p tcp --dport 1 -j ACCEPT
+
+
 ### task
 
 The module provides functions to define and run tasks.  Each task can define
