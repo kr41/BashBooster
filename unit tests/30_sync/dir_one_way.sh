@@ -12,29 +12,29 @@ bb-event-delay() {
 
 
 EXPECT_PARAM=1
-bb-sync-dir-one-way "$DST_DIR" "$SRC_DIR" 'dir-changed' 1
+bb-sync-dir -o "$DST_DIR" "$SRC_DIR" 'dir-changed' 1
 bb-assert '[[ -d "$DST_DIR" ]]'
 
 EXPECT_PARAM=2
 touch "$SRC_DIR/foo"
 mkdir "$SRC_DIR/bar"
 touch "$SRC_DIR/bar/baz"
-bb-sync-dir-one-way "$DST_DIR" "$SRC_DIR" 'dir-changed' 2
+bb-sync-dir --one-way "$DST_DIR" "$SRC_DIR" 'dir-changed' 2
 bb-assert '[[ -f "$DST_DIR/foo" ]]'
 bb-assert '[[ -d "$DST_DIR/bar" ]]'
 bb-assert '[[ -f "$DST_DIR/bar/baz" ]]'
 
 EXPECT_PARAM=3
 echo "Foo" >> "$SRC_DIR/foo"
-bb-sync-dir-one-way "$DST_DIR" "$SRC_DIR" 'dir-changed' 3
+bb-sync-dir "$DST_DIR" -o "$SRC_DIR" 'dir-changed' 3
 bb-assert '[[ -z "$( diff -q "$DST_DIR/foo" "$SRC_DIR/foo" )" ]]'
 
 EXPECT_PARAM=4
 rm "$SRC_DIR/foo"
 rm -r "$SRC_DIR/bar"
-bb-sync-dir-one-way "$DST_DIR" "$SRC_DIR" 'event-should-not-be-delayed'
+bb-sync-dir "$DST_DIR" "$SRC_DIR" -o 'event-should-not-be-delayed'
 bb-assert '[[ -f "$DST_DIR/foo" ]]'
 bb-assert '[[ -d "$DST_DIR/bar" ]]'
 bb-assert '[[ -f "$DST_DIR/bar/baz" ]]'
 
-bb-sync-dir-one-way "$DST_DIR" "$SRC_DIR" 'event-should-not-be-delayed'
+bb-sync-dir "$DST_DIR" "$SRC_DIR" -o 'event-should-not-be-delayed'
