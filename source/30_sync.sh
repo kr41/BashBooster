@@ -3,24 +3,23 @@ bb-sync-file() {
     local SRC_FILE="$2"
     shift 2
 
-    local DST_FILE_CHANGED=0
+    local DST_FILE_CHANGED=false
 
     if [[ ! -f "$DST_FILE" ]]
     then
         touch "$DST_FILE"
-        bb-event-delay "$@"
-        DST_FILE_CHANGED=1
+        DST_FILE_CHANGED=true
     fi
     if [[ -n "$( diff -q "$SRC_FILE" "$DST_FILE" )" ]]
     then
         cp -f "$SRC_FILE" "$DST_FILE"
-        bb-event-delay "$@"
-        DST_FILE_CHANGED=1
+        DST_FILE_CHANGED=true
     fi
 
-    if [ "$DST_FILE_CHANGED" -eq 1 ]
+    if $DST_FILE_CHANGED
     then
         bb-event-fire "bb-sync-file-changed" "$DST_FILE"
+        bb-event-delay "$@"
     fi
 }
 
