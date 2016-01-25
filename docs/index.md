@@ -991,6 +991,30 @@ The module provides functions to work with [Apt][] package manager.
     If package is unable to be installed, script will be terminated with error,
     i.e. [`bb-exit`](#bb-exit){: .code } will be called.
 
+**bb-apt-package-upgrade?** PACKAGE {: #bb-apt-package-upgrade }
+:   Checks if a new version of `PACKAGE` is available.  It uses
+    [`bb-apt-update`](#bb-apt-update){: .code } for updating Apt cache before
+    doing the check.
+
+    If the requested package is not installed, `false` is returned by the
+    function.
+
+**bb-apt-upgrade** PACKAGE [PACKAGE...] {: #bb-apt-upgrade }
+:   Upgrades `PACKAGE` if a newer version is available.  It uses
+    [`bb-apt-package-upgrade?`](#bb-apt-package-upgrade){: .code } for checking
+    the availability of an updated version.
+
+    Before upgrading a package, an event `bb-package-pre-upgrade` will be fired
+    by [`bb-event-fire`](#bb-event-fire){: .code } with the package name as an
+    argument.  So that you will be able to make some pre upgrade actions.
+
+    After upgrading a package, an event `bb-package-post-upgrade` will be fired
+    by [`bb-event-fire`](#bb-event-fire){: .code } with the package name as an
+    argument.  So that you will be able to make some post upgrade actions.
+
+    If package is unable to be upgraded, script will be terminated with error,
+    i.e. [`bb-exit`](#bb-exit){: .code } will be called.
+
 [Apt]: https://wiki.debian.org/Apt
 
 
