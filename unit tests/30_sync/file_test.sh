@@ -34,3 +34,8 @@ bb-sync-file "$DST_FILE" "$SRC_FILE" 'file-changed' 2
 bb-assert '[[ ! -n "$( diff -q "$DST_FILE" "$SRC_FILE" )" ]]'
 
 bb-sync-file "$DST_FILE" "$SRC_FILE" 'event-should-not-be-delayed'
+
+EXPECT_PARAM="arg with space"
+echo "Foo" >> "$SRC_FILE"
+bb-sync-file "$DST_FILE" "$SRC_FILE" 'file-changed' 'arg with space'
+

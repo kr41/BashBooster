@@ -58,7 +58,12 @@ bb-event-delay() {
     if [[ -z "$( cat "$EVENTS" | grep "^$EVENT\$" )" ]]
     then
         bb-log-debug "Delayed event '$EVENT'"
-        echo "$EVENT" >> "$EVENTS"
+        while [ $# -gt 0 ]
+        do
+            printf "%q " "$1" >> "$EVENTS"
+            shift
+        done
+        printf "\n" >> "$EVENTS"
     fi
 }
 

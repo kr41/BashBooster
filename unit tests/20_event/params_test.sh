@@ -23,3 +23,9 @@ bb-event-fire event p1 p2
 EXPECT_P1="p3"
 EXPECT_P2="p4"
 bb-event-delay event p3 p4
+bb-event-cleanup
+
+EXPECT_P1="arg with space"
+EXPECT_P2="another arg with space"
+bb-event-delay event "arg with space" "another arg with space"
+bb-event-cleanup
