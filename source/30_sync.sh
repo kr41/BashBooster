@@ -38,7 +38,6 @@ bb-sync-dir() {
         shift
     done
     ARGS=( "${ARGS[@]}" "$@" )
-    echo "${ARGS[@]}"
 
     bb-sync-dir-helper "$TWO_WAY" "${ARGS[@]}"
 }
