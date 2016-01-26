@@ -12,7 +12,7 @@ bb-sync-file() {
     fi
     if [[ -n "$( diff -q "$SRC_FILE" "$DST_FILE" )" ]]
     then
-        cp -f "$SRC_FILE" "$DST_FILE"
+        cp -f -p "$SRC_FILE" "$DST_FILE"
         DST_FILE_CHANGED=true
     fi
 
