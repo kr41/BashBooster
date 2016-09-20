@@ -1,4 +1,0 @@
-[1;30mtest.sh [DEBUG] Debug message[0m
-[0;32mtest.sh [INFO] Info message[0m
-[0;33mtest.sh [WARNING] Warning message[0m
-[0;31mtest.sh [ERROR] Error message[0m
