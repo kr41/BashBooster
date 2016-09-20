@@ -2,7 +2,7 @@ declare -A BB_EXT_BODIES
 
 bb-ext-python() {
     local NAME="$1"
-    BB_EXT_BODIES[$NAME]="$( cat )"
+    BB_EXT_BODIES["$NAME"]="$( cat )"
 
     eval "$NAME() { python -c \"\${BB_EXT_BODIES[$NAME]}\" \"\$@\"; }"
 }
@@ -15,7 +15,7 @@ bb-var BB_AUGEAS_ROOT "/"
 
 bb-ext-augeas() {
     local NAME="$1"
-    BB_EXT_BODIES[$NAME]="$( cat )"
+    BB_EXT_BODIES["$NAME"]="$( cat )"
 
     eval "$NAME() {
     eval \"augtool -r \\\"\$BB_AUGEAS_ROOT\\\" \$BB_AUGEAS_PARAMS\" <<EOF
