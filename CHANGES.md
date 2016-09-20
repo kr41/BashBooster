@@ -1,7 +1,7 @@
 Changes
 -------
 
-### 0.4beta (2016-??-??)
+### 0.4beta (2016-09-20)
 
 *   Added `iptables` module (Erik Stephens)
 *   Added `augeas` module (Jocelyn Le Sage)
