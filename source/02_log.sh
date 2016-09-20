@@ -26,11 +26,11 @@ $BB_LOG_USE_COLOR && BB_LOG_FORMAT="\${COLOR}${BB_LOG_FORMAT}\${NOCOLOR}"
 bb-var BB_LOG_FORMAT "$BB_LOG_DEFAULT_FORMAT"
 
 declare -A BB_LOG_COLORS
-BB_LOG_COLORS[$BB_LOG_DEBUG]='\e[1;30m'      # Dark Gray
-BB_LOG_COLORS[$BB_LOG_INFO]='\e[0;32m'       # Green
-BB_LOG_COLORS[$BB_LOG_WARNING]='\e[0;33m'    # Brown/Orange
-BB_LOG_COLORS[$BB_LOG_ERROR]='\e[0;31m'      # Red
-BB_LOG_COLORS['NC']='\e[0m'
+BB_LOG_COLORS[$BB_LOG_DEBUG]="$( tput bold )$( tput setaf 0 )"  # Dark Gray
+BB_LOG_COLORS[$BB_LOG_INFO]="$( tput setaf 2 )"                 # Green
+BB_LOG_COLORS[$BB_LOG_WARNING]="$( tput setaf 3 )"              # Brown/Orange
+BB_LOG_COLORS[$BB_LOG_ERROR]="$( tput setaf 1 )"                # Red
+BB_LOG_COLORS['NC']="$( tput sgr0 )"
 
 bb-log-level-code() {
     local CODE=$(( $BB_LOG_LEVEL ))
