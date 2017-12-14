@@ -6,7 +6,7 @@ bb-yum?() {
 
 bb-yum-repo?() {
     local REPO=$1
-    yum -C repolist | grep -qw "^$REPO"
+    yum -C repolist | grep -Ewq "^(\W)*${REPO}"
 }
 
 bb-yum-package?() {
