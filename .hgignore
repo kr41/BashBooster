@@ -8,3 +8,5 @@ bashbooster.sh
 docs/www/*.html
 .idea/*
 .pip
+docs/env
+dist
