@@ -1,6 +1,10 @@
 Changes
 -------
 
+### 0.5beta (2017-12-14)
+
+*   Fixed `bb-yum-repo?` funcion
+
 ### 0.4beta (2016-09-20)
 
 *   Added `iptables` module (Erik Stephens)
