@@ -40,11 +40,14 @@ bb-apt-package-upgrade?() {
 
     local PACKAGE=$1
     local OUTPUT="$(
-        apt-cache policy "$PACKAGE" |
-        grep -A 1 'Installed: ' |
-        sed -r 's/(Installed: |Candidate: )//' |
-        sed '/ (none)/I,+1 d' |
-        uniq -u
+        apt-cache policy "$PACKAGE" | awk -c '
+            /Installed: / { installed = $2 }
+            /Candidate: / {
+                if (installed != "(none)" && installed != $2) {
+                    print installed " " $2
+                }
+            }
+        '
     )"
 
     # Note: No upgrade available is reported for a non-installed package
