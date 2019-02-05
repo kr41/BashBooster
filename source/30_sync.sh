@@ -44,8 +44,8 @@ bb-sync-dir() {
 
 bb-sync-dir-helper() {
     local TWO_WAY="$1"
-    local DST_DIR="$( readlink -nm "$2" )"
-    local SRC_DIR="$( readlink -ne "$3" )"
+    local DST_DIR="$( cd "$( dirname "$2" )" ; pwd )/$( basename "$2" )"
+    local SRC_DIR="$( cd "$3" ; pwd )"
     shift 3
 
     if [[ ! -d "$DST_DIR" ]]

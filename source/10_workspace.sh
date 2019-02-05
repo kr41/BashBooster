@@ -9,7 +9,7 @@ bb-workspace-init() {
             "Failed to initialize workspace at '$BB_WORKSPACE'"
     fi
     # Ensure BB_WORKSPACE stores absolute path
-    BB_WORKSPACE="$( readlink -ne $BB_WORKSPACE )"
+    BB_WORKSPACE="$( cd "$BB_WORKSPACE" ; pwd )"
 }
 
 bb-workspace-cleanup() {
