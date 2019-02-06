@@ -1141,6 +1141,9 @@ The module provides functions to work with [Homebrew][] package manager.
 **bb-brew-package?** PACKAGE {: #bb-brew-package }
 :   Checks if `PACKAGE` is installed.
 
+**bb-cask-brew-package?** PACKAGE {: #bb-cask-brew-package }
+:   Checks if `PACKAGE` is installed.
+
 **bb-brew-update** {: #bb-brew-update }
 :   Updates Homebrew cache.  It sets up variable `BB_BREW_UPDATED` to `true`.
     So the second call of this function does nothing.
@@ -1148,6 +1151,19 @@ The module provides functions to work with [Homebrew][] package manager.
 **bb-brew-install** PACKAGE [PACKAGE...] {: #bb-brew-install }
 :   Installs `PACKAGE` if it is not already installed.  It uses
     [`bb-brew-package?`](#bb-brew-package){: .code } for checking `PACKAGE`
+    installation status, and [`bb-brew-update`](#bb-brew-update){: .code }
+    for updating Homebrew cache before installation.
+
+    For each installed package an event `bb-package-installed` will be fired
+    by [`bb-event-fire`](#bb-event-fire){: .code } with the package name as
+    an argument.  So that you will be able to make some post installation actions.
+
+    If package is unable to be installed, script will be terminated with error,
+    i.e. [`bb-exit`](#bb-exit){: .code } will be called.
+
+**bb-brew-cask-install** PACKAGE [PACKAGE...] {: #bb-brew-cask-install }
+:   Installs `PACKAGE` if it is not already installed.  It uses
+    [`bb-brew-cask-package?`](#bb-brew-cask-package){: .code } for checking `PACKAGE`
     installation status, and [`bb-brew-update`](#bb-brew-update){: .code }
     for updating Homebrew cache before installation.
 

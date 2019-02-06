@@ -14,6 +14,11 @@ bb-brew-package?() {
     [ -n "$( brew ls --versions "$PACKAGE" )" ]
 }
 
+bb-brew-cask-package?() {
+    local PACKAGE=$1
+    [ -n "$( brew cask ls --versions "$PACKAGE" )" ]
+}
+
 bb-brew-update() {
     $BB_BREW_UPDATED && return 0
     bb-log-info 'Updating Homebrew'
@@ -29,6 +34,20 @@ bb-brew-install() {
             bb-brew-update
             bb-log-info "Installing package '$PACKAGE'"
             brew install "$PACKAGE"
+            bb-exit-on-error "Failed to install package '$PACKAGE'"
+            bb-event-fire "bb-package-installed" "$PACKAGE"
+        fi
+    done
+}
+
+bb-brew-cask-install() {
+    for PACKAGE in "$@"
+    do
+        if ! bb-brew-cask-package? "$PACKAGE"
+        then
+            bb-brew-update
+            bb-log-info "Installing package '$PACKAGE'"
+            brew cask install "$PACKAGE"
             bb-exit-on-error "Failed to install package '$PACKAGE'"
             bb-event-fire "bb-package-installed" "$PACKAGE"
         fi
