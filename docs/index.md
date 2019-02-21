@@ -1141,7 +1141,7 @@ The module provides functions to work with [Homebrew][] package manager.
 **bb-brew-package?** PACKAGE {: #bb-brew-package }
 :   Checks if `PACKAGE` is installed.
 
-**bb-cask-brew-package?** PACKAGE {: #bb-cask-brew-package }
+**bb-brew-cask-package?** PACKAGE {: #bb-brew-cask-package }
 :   Checks if `PACKAGE` is installed.
 
 **bb-brew-update** {: #bb-brew-update }
