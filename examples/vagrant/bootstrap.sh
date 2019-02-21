@@ -18,7 +18,9 @@ then
     bb-apt-install nginx python-virtualenv
 elif bb-yum?
 then
-    EPEL_REPO="$( bb-download http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm )"
+    bb-exe? wget || bb-yum-install wget
+
+    EPEL_REPO="$( bb-download http://download.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm )"
     bb-yum-repo? epel || rpm -ivh "$EPEL_REPO"
 
     bb-event-on 'bb-package-installed' 'post-install'
@@ -52,7 +54,7 @@ bb-log-info "Creating event listeners"
 
 bb-event-on 'webserver-updated' 'on-webserver-updated'
 on-webserver-updated() {
-    service nginx restart
+    systemctl restart nginx
 }
 
 bb-event-on 'builder-updated' 'on-builder-updated'
@@ -70,20 +72,18 @@ on-site-updated() {
 
 bb-log-info "Synchronizing data"
 
-bb-sync-dir  "$BB_WORKSPACE/docs/www/css"          '/vagrant/docs/www/css'
-bb-sync-file "$BB_WORKSPACE/docs/requirements.txt" '/vagrant/docs/requirements.txt' builder-updated
-bb-sync-file "$BB_WORKSPACE/docs/layout.mako"      '/vagrant/docs/layout.mako'      site-updated
-bb-sync-file "$BB_WORKSPACE/docs/index.md"         '/vagrant/docs/index.md'         site-updated
-bb-sync-file "$BB_WORKSPACE/docs/build.py"         '/vagrant/docs/build.py'         site-updated
-bb-sync-file "$BB_WORKSPACE/CHANGES.md"            '/vagrant/CHANGES.md'            site-updated
-bb-sync-file "$BB_WORKSPACE/VERSION.txt"           '/vagrant/VERSION.txt'           site-updated
+bb-sync-dir     "$BB_WORKSPACE/docs/www/css"          '/vagrant/docs/www/css'
+bb-sync-file    "$BB_WORKSPACE/docs/requirements.txt" '/vagrant/docs/requirements.txt' builder-updated
+bb-sync-dir  -o "$BB_WORKSPACE/docs/"                 '/vagrant/docs/'                 site-updated
+bb-sync-file    "$BB_WORKSPACE/CHANGES.md"            '/vagrant/CHANGES.md'            site-updated
+bb-sync-file    "$BB_WORKSPACE/VERSION.txt"           '/vagrant/VERSION.txt'           site-updated
 
-NGINX_CONF="$( bb-tmp-file )"
-bb-template "nginx.conf.bbt" > "$NGINX_CONF"
+
 if [[ -f '/etc/nginx/sites-available/default' ]]
 then
+    NGINX_CONF="$( bb-tmp-file )"
+    bb-template "nginx.conf.bbt" > "$NGINX_CONF"
     bb-sync-file '/etc/nginx/sites-available/default' "$NGINX_CONF" webserver-updated
-elif [[ -f '/etc/nginx/conf.d/default.conf' ]]
-then
-    bb-sync-file '/etc/nginx/conf.d/default.conf'     "$NGINX_CONF" webserver-updated
+else
+    bb-sync-dir -o '/usr/share/nginx/html' "$BB_WORKSPACE/docs/www"
 fi
