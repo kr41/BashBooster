@@ -4,7 +4,7 @@ This example demonstrates usage of task runner utility `bb-task`.  Run:
 
 It will prepare demo virtual machine, i.e.:
 
-*   setup virtual machine with Ubuntu 14.04;
+*   setup virtual machine with Ubuntu 18.04;
 *   install [Mercurial][] source control management tool;
 *   clone [TraversalKit example application][] into
     `/home/vagrant/Projects/TraversalKitExampleApp`;
