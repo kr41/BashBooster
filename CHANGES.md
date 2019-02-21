@@ -1,6 +1,11 @@
 Changes
 -------
 
+### 0.6 (2019-02-21)
+
+*   Fixed MacOS compatibility
+*   Added `brew cask` functions (Oliver Marshall)
+
 ### 0.5beta (2017-12-14)
 
 *   Fixed `bb-yum-repo?` funcion
